@@ -1,5 +1,5 @@
 
-public class Box {
+public abstract class Box {
 
 	private int x ;
 	private int y ;

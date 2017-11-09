@@ -1,9 +1,9 @@
 
 public class EBox extends Box{
 	
-	public EBox (int x, int y) {
+	public EBox (String label, int x, int y, Maze maze) {
 		
-		super(x,y) ;
+		super(label,x,y,maze) ;
 		
 	}
 

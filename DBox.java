@@ -1,9 +1,9 @@
 
 public class DBox extends Box{
 
-	public DBox (int x, int y) {
+	public DBox (String label, int x, int y, Maze maze) {
 		
-		super(x,y) ;
+		super(label,x,y,maze) ;
 		
 	}
 	

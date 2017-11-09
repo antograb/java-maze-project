@@ -1,15 +1,22 @@
 
-public class Maze {
+public class Maze 
+		implements GraphInterface{
 
 	int dimensionX ;
 	int dimensionY ;
 	int[][] maze ;
+	int[][] adjMatrix ;
 	
-	public Maze(int x, int y) {
+	public Maze(int dimensionX, int dimensionY, int[][] adjmatrix) {
 		
-		this.dimensionX = x ;
-		this.dimensionY = y ;
+		this.dimensionX = dimensionX ;
+		this.dimensionY = dimensionY ;
 		this.maze = new int[dimensionX][dimensionY] ;
+		this.adjMatrix = adjMatrix ;
+		
+	}
+	
+	public int getCost(VertexInterface start, VertexInterface end) {
 		
 	}
 
@@ -36,6 +43,7 @@ public class Maze {
 	public void setMaze(int[][] maze) {
 		this.maze = maze;
 	}
+	
 	
 	
 	

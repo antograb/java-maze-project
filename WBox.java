@@ -1,9 +1,9 @@
 
 public class WBox extends Box {
 	
-	public WBox (int x, int y) {
+	public WBox (String label, int x, int y, Maze maze) {
 		
-		super(x,y) ;
+		super(label,x,y,maze) ;
 		
 	}
 

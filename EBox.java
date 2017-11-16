@@ -5,6 +5,7 @@ public class EBox extends Box{
 		
 		super(label,x,y,maze) ;
 		
+		
 	}
 
 }

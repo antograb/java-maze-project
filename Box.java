@@ -1,3 +1,4 @@
+import java.util.List;
 
 public abstract class Box
 		implements VertexInterface {
@@ -6,12 +7,16 @@ public abstract class Box
 	private int y ;
 	private String label ;
 	private Maze maze ;
+	private List<Box> neighbourList ;
 	
 	public Box (String label, int x, int y, Maze maze) {
 		this.label = label ;
 		this.x = x ;
 		this.y = y ;
 		this.maze = maze ;
+		if (x != 0 && y != 0 && x != maze.getDimensionX() && y != maze.getDimensionY()) {
+			this.neighbourList.add(maze.getMaze()[x+1][y]) ;			
+		}
 	}
 	
 	public boolean compareTo(VertexInterface vertex) {

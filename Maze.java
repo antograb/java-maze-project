@@ -1,3 +1,5 @@
+import java.util.Iterator;
+import java.util.List;
 
 public class Maze 
 		implements GraphInterface{
@@ -5,18 +7,20 @@ public class Maze
 	int dimensionX ;
 	int dimensionY ;
 	int[][] maze ;
-	int[][] adjMatrix ;
 	
-	public Maze(int dimensionX, int dimensionY, int[][] adjmatrix) {
+	public Maze(int dimensionX, int dimensionY, int[][] maze) {
 		
-		this.dimensionX = dimensionX ;
-		this.dimensionY = dimensionY ;
-		this.maze = new int[dimensionX][dimensionY] ;
-		this.adjMatrix = adjMatrix ;
+		this.maze = maze ;
+		this.dimensionX = maze.length ;
+		this.dimensionY = maze[0].length ;
 		
 	}
 	
-	public int getCost(VertexInterface start, VertexInterface end) {
+	public int getCost(Box start, Box end) {
+		
+	}
+	
+	public int getVertexNumber() {
 		
 	}
 

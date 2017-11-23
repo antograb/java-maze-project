@@ -1,14 +1,13 @@
-import java.util.Iterator;
-import java.util.List;
+import java.util.ArrayList;
 
 public class Maze 
 		implements GraphInterface{
 
-	int dimensionX ;
-	int dimensionY ;
-	int[][] maze ;
+	private int dimensionX ;
+	private int dimensionY ;
+	private Box[][] maze ;
 	
-	public Maze(int dimensionX, int dimensionY, int[][] maze) {
+	public Maze(Box[][] maze) {
 		
 		this.maze = maze ;
 		this.dimensionX = maze.length ;
@@ -16,14 +15,37 @@ public class Maze
 		
 	}
 	
-	public int getCost(Box start, Box end) {
+	public int getCost(VertexInterface start, VertexInterface end) {
 		
+		Box startBox = (Box) start ;
+		Box endBox = (Box) end ;
+		
+		if (startBox.getNeighbourList().contains(endBox)) {
+			if (startBox.isWalkable() & endBox.isWalkable()) {
+				return 1 ;
+			}
+			else {
+				return 0 ;
+			}
+		}
+		
+		return 0 ;
 	}
 	
 	public int getVertexNumber() {
-		
+		return dimensionX*dimensionY ;
 	}
 
+	public ArrayList<VertexInterface> getVertexes() {
+		ArrayList<VertexInterface> vertexList = new ArrayList<VertexInterface>() ;
+		for (int i = 0 ; i <= dimensionX ; i++) {
+			for (int j = 0 ; j <= dimensionY ; j++) {
+				vertexList.add(maze[i][j]) ;
+			}
+		}
+		return vertexList ;
+	}
+	
 	public int getDimensionX() {
 		return dimensionX;
 	}
@@ -40,15 +62,13 @@ public class Maze
 		this.dimensionY = dimensionY;
 	}
 
-	public int[][] getMaze() {
+	public Box[][] getMaze() {
 		return maze;
 	}
 
-	public void setMaze(int[][] maze) {
+	public void setMaze(Box[][] maze) {
 		this.maze = maze;
 	}
-	
-	
 	
 	
 }

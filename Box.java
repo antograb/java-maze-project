@@ -10,12 +10,77 @@ public abstract class Box
 	private List<Box> neighbourList ;
 	
 	public Box (String label, int x, int y, Maze maze) {
+		
 		this.label = label ;
 		this.x = x ;
 		this.y = y ;
 		this.maze = maze ;
+		
 		if (x != 0 && y != 0 && x != maze.getDimensionX() && y != maze.getDimensionY()) {
-			this.neighbourList.add(maze.getMaze()[x+1][y]) ;			
+			this.neighbourList.add(maze.getMaze()[x+1][y]) ;
+			this.neighbourList.add(maze.getMaze()[x-1][y]) ;
+			this.neighbourList.add(maze.getMaze()[x][y+1]) ;
+			this.neighbourList.add(maze.getMaze()[x][y-1]) ;
+		}
+		
+		if (x == 0) {
+			this.neighbourList.add(maze.getMaze()[x+1][y]) ;
+			
+			if (y == maze.getDimensionY()) {
+				this.neighbourList.add(maze.getMaze()[x][y-1]) ;
+			}
+			else if (y == 0) {
+				this.neighbourList.add(maze.getMaze()[x][y+1]) ;
+			}
+			else {
+				this.neighbourList.add(maze.getMaze()[x][y-1]) ;
+				this.neighbourList.add(maze.getMaze()[x][y+1]) ;
+			}
+		}
+		
+		if (y == 0) {
+			this.neighbourList.add(maze.getMaze()[x][y+1]) ;
+			
+			if (x == maze.getDimensionX()) {
+				this.neighbourList.add(maze.getMaze()[x-1][y]) ;
+			}
+			else if (x == 0) {
+				this.neighbourList.add(maze.getMaze()[x+1][y]) ;
+			}
+			else {
+				this.neighbourList.add(maze.getMaze()[x-1][y]) ;
+				this.neighbourList.add(maze.getMaze()[x+1][y]) ;
+			}
+		}
+		
+		if (y == maze.getDimensionY()) {
+			this.neighbourList.add(maze.getMaze()[x][y-1]) ;
+			
+			if (x == maze.getDimensionX()) {
+				this.neighbourList.add(maze.getMaze()[x-1][y]) ;
+			}
+			else if (x == 0) {
+				this.neighbourList.add(maze.getMaze()[x+1][y]) ;
+			}
+			else {
+				this.neighbourList.add(maze.getMaze()[x-1][y]) ;
+				this.neighbourList.add(maze.getMaze()[x+1][y]) ;
+			}
+		}
+		
+		if (x == maze.getDimensionX()) {
+			this.neighbourList.add(maze.getMaze()[x-1][y]) ;
+			
+			if (y == maze.getDimensionY()) {
+				this.neighbourList.add(maze.getMaze()[x][y-1]) ;
+			}
+			else if (y == 0) {
+				this.neighbourList.add(maze.getMaze()[x][y+1]) ;
+			}
+			else {
+				this.neighbourList.add(maze.getMaze()[x][y-1]) ;
+				this.neighbourList.add(maze.getMaze()[x][y+1]) ;
+			}
 		}
 	}
 	
@@ -24,6 +89,18 @@ public abstract class Box
 			return true ;
 		}
 		return false ;
+	}
+	
+	public boolean isWalkable() {
+		return true ;
+	}
+	
+	public List<Box> getNeighbourList() {
+		return neighbourList;
+	}
+
+	public void setNeighbourList(List<Box> neighbourList) {
+		this.neighbourList = neighbourList;
 	}
 
 	public int getX() {

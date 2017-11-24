@@ -7,4 +7,9 @@ public class DBox extends Box{
 		
 	}
 	
+	@Override
+	public boolean isDeparture() {
+		return true ;
+	}
+	
 }

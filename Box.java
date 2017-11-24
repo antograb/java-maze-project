@@ -95,6 +95,14 @@ public abstract class Box
 		return true ;
 	}
 	
+	public boolean isArrival() {
+		return false ;
+	}
+	
+	public boolean isDeparture() {
+		return false ;
+	}
+	
 	public List<Box> getNeighbourList() {
 		return neighbourList;
 	}

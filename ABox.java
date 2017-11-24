@@ -7,5 +7,9 @@ public class ABox extends Box{
 		
 	}
 	
+	@Override
+	public boolean isArrival() {
+		return true ;
+	}
 
 }

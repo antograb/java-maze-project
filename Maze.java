@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 public class Maze 
@@ -44,6 +46,38 @@ public class Maze
 			}
 		}
 		return vertexList ;
+	}
+	
+	public final void initFromTextFile(String filename) {
+		
+		FileReader fr = null ;
+		BufferedReader br = null ;
+		
+		try {
+			fr  = new FileReader(filename) ;
+			br = new BufferedReader(fr) ;
+
+			
+			int lineLength = br.readLine().length() - 1 ;
+			int currentLineLength ;
+			int cInt = br.read() ;
+			
+			while (cInt != -1)
+			{
+				currentLineLength = br.readLine().length() ;
+				if (currentLineLength != lineLength) {
+					throw new MazeReadingException(filename) ;
+				}
+				cInt = br.read() ;
+			}
+		} catch (MazeReadingException mre) { 
+			mre.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try { br.close() ;} catch (Exception e) {}
+		}
+		
 	}
 	
 	public int getDimensionX() {

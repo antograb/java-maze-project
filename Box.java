@@ -16,6 +16,10 @@ public abstract class Box
 		this.y = y ;
 		this.maze = maze ;
 		
+	}
+	
+	public List<Box> generateNeighbors() {
+		
 		if (x != 0 && y != 0 && x != maze.getDimensionX() && y != maze.getDimensionY()) {
 			this.neighbourList.add(maze.getMaze()[x+1][y]) ;
 			this.neighbourList.add(maze.getMaze()[x-1][y]) ;
@@ -82,6 +86,8 @@ public abstract class Box
 				this.neighbourList.add(maze.getMaze()[x][y+1]) ;
 			}
 		}
+		
+		return neighbourList ;
 	}
 	
 	public boolean compareTo(VertexInterface vertex) {

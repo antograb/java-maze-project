@@ -6,7 +6,7 @@ public class MazeReadingException
 	
 	public MazeReadingException (String filename) {
 		
-		super("Invalid maze format :" + filename) ;
+		super("Invalid maze format : " + filename) ;
 		this.filename = filename ;
 		
 	}

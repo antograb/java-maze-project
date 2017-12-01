@@ -1,19 +1,19 @@
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Maze 
-		implements GraphInterface{
+		implements GraphInterface {
 
 	private int dimensionX ;
 	private int dimensionY ;
 	private Box[][] maze ;
 	
-	public Maze(Box[][] maze) {
+	public Maze(String filename) {
 		
-		this.maze = maze ;
-		this.dimensionX = maze.length ;
-		this.dimensionY = maze[0].length ;
+		initFromTextFile(filename) ;
 		
 	}
 	
@@ -50,25 +50,71 @@ public class Maze
 	
 	public final void initFromTextFile(String filename) {
 		
-		FileReader fr = null ;
+		FileReader     fr = null ;
 		BufferedReader br = null ;
 		
-		try {
-			fr  = new FileReader(filename) ;
+		try { //Determines the height of the maze and stores it into lineCount
+			fr = new FileReader(filename) ;
 			br = new BufferedReader(fr) ;
-
+			while (br.readLine() != null) dimensionY++;
+			//System.out.println("Line count :" + lineCount);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try { br.close() ;} catch (Exception e) {}
+		}
+		
+		try { //generates the maze
+			fr = new FileReader(filename) ;
+			br = new BufferedReader(fr) ;
 			
-			int lineLength = br.readLine().length() - 1 ;
+			String currentLine = null ;
+			
+			currentLine = br.readLine() ;
+			System.out.println(currentLine);
+			dimensionX = currentLine.length() ; //maze's width
+			System.out.println("Line length :" + dimensionX);
 			int currentLineLength ;
-			int cInt = br.read() ;
+			int compteurLigne = 0 ;
 			
-			while (cInt != -1)
+			this.maze = new Box[dimensionX][dimensionY] ;
+			
+			while (currentLine != null)
 			{
-				currentLineLength = br.readLine().length() ;
-				if (currentLineLength != lineLength) {
+				
+				//System.out.println(currentLine);
+				currentLineLength = currentLine.length() ;
+				System.out.println("Current line length :" + currentLineLength);
+				
+				for (int compteurColonne = 0 ; compteurColonne < currentLineLength ; compteurColonne++) {
+					
+					char currentChar = currentLine.charAt(compteurColonne) ;
+					
+					switch(currentChar) {
+						
+					case 'W' : maze[compteurLigne][compteurColonne] = new WBox("W", compteurLigne, compteurColonne, this) ;
+						break;
+					
+					case 'E' : maze[compteurLigne][compteurColonne] = new EBox("E", compteurLigne, compteurColonne, this) ;
+						break;
+					
+					case 'D' : maze[compteurLigne][compteurColonne] = new DBox("D", compteurLigne, compteurColonne, this) ;
+						break;
+					
+					case 'A' : maze[compteurLigne][compteurColonne] = new ABox("A", compteurLigne, compteurColonne, this) ;
+						break;
+					
+					default : throw new MazeReadingException(filename) ;
+					
+					}
+				}
+				
+				if (currentLineLength != dimensionX) {
 					throw new MazeReadingException(filename) ;
 				}
-				cInt = br.read() ;
+				
+				currentLine = br.readLine() ;
+				compteurLigne++ ;
 			}
 		} catch (MazeReadingException mre) { 
 			mre.printStackTrace();
@@ -76,6 +122,48 @@ public class Maze
 			e.printStackTrace();
 		} finally {
 			try { br.close() ;} catch (Exception e) {}
+		}
+		
+		System.out.println("dimX :" + dimensionX);
+		System.out.println("dimY :" + dimensionY);
+
+		
+		//neighbour generation for each box in the maze
+		for (int i = 0 ; i < dimensionX ; i++) {
+			for (int j = 0 ; j < dimensionY ; j++) {				
+				System.out.println(maze[i][j].getLabel());
+				System.out.println(maze[i][j].getMaze());
+				System.out.println("x : " + maze[i][j].getX() +" y : " + maze[i][j].getY());
+				
+				maze[i][j].generateNeighbors() ;
+			}
+			System.out.println();
+		}
+	}
+	
+	public final void saveToTextFile(String fileName) {
+		
+		FileOutputStream fos = null ;
+		PrintWriter      pw  = null ;
+		
+		try {
+		
+			fos = new FileOutputStream(fileName) ;
+			pw  = new PrintWriter(fos) ;
+			
+			for (int i = 0; i < dimensionX ; i++) {
+				for (int j = 0 ; j < dimensionY ; j++) {	
+					
+					pw.print(maze[i][j].getLabel());
+					
+				}
+				pw.print("\n");
+			}
+		
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try { pw.close();} catch(Exception e) {}
 		}
 		
 	}

@@ -1,3 +1,4 @@
+package maze;
 
 public class EBox extends Box{
 	

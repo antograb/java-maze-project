@@ -1,5 +1,8 @@
+package maze;
 import java.util.ArrayList;
 import java.util.List;
+
+import dijkstra.VertexInterface;
 
 public abstract class Box
 		implements VertexInterface {

@@ -1,8 +1,12 @@
+package maze;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+
+import dijkstra.GraphInterface;
+import dijkstra.VertexInterface;
 
 public class Maze 
 		implements GraphInterface {
@@ -40,9 +44,11 @@ public class Maze
 
 	public ArrayList<VertexInterface> getVertexes() {
 		ArrayList<VertexInterface> vertexList = new ArrayList<VertexInterface>() ;
-		for (int i = 0 ; i <= dimensionX ; i++) {
-			for (int j = 0 ; j <= dimensionY ; j++) {
-				vertexList.add(maze[i][j]) ;
+		for (int i = 0 ; i < dimensionX ; i++) {
+			for (int j = 0 ; j < dimensionY ; j++) {
+				if (maze[i][j].isWalkable()) {
+					vertexList.add(maze[i][j]) ;
+				}
 			}
 		}
 		return vertexList ;

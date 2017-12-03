@@ -27,7 +27,7 @@ public class Maze
 		Box endBox = (Box) end ;
 		
 		if (startBox.getNeighbourList().contains(endBox)) {
-			if (startBox.isWalkable() & endBox.isWalkable()) {
+			if (startBox.isWalkable() && endBox.isWalkable()) {
 				return 1 ;
 			}
 			else {

@@ -1,9 +1,13 @@
 package dijkstra;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Hashtable;
+
+import maze.Box;
 
 public class Dijkstra {
 	
-	private PreviousInterface dijkstra(GraphInterface g, VertexInterface r, ASetInterface a, PiInterface pi, PreviousInterface previous) {
+	private static PreviousInterface dijkstra(GraphInterface g, VertexInterface r, ASetInterface a, PiInterface pi, PreviousInterface previous) {
 		
 		a.add(r) ; ;
 		VertexInterface pivot = r ;
@@ -42,5 +46,21 @@ public class Dijkstra {
 		
 	}
 	
+	public static PreviousInterface dijkstra(GraphInterface g, VertexInterface r) {
+		
+		HashSet<Box> vertexHashSet = new HashSet<Box>() ;
+		ASet aSet = new ASet(vertexHashSet) ;
+		
+		Hashtable<VertexInterface, Integer> hashPi = new Hashtable<VertexInterface, Integer>() ;
+		Pi pi = new Pi(hashPi) ;
+
+		Hashtable<VertexInterface, VertexInterface> hashPrevious = new Hashtable<VertexInterface, VertexInterface>() ;
+		ArrayList<VertexInterface> shortestPath = new ArrayList<VertexInterface>() ;
+		Previous previous = new Previous(hashPrevious, shortestPath) ;
+		
+		return dijkstra(g, r, aSet, pi, previous) ;
+		
+		
+	}
 	
 }

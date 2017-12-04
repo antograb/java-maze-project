@@ -7,6 +7,14 @@ public class Previous implements PreviousInterface {
 	
 	private Hashtable<VertexInterface, VertexInterface> hashPrevious = new Hashtable<VertexInterface, VertexInterface>() ;
 	private ArrayList<VertexInterface> shortestPath = new ArrayList<VertexInterface>() ;
+	
+	
+
+	public Previous(Hashtable<VertexInterface, VertexInterface> hashPrevious, ArrayList<VertexInterface> shortestPath) {
+		super();
+		this.hashPrevious = hashPrevious;
+		this.shortestPath = shortestPath;
+	}
 
 	public VertexInterface getPrevious(VertexInterface vertex) {
 		

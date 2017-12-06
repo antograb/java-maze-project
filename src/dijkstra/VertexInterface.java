@@ -1,4 +1,5 @@
 package dijkstra;
+import java.util.List;
 
 public interface VertexInterface {
 	
@@ -6,5 +7,4 @@ public interface VertexInterface {
 	public boolean compareTo(VertexInterface vertex) ;
 	
 	public String getLabel() ;
-	
 }

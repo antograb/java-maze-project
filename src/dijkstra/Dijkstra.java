@@ -3,13 +3,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 
-import maze.Box;
-
 public class Dijkstra {
 	
 	private static PreviousInterface dijkstra(GraphInterface g, VertexInterface r, ASetInterface a, PiInterface pi, PreviousInterface previous) {
 		
-		a.add(r) ; ;
+		a.add(r) ;
 		VertexInterface pivot = r ;
 		pi.setPi(0, r) ;
 		
@@ -20,11 +18,12 @@ public class Dijkstra {
 				pi.setPi(Integer.MAX_VALUE, vertex);
 			}
 		}
-		
+				
 		int n = g.getVertexNumber();
+
 		for (int j = 0; j < n; j++) {
-			for (VertexInterface vertex: vertexList) {
-				if (! a.contains(vertex) && previous.getPrevious(vertex).compareTo(pivot)) {
+			for (VertexInterface vertex: g.generateNeighbours(pivot)) {
+				if (!a.contains(vertex)) {
 					if (pi.getPi(pivot) + g.getCost(pivot, vertex) < pi.getPi(vertex)) {
 						pi.setPi(pi.getPi(pivot) + g.getCost(pivot, vertex), vertex) ;
 						previous.setPrevious(pivot, vertex);
@@ -48,7 +47,7 @@ public class Dijkstra {
 	
 	public static PreviousInterface dijkstra(GraphInterface g, VertexInterface r) {
 		
-		HashSet<Box> vertexHashSet = new HashSet<Box>() ;
+		HashSet<VertexInterface> vertexHashSet = new HashSet<VertexInterface>() ;
 		ASet aSet = new ASet(vertexHashSet) ;
 		
 		Hashtable<VertexInterface, Integer> hashPi = new Hashtable<VertexInterface, Integer>() ;

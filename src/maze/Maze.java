@@ -54,6 +54,33 @@ public class Maze
 		return vertexList ;
 	}
 	
+	public ArrayList<VertexInterface> generateNeighbours(VertexInterface vertex) {
+		
+		Box box = (Box)vertex ;
+		int x = box.getX() ;
+		int y = box.getY() ;
+		ArrayList<VertexInterface> neighbourList = new ArrayList<VertexInterface>() ;
+		
+		if (x > 0 && maze[x-1][y].isWalkable()) {
+			neighbourList.add(maze[x-1][y]) ;
+		}
+		
+		if (x < dimensionX-1 && maze[x+1][y].isWalkable()) {
+			neighbourList.add(maze[x+1][y]) ;
+		}
+		
+		if (y > 0 && maze[x][y-1].isWalkable()) {
+			neighbourList.add(maze[x][y-1]) ;
+		}
+		
+		if (y < dimensionY-1 && maze[x][y+1].isWalkable()) {
+			neighbourList.add(maze[x][y+1]) ;
+		}
+		
+		return neighbourList ;
+		
+	}
+	
 	public final void initFromTextFile(String filename) {
 		
 		FileReader     fr = null ;
@@ -77,9 +104,7 @@ public class Maze
 			String currentLine = null ;
 			
 			currentLine = br.readLine() ;
-			System.out.println(currentLine);
 			dimensionX = currentLine.length() ; //maze's width
-			System.out.println("Line length :" + dimensionX);
 			int currentLineLength ;
 			int compteurLigne = 0 ;
 			
@@ -90,7 +115,6 @@ public class Maze
 				
 				//System.out.println(currentLine);
 				currentLineLength = currentLine.length() ;
-				System.out.println("Current line length :" + currentLineLength);
 				
 				for (int compteurColonne = 0 ; compteurColonne < currentLineLength ; compteurColonne++) {
 					
@@ -130,13 +154,6 @@ public class Maze
 			try { br.close() ;} catch (Exception e) {}
 		}
 		
-		//neighbour generation for each box in the maze
-		for (int i = 0 ; i < dimensionX ; i++) {
-			for (int j = 0 ; j < dimensionY ; j++) {
-				maze[i][j].generateNeighbors() ;
-			}
-			System.out.println();
-		}
 	}
 	
 	public final void saveToTextFile(String fileName) {

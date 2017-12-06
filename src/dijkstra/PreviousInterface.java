@@ -11,7 +11,6 @@ public interface PreviousInterface {
 	public void setPrevious(VertexInterface father, VertexInterface son) ;
 	
 	/**Shortest path from root to a vertex */
-	public ArrayList<VertexInterface> getShortestPathTo(VertexInterface vertex) ;
-	
+	public ArrayList<VertexInterface> getShortestPathTo(VertexInterface vertex) ;	
 
 }

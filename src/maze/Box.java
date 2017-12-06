@@ -9,7 +9,7 @@ public abstract class Box
 
 	private int x ;
 	private int y ;
-	private String label ;
+	private String label = null ;
 	private Maze maze ;
 	private List<Box> neighbourList = new ArrayList<Box>() ;
 	
@@ -22,27 +22,8 @@ public abstract class Box
 		
 	}
 	
-	public List<Box> generateNeighbors() {
-		
-		Box[][] vMaze = maze.getMaze() ;
-		
-		if (x > 0 && vMaze[x-1][y].isWalkable()) {
-			neighbourList.add(vMaze[x-1][y]) ;
-		}
-		
-		if (x < maze.getDimensionX()-1 && vMaze[x+1][y].isWalkable()) {
-			neighbourList.add(vMaze[x+1][y]) ;
-		}
-		
-		if (y > 0 && vMaze[x][y-1].isWalkable()) {
-			neighbourList.add(vMaze[x][y-1]) ;
-		}
-		
-		if (y < maze.getDimensionY()-1 && vMaze[x][y+1].isWalkable()) {
-			neighbourList.add(vMaze[x][y+1]) ;
-		}
-		
-		return neighbourList ;
+	public List<VertexInterface> generateNeighbors() {
+		return maze.generateNeighbours(this) ;
 		
 	}
 	
@@ -105,6 +86,8 @@ public abstract class Box
 		this.maze = maze;
 	}
 	
-	
+	public String toString() {
+		return label;
+	}
 	
 }

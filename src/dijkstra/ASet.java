@@ -6,10 +6,10 @@ import maze.Box;
 
 public class ASet implements ASetInterface {
 
-	private HashSet<Box> vertexHashSet = new HashSet<Box>() ;
+	private HashSet<VertexInterface> vertexHashSet = new HashSet<VertexInterface>() ;
 
 	
-	public ASet(HashSet<Box> vertexHashSet) {
+	public ASet(HashSet<VertexInterface> vertexHashSet) {
 		
 		this.vertexHashSet = vertexHashSet;
 		
@@ -23,11 +23,13 @@ public class ASet implements ASetInterface {
 
 	public boolean contains(VertexInterface vertex) {
 		
-		for (VertexInterface v: vertexHashSet) {			
-			if (v == vertex) return true ;
-		}
+		if (vertexHashSet.contains(vertex)) return true ;
 		return false ;
 		
+	}
+
+	public HashSet<VertexInterface> getVertexHashSet() {
+		return vertexHashSet;
 	}
 
 }

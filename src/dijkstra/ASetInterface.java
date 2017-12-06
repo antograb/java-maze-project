@@ -1,5 +1,6 @@
 package dijkstra;
 
+import java.util.HashSet;
 
 public interface ASetInterface {
 	
@@ -8,6 +9,8 @@ public interface ASetInterface {
 	
 	/** Check if a vertex belongs to ASet */
 	public boolean contains(VertexInterface vertex) ;
+
+	public HashSet<VertexInterface> getVertexHashSet();
 	
  
 }

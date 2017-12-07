@@ -25,17 +25,8 @@ public class Maze
 		
 		Box startBox = (Box) start ;
 		Box endBox = (Box) end ;
-		
-		if (startBox.getNeighbourList().contains(endBox)) {
-			if (startBox.isWalkable() && endBox.isWalkable()) {
-				return 1 ;
-			}
-			else {
-				return 0 ;
-			}
-		}
-		
-		return 0 ;
+
+		return startBox.getNeighbourList().contains(endBox) ? 1 : 0 ;
 	}
 	
 	public int getVertexNumber() {
@@ -60,7 +51,12 @@ public class Maze
 		int x = box.getX() ;
 		int y = box.getY() ;
 		ArrayList<VertexInterface> neighbourList = new ArrayList<VertexInterface>() ;
-		
+
+		// Always returns an empty list if the departure box is a wall
+		if (! box.isWalkable()) {
+			return neighbourList ;
+		}
+
 		if (x > 0 && maze[x-1][y].isWalkable()) {
 			neighbourList.add(maze[x-1][y]) ;
 		}
@@ -180,7 +176,6 @@ public class Maze
 		} finally {
 			try { pw.close();} catch(Exception e) {}
 		}
-		
 	}
 	
 	public int getDimensionX() {

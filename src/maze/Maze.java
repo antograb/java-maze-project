@@ -90,7 +90,6 @@ public class Maze
 			fr = new FileReader(filename) ;
 			br = new BufferedReader(fr) ;
 			while (br.readLine() != null) dimensionY++;
-			//System.out.println("Line count :" + lineCount);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -112,8 +111,6 @@ public class Maze
 			
 			while (currentLine != null)
 			{
-				
-				//System.out.println(currentLine);
 				currentLineLength = currentLine.length() ;
 				
 				for (int compteurColonne = 0 ; compteurColonne < currentLineLength ; compteurColonne++) {
@@ -122,16 +119,16 @@ public class Maze
 					
 					switch(currentChar) {
 						
-					case 'W' : maze[compteurLigne][compteurColonne] = new WBox("W", compteurLigne, compteurColonne, this) ;
+					case 'W' : maze[compteurColonne][compteurLigne] = new WBox("W", compteurColonne, compteurLigne, this) ;
 						break;
 					
-					case 'E' : maze[compteurLigne][compteurColonne] = new EBox("E", compteurLigne, compteurColonne, this) ;
+					case 'E' : maze[compteurColonne][compteurLigne] = new EBox("E", compteurColonne, compteurLigne, this) ;
 						break;
 					
-					case 'D' : maze[compteurLigne][compteurColonne] = new DBox("D", compteurLigne, compteurColonne, this) ;
+					case 'D' : maze[compteurColonne][compteurLigne] = new DBox("D", compteurColonne, compteurLigne, this) ;
 						break;
 					
-					case 'A' : maze[compteurLigne][compteurColonne] = new ABox("A", compteurLigne, compteurColonne, this) ;
+					case 'A' : maze[compteurColonne][compteurLigne] = new ABox("A", compteurColonne, compteurLigne, this) ;
 						break;
 					
 					default : throw new MazeReadingException(filename) ;

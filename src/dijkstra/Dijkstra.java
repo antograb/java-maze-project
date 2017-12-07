@@ -26,7 +26,7 @@ public class Dijkstra {
 				if (!a.contains(vertex)) {
 					if (pi.getPi(pivot) + g.getCost(pivot, vertex) < pi.getPi(vertex)) {
 						pi.setPi(pi.getPi(pivot) + g.getCost(pivot, vertex), vertex) ;
-						previous.setPrevious(pivot, vertex);
+						previous.setPrevious(pivot, vertex) ;
 					}
 				}
 			}
@@ -38,7 +38,7 @@ public class Dijkstra {
 					 piMax = pi.getPi(vertex) ;
 				}
 			}
-			a.add(pivot);
+			a.add(pivot) ;
 		}
 		
 		return previous ;

@@ -1,5 +1,9 @@
 package dijkstra;
 
+/**
+ * This is the Pi class as described in the INF101 course of Telecom Paristech.
+ *
+ */
 public interface PiInterface {
 	
 	/** Returns the value of pi(v) */

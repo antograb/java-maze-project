@@ -2,9 +2,6 @@ package dijkstra;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.List;
-
-import maze.Box;
 
 public class Previous implements PreviousInterface {
 	

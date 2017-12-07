@@ -8,6 +8,15 @@ import java.util.ArrayList;
 import dijkstra.GraphInterface;
 import dijkstra.VertexInterface;
 
+/** <h1> Maze class </h1>
+ * <p>
+ * This class describes the maze as a matrix of Boxes ({@link maze.Box}). 
+ * 
+ * 
+ * @author Antonin Godard
+ * @author Sylvain Rager
+ *
+ */
 public class Maze 
 		implements GraphInterface {
 
@@ -81,16 +90,19 @@ public class Maze
 		
 	}
 	
+	/**Constructs the maze from a text file, according to each single character on each line. 
+	 * @param filename
+	 */
+	
 	public final void initFromTextFile(String filename) {
 		
 		FileReader     fr = null ;
 		BufferedReader br = null ;
 		
-		try { //Determines the height of the maze and stores it into lineCount
+		try {
 			fr = new FileReader(filename) ;
 			br = new BufferedReader(fr) ;
 			while (br.readLine() != null) dimensionY++;
-			//System.out.println("Line count :" + lineCount);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

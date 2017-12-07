@@ -10,8 +10,7 @@ import dijkstra.VertexInterface;
 
 /** <h1> Maze class </h1>
  * <p>
- * This class describes the maze as a matrix of Boxes ({@link maze.Box}). 
- * 
+ * This class describes the maze as a matrix of Boxes ({@link maze.Box}).
  * 
  * @author Antonin Godard
  * @author Sylvain Rager
@@ -30,6 +29,9 @@ public class Maze
 		
 	}
 	
+	/**
+	 * 
+	 */
 	public int getCost(VertexInterface start, VertexInterface end) {
 		
 		Box startBox = (Box) start ;
@@ -51,6 +53,9 @@ public class Maze
 		return dimensionX*dimensionY ;
 	}
 
+	/**
+	 * @param ArrayList<VertexInterface>
+	 */
 	public ArrayList<VertexInterface> getVertexes() {
 		ArrayList<VertexInterface> vertexList = new ArrayList<VertexInterface>() ;
 		for (int i = 0 ; i < dimensionX ; i++) {
@@ -63,6 +68,9 @@ public class Maze
 		return vertexList ;
 	}
 	
+	/**
+	 * 
+	 */
 	public ArrayList<VertexInterface> generateNeighbours(VertexInterface vertex) {
 		
 		Box box = (Box)vertex ;

@@ -21,6 +21,12 @@ public class Maze
 		
 	}
 	
+	// public Maze(Box[][] maze){
+	// 	//Replacement for setMaze()
+	//  //Todo : check if the given array is a proper maze
+	// 	//and then set dimensionX and dimensionX
+	// }
+
 	public int getCost(VertexInterface start, VertexInterface end) {
 		
 		Box startBox = (Box) start ;
@@ -77,7 +83,7 @@ public class Maze
 		
 	}
 	
-	public final void initFromTextFile(String filename) {
+	private final void initFromTextFile(String filename) {
 		
 		FileReader     fr = null ;
 		BufferedReader br = null ;
@@ -182,25 +188,12 @@ public class Maze
 		return dimensionX;
 	}
 
-	public void setDimensionX(int dimensionX) {
-		this.dimensionX = dimensionX;
-	}
-
 	public int getDimensionY() {
 		return dimensionY;
-	}
-
-	public void setDimensionY(int dimensionY) {
-		this.dimensionY = dimensionY;
 	}
 
 	public Box[][] getMaze() {
 		return maze;
 	}
 
-	public void setMaze(Box[][] maze) {
-		this.maze = maze;
-	}
-	
-	
 }

@@ -12,8 +12,4 @@ public class MazeReadingException
 		
 	}
 	
-	public String getFilename() {
-		return filename ;
-	}
-	
 }

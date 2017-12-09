@@ -8,7 +8,7 @@ public class Pi implements PiInterface {
 	
 	public Pi(Hashtable<VertexInterface, Integer> hashPi) {
 		
-		this.hashPi = hashPi ;
+		this.hashPi = new Hashtable<VertexInterface, Integer>(hashPi);
 		
 	}
 	

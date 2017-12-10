@@ -1,6 +1,5 @@
 package maze;
 import java.util.ArrayList;
-import java.util.List;
 
 import dijkstra.VertexInterface;
 
@@ -11,7 +10,7 @@ public abstract class Box
 	private int y ;
 	private String label = null ;
 	private Maze maze ;
-	private List<Box> neighbourList = new ArrayList<Box>() ;
+	private ArrayList<Box> neighbourList = new ArrayList<Box>() ;
 	
 	public Box (String label, int x, int y, Maze maze) {
 		

@@ -2,8 +2,6 @@ package dijkstra;
 
 import java.util.HashSet;
 
-import maze.Box;
-
 public class ASet implements ASetInterface {
 
 	private HashSet<VertexInterface> vertexHashSet = new HashSet<VertexInterface>() ;

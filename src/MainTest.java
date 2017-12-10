@@ -1,5 +1,7 @@
-import dijkstra.Dijkstra;
-import maze.Maze;
+import java.util.ArrayList;
+
+import dijkstra.*;
+import maze.*;
 
 public class MainTest {
 
@@ -7,7 +9,13 @@ public class MainTest {
 		
 		Maze mazeTest = new Maze("data/labyrinthe.txt") ;
 		
-		Dijkstra.dijkstra(mazeTest, mazeTest.getMaze()[1][1]) ;
+		Previous previous = (Previous) Dijkstra.dijkstra(mazeTest, mazeTest.getMaze()[1][1]);
+		
+		ArrayList<VertexInterface> shortest = previous.getShortestPathTo(mazeTest.getMaze()[5][5]);
+	    
+		for (VertexInterface vertex : shortest) {
+			System.out.println(vertex);
+		}
 		
 		mazeTest.saveToTextFile("data/labyOutput.txt");
 

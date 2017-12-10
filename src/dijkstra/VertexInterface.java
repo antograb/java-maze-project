@@ -1,5 +1,4 @@
 package dijkstra;
-import java.util.List;
 
 public interface VertexInterface {
 	

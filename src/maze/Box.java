@@ -21,7 +21,7 @@ public abstract class Box
 		
 	}
 	
-	public List<VertexInterface> generateNeighbors() {
+	public ArrayList<VertexInterface> generateNeighbors() {
 		return maze.generateNeighbours(this) ;
 		
 	}
@@ -45,11 +45,11 @@ public abstract class Box
 		return false ;
 	}
 	
-	public List<Box> getNeighbourList() {
+	public ArrayList<Box> getNeighbourList() {
 		return neighbourList;
 	}
 
-	public void setNeighbourList(List<Box> neighbourList) {
+	public void setNeighbourList(ArrayList<Box> neighbourList) {
 		this.neighbourList = neighbourList;
 	}
 
@@ -86,7 +86,7 @@ public abstract class Box
 	}
 	
 	public String toString() {
-		return label;
+		return "Label: " + label + ", x: " + x + ", y: " + y;
 	}
 	
 }

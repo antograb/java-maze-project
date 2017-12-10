@@ -1,6 +1,6 @@
 package maze;
 
-public class DBox extends Box{
+public class DBox extends EBox{
 
 	public DBox (String label, int x, int y, Maze maze) {
 		

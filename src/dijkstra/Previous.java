@@ -2,16 +2,11 @@ package dijkstra;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.List;
-
-import maze.Box;
 
 public class Previous implements PreviousInterface {
 	
 	private Hashtable<VertexInterface, VertexInterface> hashPrevious = new Hashtable<VertexInterface, VertexInterface>() ;
 	private ArrayList<VertexInterface> shortestPath = new ArrayList<VertexInterface>() ;
-	
-	
 
 	public Previous(Hashtable<VertexInterface, VertexInterface> hashPrevious, ArrayList<VertexInterface> shortestPath) {
 
@@ -39,8 +34,7 @@ public class Previous implements PreviousInterface {
 		if (getPrevious(father) == null) return shortestPath ;
 		else {
 			return getShortestPathTo(father) ;
-		}
-		
+		}	
 	}
 
 }

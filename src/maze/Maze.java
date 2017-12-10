@@ -53,9 +53,6 @@ public class Maze
 		return dimensionX*dimensionY ;
 	}
 
-	/**
-	 * @param ArrayList<VertexInterface>
-	 */
 	public ArrayList<VertexInterface> getVertexes() {
 		ArrayList<VertexInterface> vertexList = new ArrayList<VertexInterface>() ;
 		for (int i = 0 ; i < dimensionX ; i++) {
@@ -68,9 +65,6 @@ public class Maze
 		return vertexList ;
 	}
 	
-	/**
-	 * 
-	 */
 	public ArrayList<VertexInterface> generateNeighbours(VertexInterface vertex) {
 		
 		Box box = (Box)vertex ;

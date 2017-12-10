@@ -29,24 +29,18 @@ public class Maze
 		
 	}
 	
-	/**
-	 * 
-	 */
+	// public Maze(Box[][] maze){
+	// 	//Replacement for setMaze()
+	//      //Todo : check if the given array is a proper maze
+	// 	//and then set dimensionX and dimensionX
+	// }
+
 	public int getCost(VertexInterface start, VertexInterface end) {
 		
 		Box startBox = (Box) start ;
 		Box endBox = (Box) end ;
-		
-		if (startBox.getNeighbourList().contains(endBox)) {
-			if (startBox.isWalkable() && endBox.isWalkable()) {
-				return 1 ;
-			}
-			else {
-				return 0 ;
-			}
-		}
-		
-		return 0 ;
+
+		return startBox.getNeighbourList().contains(endBox) ? 1 : 0 ;
 	}
 	
 	public int getVertexNumber() {
@@ -71,7 +65,12 @@ public class Maze
 		int x = box.getX() ;
 		int y = box.getY() ;
 		ArrayList<VertexInterface> neighbourList = new ArrayList<VertexInterface>() ;
-		
+
+		// Always returns an empty list if the departure box is a wall
+		if (! box.isWalkable()) {
+			return neighbourList ;
+		}
+
 		if (x > 0 && maze[x-1][y].isWalkable()) {
 			neighbourList.add(maze[x-1][y]) ;
 		}
@@ -97,7 +96,7 @@ public class Maze
 	 * 	The path to the file containing the representation of the maze.
 	 */
 	
-	public final void initFromTextFile(String filename) {
+	private final void initFromTextFile(String filename) {
 		
 		FileReader     fr = null ;
 		BufferedReader br = null ;
@@ -193,32 +192,18 @@ public class Maze
 		} finally {
 			try { pw.close();} catch(Exception e) {}
 		}
-		
 	}
 	
 	public int getDimensionX() {
 		return dimensionX;
 	}
 
-	public void setDimensionX(int dimensionX) {
-		this.dimensionX = dimensionX;
-	}
-
 	public int getDimensionY() {
 		return dimensionY;
-	}
-
-	public void setDimensionY(int dimensionY) {
-		this.dimensionY = dimensionY;
 	}
 
 	public Box[][] getMaze() {
 		return maze;
 	}
 
-	public void setMaze(Box[][] maze) {
-		this.maze = maze;
-	}
-	
-	
 }

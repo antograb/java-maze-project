@@ -2,8 +2,6 @@ package dijkstra;
 
 import java.util.HashSet;
 
-import maze.Box;
-
 public class ASet implements ASetInterface {
 
 	private HashSet<VertexInterface> vertexHashSet = new HashSet<VertexInterface>() ;
@@ -11,20 +9,19 @@ public class ASet implements ASetInterface {
 	
 	public ASet(HashSet<VertexInterface> vertexHashSet) {
 		
-		this.vertexHashSet = vertexHashSet;
+		this.vertexHashSet = new HashSet<VertexInterface>(vertexHashSet);
 		
 	}
 
 	public void add(VertexInterface vertex) {
 		
-		vertexHashSet.add((Box)vertex) ;
+		vertexHashSet.add(vertex) ;
 		
 	}
 
 	public boolean contains(VertexInterface vertex) {
 		
-		if (vertexHashSet.contains(vertex)) return true ;
-		return false ;
+		return vertexHashSet.contains(vertex);
 		
 	}
 

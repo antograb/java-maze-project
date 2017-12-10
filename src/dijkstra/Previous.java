@@ -7,13 +7,11 @@ public class Previous implements PreviousInterface {
 	
 	private Hashtable<VertexInterface, VertexInterface> hashPrevious = new Hashtable<VertexInterface, VertexInterface>() ;
 	private ArrayList<VertexInterface> shortestPath = new ArrayList<VertexInterface>() ;
-	
-	
 
 	public Previous(Hashtable<VertexInterface, VertexInterface> hashPrevious, ArrayList<VertexInterface> shortestPath) {
 
-		this.hashPrevious = hashPrevious;
-		this.shortestPath = shortestPath;
+		this.hashPrevious = new Hashtable<VertexInterface, VertexInterface>(hashPrevious);
+		this.shortestPath = new ArrayList<VertexInterface>(shortestPath);
 	}
 
 	public VertexInterface getPrevious(VertexInterface vertex) {
@@ -36,8 +34,7 @@ public class Previous implements PreviousInterface {
 		if (getPrevious(father) == null) return shortestPath ;
 		else {
 			return getShortestPathTo(father) ;
-		}
-		
+		}	
 	}
 
 }

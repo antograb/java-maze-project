@@ -26,13 +26,6 @@ public abstract class Box
 		
 	}
 	
-	public boolean compareTo(VertexInterface vertex) {
-		if (this.getLabel() == vertex.getLabel()) {
-			return true ;
-		}
-		return false ;
-	}
-	
 	public boolean isWalkable() {
 		return true ;
 	}
@@ -49,40 +42,16 @@ public abstract class Box
 		return neighbourList;
 	}
 
-	public void setNeighbourList(ArrayList<Box> neighbourList) {
-		this.neighbourList = neighbourList;
-	}
-
 	public int getX() {
 		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
 	}
 
 	public int getY() {
 		return y;
 	}
 
-	public void setY(int y) {
-		this.y = y;
-	}
-
 	public String getLabel() {
 		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	public Maze getMaze() {
-		return maze;
-	}
-
-	public void setMaze(Maze maze) {
-		this.maze = maze;
 	}
 	
 	public String toString() {

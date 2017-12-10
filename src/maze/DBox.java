@@ -1,5 +1,10 @@
+package maze;
 
-public class DBox extends Box{
+/**
+ * A <code>DBox</code> is the <code>Box</code> on which the user is first in the <code>Maze</code>.
+ */
+
+public class DBox extends EBox{
 
 	public DBox (String label, int x, int y, Maze maze) {
 		

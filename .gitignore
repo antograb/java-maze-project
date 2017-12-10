@@ -1,0 +1,4 @@
+*.html
+*.css
+src/package-list
+src/script.js

@@ -4,6 +4,18 @@ import java.util.List;
 
 import dijkstra.VertexInterface;
 
+/** <h1> Box class </h1>
+ * <p>
+ * 
+ * This class describes a Box and implements {@link dijkstra.VertexInterface}.
+ * <p>
+ * A Box is represented with its coordinates, its label, and its neighbourList. It also has a reference on the Maze.
+ * 
+ * @author Antonin Godard
+ * @author Sylvain Rager
+ *
+ */
+
 public abstract class Box
 		implements VertexInterface {
 

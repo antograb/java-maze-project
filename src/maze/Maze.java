@@ -94,6 +94,7 @@ public class Maze
 	
 	/**Constructs the maze from a text file, according to each single character on each line. 
 	 * @param filename
+	 * 	The path to the file containing the representation of the maze.
 	 */
 	
 	public final void initFromTextFile(String filename) {

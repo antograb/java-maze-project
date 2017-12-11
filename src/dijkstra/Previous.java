@@ -4,37 +4,37 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class Previous implements PreviousInterface {
-	
-	private Hashtable<VertexInterface, VertexInterface> hashPrevious = new Hashtable<VertexInterface, VertexInterface>() ;
-	private ArrayList<VertexInterface> shortestPath = new ArrayList<VertexInterface>() ;
 
-	public Previous(Hashtable<VertexInterface, VertexInterface> hashPrevious, ArrayList<VertexInterface> shortestPath) {
+	private Hashtable<VertexInterface, VertexInterface> hashPrevious;
+	private ArrayList<VertexInterface> shortestPath;
+
+	public Previous(Hashtable<VertexInterface, VertexInterface> hashPrevious,
+			ArrayList<VertexInterface> shortestPath) {
 
 		this.hashPrevious = new Hashtable<VertexInterface, VertexInterface>(hashPrevious);
 		this.shortestPath = new ArrayList<VertexInterface>(shortestPath);
 	}
 
 	public VertexInterface getPrevious(VertexInterface vertex) {
-		
-		return hashPrevious.get(vertex) ;
-		
+
+		return hashPrevious.get(vertex);
 	}
 
 	public void setPrevious(VertexInterface father, VertexInterface son) {
-		
-		hashPrevious.put(son, father) ;
 
+		hashPrevious.put(son, father);
 	}
 
 	public ArrayList<VertexInterface> getShortestPathTo(VertexInterface vertex) {
-		
-		VertexInterface father = getPrevious(vertex) ;
-		shortestPath.add(father) ;
-		
-		if (getPrevious(father) == null) return shortestPath ;
-		else {
-			return getShortestPathTo(father) ;
-		}	
-	}
 
+		VertexInterface father = getPrevious(vertex);
+		shortestPath.add(father);
+
+		if (getPrevious(father) == null) {
+			return shortestPath;
+		}
+		else {
+			return getShortestPathTo(father);
+		}
+	}
 }

@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 import dijkstra.*;
 import maze.*;
+import ui.*;
 
 public class MainTest {
 
@@ -18,6 +19,8 @@ public class MainTest {
 		}
 		
 		mazeTest.saveToTextFile("data/labyOutput.txt");
+		
+		new MazeApp();
 
 	}
 

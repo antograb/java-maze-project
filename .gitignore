@@ -2,3 +2,6 @@
 *.css
 src/package-list
 src/script.js
+/bin/
+*.classpath
+*.project

@@ -12,9 +12,9 @@ public abstract class DrawingBox extends JPanel {
 	public DrawingBox(MazeApp mazeApp, Color color) {
 		
 		this.mazeApp = mazeApp;
-		this.color = color;
+		this.color   = color;
 		
 		setBackground(color);
-		setPreferredSize(new Dimension(20,20));
+		setPreferredSize(new Dimension(40,40));
 	}
 }

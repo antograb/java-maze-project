@@ -20,7 +20,7 @@ public class MainTest {
 		
 		mazeTest.saveToTextFile("data/labyOutput.txt");
 		
-		new MazeApp(mazeTest);
+		new MazeApp();
 
 	}
 

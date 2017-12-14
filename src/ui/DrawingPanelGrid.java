@@ -13,10 +13,10 @@ public class DrawingPanelGrid extends JPanel {
 	private       int     dimensionX;
 	private       int     dimensionY;
 	
-	public DrawingPanelGrid(MazeApp mazeApp, Maze maze) {
+	public DrawingPanelGrid(MazeApp mazeApp) {
 		
 		this.mazeApp = mazeApp;
-		this.maze = maze;
+		this.maze = mazeApp.getMazeAppModel().getMaze();
 		this.dimensionX = maze.getDimensionX();
 		this.dimensionY = maze.getDimensionY();
 		

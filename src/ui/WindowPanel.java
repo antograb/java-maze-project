@@ -7,13 +7,12 @@ import java.awt.*;
 public class WindowPanel extends JPanel
 {
     private final DrawingPanelGrid drawingPanelGrid;
-    private       Maze             maze;
     
-	public WindowPanel(MazeApp mazeApp, Maze maze)
-	{
+	public WindowPanel(MazeApp mazeApp) {
+		
 		setLayout(new BorderLayout());
 		
-		add(drawingPanelGrid = new DrawingPanelGrid(mazeApp, maze), BorderLayout.CENTER);
+		add(drawingPanelGrid = new DrawingPanelGrid(mazeApp), BorderLayout.CENTER);
 	}
 	
 }

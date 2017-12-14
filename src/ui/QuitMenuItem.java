@@ -10,7 +10,6 @@ public class QuitMenuItem extends JMenuItem {
 
 		super("Quit");
 		this.mazeApp = mazeApp;
-
 	}
 	
 }

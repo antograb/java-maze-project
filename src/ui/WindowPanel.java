@@ -14,4 +14,10 @@ public class WindowPanel extends JPanel
 
 		add(drawingPanelGrid = new DrawingPanelGrid(mazeApp), BorderLayout.CENTER);
 	}
+
+	public void notifyForUpdates(Object param) {
+
+		drawingPanelGrid.notifyForUpdates(param);
+	}
+
 }

@@ -7,5 +7,4 @@ public class EmptyDrawingBox extends DrawingBox {
 	public EmptyDrawingBox(MazeApp mazeApp, Color color) {
 		super(mazeApp, color);
 	}
-
 }

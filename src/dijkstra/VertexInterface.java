@@ -5,10 +5,9 @@ package dijkstra;
  *
  */
 public interface VertexInterface {
-	
+
 	/**
 	 * @return The label of the element.
 	 */
-	public String getLabel() ;
-	
+	public String getLabel();
 }

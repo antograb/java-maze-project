@@ -5,11 +5,12 @@ import dijkstra.VertexInterface;
 
 /** <h1> Box class </h1>
  * <p>
- * 
+ *
  * This class describes a Box and implements {@link dijkstra.VertexInterface}.
  * <p>
- * A Box is represented with its coordinates, its label, and its neighbourList. It also has a reference on the Maze.
- * 
+ * A Box is represented with its coordinates, its label, and its neighbourList.
+ * It also has a reference on the Maze.
+ *
  * @author Antonin Godard
  * @author Sylvain Rager
  *
@@ -18,40 +19,29 @@ import dijkstra.VertexInterface;
 public abstract class Box
 		implements VertexInterface {
 
-	private int x ;
-	private int y ;
-	private String label = null ;
-	private Maze maze ;
-	private ArrayList<Box> neighbourList = new ArrayList<Box>() ;
-	
+	private int x;
+	private int y;
+	private String label;
+	private Maze maze;
+
 	public Box (String label, int x, int y, Maze maze) {
-		
-		this.label = label ;
-		this.x = x ;
-		this.y = y ;
-		this.maze = maze ;
-		
+
+		this.label = new String(label);
+		this.x = x;
+		this.y = y;
+		this.maze = maze;
 	}
-	
-	public ArrayList<VertexInterface> generateNeighbors() {
-		return maze.generateNeighbours(this) ;
-		
-	}
-	
+
 	public boolean isWalkable() {
-		return true ;
+		return true;
 	}
-	
+
 	public boolean isArrival() {
-		return false ;
+		return false;
 	}
-	
+
 	public boolean isDeparture() {
-		return false ;
-	}
-	
-	public ArrayList<Box> getNeighbourList() {
-		return neighbourList;
+		return false;
 	}
 
 	public int getX() {
@@ -65,9 +55,9 @@ public abstract class Box
 	public String getLabel() {
 		return label;
 	}
-	
+
 	public String toString() {
 		return "Label: " + label + ", x: " + x + ", y: " + y;
 	}
-	
+
 }

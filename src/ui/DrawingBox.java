@@ -3,6 +3,7 @@ package ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JPanel;
+import javax.swing.BorderFactory;
 
 public abstract class DrawingBox extends JPanel {
 
@@ -16,5 +17,8 @@ public abstract class DrawingBox extends JPanel {
 		
 		setBackground(color);
 		setPreferredSize(new Dimension(40,40));
+		setBorder(BorderFactory.createLineBorder(Color.orange));
+
+
 	}
 }

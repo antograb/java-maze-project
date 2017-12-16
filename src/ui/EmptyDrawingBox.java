@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.Graphics;
 
 public class EmptyDrawingBox extends DrawingBox {
 
@@ -8,4 +9,10 @@ public class EmptyDrawingBox extends DrawingBox {
 		super(mazeApp, color);
 	}
 
+	@Override
+	protected final void paintComponent(Graphics g) {
+
+		super.paintComponent(g);
+		setBackground(Color.WHITE);
+	}
 }

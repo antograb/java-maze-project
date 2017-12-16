@@ -59,6 +59,32 @@ public class Maze
 		return vertexList ;
 	}
 	
+	/**Method to determine the departure in the maze. Returns null if the departure is non-existent.
+	 * 
+	 * @return Departure vertex
+	 */
+	public VertexInterface getDeparture() {
+		
+		ArrayList<VertexInterface> vertexes = getVertexes() ;
+		for (VertexInterface vertex : vertexes) {
+			if (((Box) vertex).isDeparture()) return vertex;
+		}
+		return null;
+	}
+	
+	/**Method to determine the arrival in the maze. Returns null if the arrival is non-existent.
+	 * 
+	 * @return Arrival vertex
+	 */
+	public VertexInterface getArrival() {
+		
+		ArrayList<VertexInterface> vertexes = getVertexes() ;
+		for (VertexInterface vertex : vertexes) {
+			if (((Box) vertex).isArrival()) return vertex;
+		}
+		return null;
+	}
+	
 	public ArrayList<VertexInterface> generateNeighbours(VertexInterface vertex) {
 		
 		Box box = (Box)vertex ;

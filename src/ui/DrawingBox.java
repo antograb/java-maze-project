@@ -2,6 +2,8 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+
 import javax.swing.JPanel;
 
 public abstract class DrawingBox extends JPanel {
@@ -16,5 +18,17 @@ public abstract class DrawingBox extends JPanel {
 		
 		setBackground(color);
 		setPreferredSize(new Dimension(40,40));
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+
+		super.paintComponent(g) ;
+		setBackground(color);
+	}
+	
+	public void notifyForUpdates(Object param) {
+
+		repaint();		
 	}
 }

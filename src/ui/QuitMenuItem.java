@@ -12,18 +12,18 @@ public class QuitMenuItem extends JMenuItem
 				implements ActionListener {
 
 	private final MazeApp mazeApp;
-	
+
 	public QuitMenuItem(MazeApp mazeApp) {
 
 		super("Quit");
 		this.mazeApp = mazeApp;
 		addActionListener(this);
 	}
-	
+
 	public void actionPerformed(ActionEvent evt) {
 
 	      MazeAppModel mazeAppModel = mazeApp.getMazeAppModel();
-		   
+
 	      if (mazeAppModel.isModified()) {
 	    	  int response = JOptionPane.showInternalOptionDialog(this,
 	                                                             "Maze not saved. Save it ?",
@@ -41,6 +41,6 @@ public class QuitMenuItem extends JMenuItem
 			  		break;
 			  }
 		  }
-	      System.exit(0) ;
+	      System.exit(0);
 	}
 }

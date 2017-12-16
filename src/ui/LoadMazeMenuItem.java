@@ -15,14 +15,14 @@ public class LoadMazeMenuItem extends JMenuItem
 				implements ActionListener {
 
 	private final MazeApp mazeApp;
-	
+
 	public LoadMazeMenuItem(MazeApp mazeApp) {
 
 		super("Load maze");
 		this.mazeApp = mazeApp;
 		addActionListener(this);
 	}
-	
+
 	public void actionPerformed(ActionEvent evt) {
 
 		MazeAppModel mazeAppModel = mazeApp.getMazeAppModel();

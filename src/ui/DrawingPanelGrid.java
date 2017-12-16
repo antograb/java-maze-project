@@ -12,25 +12,25 @@ public class DrawingPanelGrid extends JPanel {
 	private       Maze    maze;
 	private       int     dimensionX;
 	private       int     dimensionY;
-	
+
 	public DrawingPanelGrid(MazeApp mazeApp) {
-		
+
 		this.mazeApp = mazeApp;
 		this.maze = mazeApp.getMazeAppModel().getMaze();
 		this.dimensionX = maze.getDimensionX();
 		this.dimensionY = maze.getDimensionY();
-		
+
 		setLayout(new GridLayout(this.dimensionX, this.dimensionY));
 		initFromMaze(maze);
-		
+
 		setPreferredSize(new Dimension(256, 256));
 	}
-	
+
 	private void initFromMaze(Maze maze) {
 
 		int dimensionX = maze.getDimensionX();
 		int dimensionY = maze.getDimensionY();
-		
+
 		for (int i = 0; i < dimensionX; i++) {
 			for (int j = 0; j < dimensionY; j++) {
 				if (maze.getMaze()[j][i].isWalkable()) {
@@ -49,6 +49,5 @@ public class DrawingPanelGrid extends JPanel {
 				}
 			}
 		}
-		
 	}
 }

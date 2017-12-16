@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.MazeAppModel;
+import model.Maze;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,8 +34,8 @@ public class LoadMazeMenuItem extends JMenuItem
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {
 	       System.out.println("You chose to open this file: " +
 	            fileChooser.getSelectedFile().getName());
-	       String filename = fileChooser.getSelectedFile().getName();
 	    }
-	    mazeApp.getMazeAppModel().setMaze(model.Maze.);
+	    String filename = fileChooser.getSelectedFile().getPath();
+	    mazeApp.getMazeAppModel().setMaze(new Maze(filename));
 	}
 }

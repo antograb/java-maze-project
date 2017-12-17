@@ -51,6 +51,7 @@ public class DrawingPanelGrid extends JPanel {
 	}
 
 	public void notifyForUpdates(Object param) {
+
 		if (param instanceof Maze) {
 			maze = (Maze) param;
 

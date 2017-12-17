@@ -16,21 +16,24 @@ public abstract class DrawingBox extends JPanel {
 
 		this.mazeApp = mazeApp;
 		this.color   = color;
-
-		setBackground(color);
-		setPreferredSize(new Dimension(40,40));
-		setBorder(BorderFactory.createLineBorder(Color.orange));
+		
+		setOpaque(true);
+		setPreferredSize(new Dimension(50,50));
+		setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 	}
 
 	@Override
-	protected void paintComponent(Graphics g) {
-
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		
 		setBackground(color);
 	}
 
 	public void notifyForUpdates(Object param) {
+		this.repaint();
+	}
 
-		repaint();
+	public void setColor(Color color) {
+		this.color = color;
 	}
 }

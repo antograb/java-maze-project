@@ -12,11 +12,14 @@ public class MazeApp extends JFrame
 
 	private final MazeMenuBar  mazeMenuBar;
 	private final WindowPanel  windowPanel;
-	private       MazeAppModel mazeAppModel = new MazeAppModel();
+	private       MazeAppModel mazeAppModel;
 
 	public MazeApp() {
 
 		super("Maze Solving Application");
+
+		this.mazeAppModel = new MazeAppModel();
+		mazeAppModel.addObserver(this);
 
 		setJMenuBar(mazeMenuBar = new MazeMenuBar(this));
 		setContentPane(windowPanel = new WindowPanel(this));
@@ -34,6 +37,7 @@ public class MazeApp extends JFrame
 	@Override
 	public void update(Observable obs, Object param) {
 
+		System.out.println("New maze detected");
 		windowPanel.notifyForUpdates(param);
 	}
 }

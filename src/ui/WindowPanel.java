@@ -16,7 +16,6 @@ public class WindowPanel extends JPanel
 	}
 
 	public void notifyForUpdates(Object param) {
-
 		drawingPanelGrid.notifyForUpdates(param);
 	}
 

@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+import model.MazeAppModel;
 import dijkstra.*;
 import maze.*;
 import ui.*;
@@ -18,9 +18,7 @@ public class MainTest {
 			System.out.println(vertex);
 		}
 
-		mazeTest.saveToTextFile("data/labyOutput.txt");
-
-		new MazeApp();
+		MazeApp app = new MazeApp();
 
 	}
 

@@ -22,57 +22,57 @@ public class DrawingPanelGrid extends JPanel {
 		this.dimensionY = maze.getDimensionY();
 		this.drawingBoxMatrix = new DrawingBox[dimensionX][dimensionY];
 
-		setLayout(new GridLayout(this.dimensionX, this.dimensionY));
+		setLayout(new GridLayout(this.dimensionY, this.dimensionX)); //inverted coordinates
 		initFromMaze(maze);
-
-		setPreferredSize(new Dimension(256, 256));
 	}
 
 	private void initFromMaze(Maze maze) {
 
-		for (int i = 0; i < dimensionX; i++) {
-			for (int j = 0; j < dimensionY; j++) {
+		for (int i = 0; i < dimensionY; i++) {
+			for (int j = 0; j < dimensionX; j++) {
 				if (maze.getMaze()[j][i].isWalkable()) {
 					if (maze.getMaze()[j][i].isDeparture()) {
-						add(new DepartureDrawingBox(mazeApp, Color.GREEN));
 						drawingBoxMatrix[j][i] = new DepartureDrawingBox(mazeApp, Color.GREEN);
 					}
 					else if (maze.getMaze()[j][i].isArrival()) {
-						add(new ArrivalDrawingBox(mazeApp, Color.RED));
 						drawingBoxMatrix[j][i] = new ArrivalDrawingBox(mazeApp, Color.RED);
 					}
 					else {
-						add(new EmptyDrawingBox(mazeApp, Color.BLACK));
 						drawingBoxMatrix[j][i] = new EmptyDrawingBox(mazeApp, Color.BLACK);
 					}
 				}
 				else {
-					add(new WallDrawingBox(mazeApp, Color.WHITE));
 					drawingBoxMatrix[j][i] = new WallDrawingBox(mazeApp, Color.WHITE);
 				}
+				
+				add(drawingBoxMatrix[j][i]);
 			}
 		}
 	}
 
 	public void notifyForUpdates(Object param) {
+		if (param instanceof Maze) {
+			maze = (Maze) param;
 
-		for (int i = 0; i < dimensionX; i++) {
-			for (int j = 0; j < dimensionY; j++) {
-				if (maze.getMaze()[j][i].isWalkable()) {
-					if (maze.getMaze()[j][i].isDeparture()) {
-						drawingBoxMatrix[j][i].notifyForUpdates();
-					}
-					else if (maze.getMaze()[j][i].isArrival()) {
-						drawingBoxMatrix[j][i].notifyForUpdates();
+			for (int j = 0; j < dimensionX; j++) {
+				for (int i = 0; i < dimensionY; i++) {
+					if (maze.getMaze()[j][i].isWalkable()) {
+						if (maze.getMaze()[j][i].isDeparture()) {
+							drawingBoxMatrix[j][i].setColor(Color.GREEN);
+						}
+						else if (maze.getMaze()[j][i].isArrival()) {
+							drawingBoxMatrix[j][i].setColor(Color.RED);
+						}
+						else {
+							drawingBoxMatrix[j][i].setColor(Color.BLACK);
+						}
 					}
 					else {
-						drawingBoxMatrix[j][i].notifyForUpdates();
+						drawingBoxMatrix[j][i].setColor(Color.WHITE);
 					}
 				}
-				else {
-					drawingBoxMatrix[j][i].notifyForUpdates();
-				}
 			}
+			repaint();
 		}
 	}
 }

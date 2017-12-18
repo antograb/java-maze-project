@@ -33,9 +33,10 @@ public class Maze
 
 		this.dimensionX = maze.getDimensionX();
 		this.dimensionY = maze.getDimensionY();
-		this.maze = new Box[dimensionX][dimensionY];
-		for (int line = 0; line < dimensionX; line++) {
-			for (int row = 0; row < dimensionY; row++) {
+		this.maze = new Box[dimensionY][dimensionX];
+
+		for (int line = 0; line < dimensionY; line++) {
+			for (int row = 0; row < dimensionX; row++) {
 				Box box = maze.getMaze()[line][row];
 				if (box.isWalkable()) {
 					if (box.isDeparture()) {
@@ -69,10 +70,10 @@ public class Maze
 
 	public ArrayList<VertexInterface> getVertexes() {
 		ArrayList<VertexInterface> vertexList = new ArrayList<VertexInterface>() ;
-		for (int i = 0 ; i < dimensionX ; i++) {
-			for (int j = 0 ; j < dimensionY ; j++) {
-				if (maze[i][j].isWalkable()) {
-					vertexList.add(maze[i][j]) ;
+		for (int line = 0 ; line < dimensionY; line++) {
+			for (int row = 0 ; row < dimensionX; row++) {
+				if (maze[line][row].isWalkable()) {
+					vertexList.add(maze[line][row]) ;
 				}
 			}
 		}
@@ -110,6 +111,7 @@ public class Maze
 	public ArrayList<VertexInterface> generateNeighbours(VertexInterface vertex) {
 		
 		Box box = (Box)vertex ;
+		//System.out.println(vertex);
 		int x = box.getX() ;
 		int y = box.getY() ;
 		ArrayList<VertexInterface> neighbourList = new ArrayList<VertexInterface>() ;
@@ -119,22 +121,23 @@ public class Maze
 			return neighbourList ;
 		}
 
-		if (x > 0 && maze[x-1][y].isWalkable()) {
-			neighbourList.add(maze[x-1][y]) ;
+		if (x > 0 && maze[y][x-1].isWalkable()) {
+			neighbourList.add(maze[y][x-1]) ;
 		}
 		
-		if (x < dimensionX-1 && maze[x+1][y].isWalkable()) {
-			neighbourList.add(maze[x+1][y]) ;
+		if (x < dimensionX-1 && maze[y][x+1].isWalkable()) {
+			neighbourList.add(maze[y][x+1]) ;
 		}
 		
-		if (y > 0 && maze[x][y-1].isWalkable()) {
-			neighbourList.add(maze[x][y-1]) ;
+		if (y > 0 && maze[y-1][x].isWalkable()) {
+			neighbourList.add(maze[y-1][x]) ;
 		}
 		
-		if (y < dimensionY-1 && maze[x][y+1].isWalkable()) {
-			neighbourList.add(maze[x][y+1]) ;
+		if (y < dimensionY-1 && maze[y+1][x].isWalkable()) {
+			neighbourList.add(maze[y+1][x]) ;
 		}
 		
+		//System.out.println("  "+ neighbourList);
 		return neighbourList ;
 		
 	}
@@ -148,7 +151,7 @@ public class Maze
 		
 		FileReader     fr = null ;
 		BufferedReader br = null ;
-		
+
 		try {
 			fr = new FileReader(filename) ;
 			br = new BufferedReader(fr) ;
@@ -168,10 +171,10 @@ public class Maze
 			currentLine = br.readLine() ;
 			dimensionX = currentLine.length() ; //maze's width
 			int currentLineLength ;
+
+			this.maze = new Box[dimensionY][dimensionX] ;
+
 			int compteurLigne = 0 ;
-			
-			this.maze = new Box[dimensionX][dimensionY] ;
-			
 			while (currentLine != null)
 			{
 				currentLineLength = currentLine.length() ;
@@ -182,16 +185,16 @@ public class Maze
 					
 					switch(currentChar) {
 						
-					case 'W' : maze[compteurColonne][compteurLigne] = new WBox("W", compteurColonne, compteurLigne, this) ;
+					case 'W' : maze[compteurLigne][compteurColonne] = new WBox("W", compteurLigne, compteurColonne, this) ;
 						break;
 					
-					case 'E' : maze[compteurColonne][compteurLigne] = new EBox("E", compteurColonne, compteurLigne, this) ;
+					case 'E' : maze[compteurLigne][compteurColonne] = new EBox("E", compteurLigne, compteurColonne, this) ;
 						break;
 					
-					case 'D' : maze[compteurColonne][compteurLigne] = new DBox("D", compteurColonne, compteurLigne, this) ;
+					case 'D' : maze[compteurLigne][compteurColonne] = new DBox("D", compteurLigne, compteurColonne, this) ;
 						break;
 					
-					case 'A' : maze[compteurColonne][compteurLigne] = new ABox("A", compteurColonne, compteurLigne, this) ;
+					case 'A' : maze[compteurLigne][compteurColonne] = new ABox("A", compteurLigne, compteurColonne, this) ;
 						break;
 					
 					default : throw new MazeReadingException(filename) ;
@@ -213,7 +216,6 @@ public class Maze
 		} finally {
 			try { br.close() ;} catch (Exception e) {}
 		}
-		
 	}
 	
 	public final void saveToTextFile(String fileName) {
@@ -226,10 +228,10 @@ public class Maze
 			fos = new FileOutputStream(fileName) ;
 			pw  = new PrintWriter(fos) ;
 			
-			for (int i = 0; i < dimensionX ; i++) {
-				for (int j = 0 ; j < dimensionY ; j++) {	
+			for (int line = 0; line < dimensionY ; line++) {
+				for (int row = 0 ; row < dimensionX ; row++) {	
 					
-					pw.print(maze[i][j].getLabel());
+					pw.print(maze[line][row].getLabel());
 					
 				}
 				pw.print("\n");
@@ -241,7 +243,19 @@ public class Maze
 			try { pw.close();} catch(Exception e) {}
 		}
 	}
-	
+
+	public String toString() {
+
+		String mazeStr = "";
+		for (int line = 0; line < dimensionY; line++) {
+			for (int row = 0; row < dimensionX; row++) {
+				mazeStr += maze[line][row].getLabel();
+			}
+			mazeStr += "\n";
+		}
+		return mazeStr;
+	}
+
 	public int getDimensionX() {
 		return dimensionX;
 	}

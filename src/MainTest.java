@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import model.MazeAppModel;
 import dijkstra.*;
 import maze.*;
 import ui.*;

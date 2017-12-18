@@ -13,6 +13,7 @@ public class DrawingPanelGrid extends JPanel {
 	private       DrawingBox[][] drawingBoxMatrix;
 	private       int            dimensionX;
 	private       int            dimensionY;
+	private       GridLayout     gridLayout;
 
 	public DrawingPanelGrid(MazeApp mazeApp) {
 
@@ -20,9 +21,10 @@ public class DrawingPanelGrid extends JPanel {
 		this.maze       = mazeApp.getMazeAppModel().getMaze();
 		this.dimensionX = maze.getDimensionX();
 		this.dimensionY = maze.getDimensionY();
-		this.drawingBoxMatrix = new DrawingBox[dimensionX][dimensionY];
+		this.drawingBoxMatrix = new DrawingBox[dimensionY][dimensionX];
+		this.gridLayout = new GridLayout(this.dimensionY, this.dimensionX); //inverted coordinates
 
-		setLayout(new GridLayout(this.dimensionY, this.dimensionX)); //inverted coordinates
+		setLayout(gridLayout);
 		initFromMaze(maze);
 	}
 
@@ -53,23 +55,28 @@ public class DrawingPanelGrid extends JPanel {
 	public void notifyForUpdates(Object param) {
 
 		if (param instanceof Maze) {
-			maze = (Maze) param;
+			this.maze = (Maze) param;
+			this.dimensionX = maze.getDimensionX();
+			this.dimensionY = maze.getDimensionY();
+			this.drawingBoxMatrix = new DrawingBox[dimensionY][dimensionX];
+			System.out.println("x : "+dimensionX+" y : "+dimensionY);
+			this.gridLayout = new GridLayout(dimensionY, dimensionX);
 
-			for (int j = 0; j < dimensionX; j++) {
-				for (int i = 0; i < dimensionY; i++) {
-					if (maze.getMaze()[j][i].isWalkable()) {
-						if (maze.getMaze()[j][i].isDeparture()) {
-							drawingBoxMatrix[j][i].setColor(Color.GREEN);
+			for (int line = 0; line < dimensionX; line++) {
+				for (int row = 0; row < dimensionY; row++) {
+					if (maze.getMaze()[line][row].isWalkable()) {
+						if (maze.getMaze()[line][row].isDeparture()) {
+							drawingBoxMatrix[row][line].setColor(Color.GREEN);
 						}
-						else if (maze.getMaze()[j][i].isArrival()) {
-							drawingBoxMatrix[j][i].setColor(Color.RED);
+						else if (maze.getMaze()[line][row].isArrival()) {
+							drawingBoxMatrix[row][line].setColor(Color.RED);
 						}
 						else {
-							drawingBoxMatrix[j][i].setColor(Color.BLACK);
+							drawingBoxMatrix[row][line].setColor(Color.BLACK);
 						}
 					}
 					else {
-						drawingBoxMatrix[j][i].setColor(Color.WHITE);
+						drawingBoxMatrix[row][line].setColor(Color.WHITE);
 					}
 				}
 			}

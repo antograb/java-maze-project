@@ -29,11 +29,31 @@ public class Maze
 		
 	}
 	
-	// public Maze(Box[][] maze){
-	// 	//Replacement for setMaze()
-	//      //Todo : check if the given array is a proper maze
-	// 	//and then set dimensionX and dimensionX
-	// }
+	public Maze(Maze maze){
+
+		this.dimensionX = maze.getDimensionX();
+		this.dimensionY = maze.getDimensionY();
+		this.maze = new Box[dimensionX][dimensionY];
+		for (int line = 0; line < dimensionX; line++) {
+			for (int row = 0; row < dimensionY; row++) {
+				Box box = maze.getMaze()[line][row];
+				if (box.isWalkable()) {
+					if (box.isDeparture()) {
+						this.maze[line][row] = new DBox(box.getLabel(), box.getX(), box.getY(), this);
+					}
+					else if (box.isArrival()) {
+						this.maze[line][row] = new ABox(box.getLabel(), box.getX(), box.getY(), this);
+					}
+					else {
+						this.maze[line][row] = new EBox(box.getLabel(), box.getX(), box.getY(), this);
+					}
+				}
+				else {
+					this.maze[line][row] = new WBox(box.getLabel(), box.getX(), box.getY(), this);
+				}
+			}
+		}
+	}
 
 	public int getCost(VertexInterface start, VertexInterface end) {
 		

@@ -17,10 +17,9 @@ public class MazeAppModel extends Observable {
 	private ArrayList<VertexInterface> shortest      = previous.getShortestPathTo(arrival);
 	private ArrayList<VertexInterface> boxList       = maze.getVertexes();
 	private Boolean                    modified      = false;
-	private ArrayList<Observer>        listObserver  = new ArrayList<Observer>();
 
 	public void setMaze(Maze maze) {
-		this.maze = maze;
+		this.maze = new Maze(maze);
 		modified = true;
 		setChanged();
 		notifyObservers(maze);

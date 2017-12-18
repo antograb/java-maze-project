@@ -27,15 +27,18 @@ public class LoadMazeMenuItem extends JMenuItem
 
 		MazeAppModel mazeAppModel = mazeApp.getMazeAppModel();
 		JFileChooser fileChooser = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-		        "Text files", "txt");
+
+		FileNameExtensionFilter filter = 
+					new FileNameExtensionFilter("Text files", "txt");
 		fileChooser.setFileFilter(filter);
+
 		int returnVal = fileChooser.showOpenDialog(mazeApp);
-	    if(returnVal == JFileChooser.APPROVE_OPTION) {
-	       System.out.println("You chose to open this file: " +
-	            fileChooser.getSelectedFile().getName());
-	    }
-	    String filename = fileChooser.getSelectedFile().getPath();
-	    mazeApp.getMazeAppModel().setMaze(new Maze(filename));
+		if(returnVal == JFileChooser.APPROVE_OPTION) {
+			System.out.println("You chose to open this file: " +
+				fileChooser.getSelectedFile().getName());
+		}
+
+		String filename = fileChooser.getSelectedFile().getPath();
+		mazeApp.getMazeAppModel().setMaze(new Maze(filename));
 	}
 }

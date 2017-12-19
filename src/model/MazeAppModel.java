@@ -36,4 +36,8 @@ public class MazeAppModel extends Observable {
 	public void saveToFile() {
 		maze.saveToTextFile("data/labyOutput.txt");
 	}
+
+	public void saveToFile(String filename) {
+		maze.saveToTextFile(filename);
+	}
 }

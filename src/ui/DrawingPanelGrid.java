@@ -30,24 +30,24 @@ public class DrawingPanelGrid extends JPanel {
 
 	private void initFromMaze(Maze maze) {
 
-		for (int i = 0; i < dimensionY; i++) {
-			for (int j = 0; j < dimensionX; j++) {
-				if (maze.getMaze()[j][i].isWalkable()) {
-					if (maze.getMaze()[j][i].isDeparture()) {
-						drawingBoxMatrix[j][i] = new DepartureDrawingBox(mazeApp, Color.GREEN);
+		for (int line = 0 ; line < dimensionY; line++) {
+			for (int row = 0 ; row < dimensionX; row++) {
+				if (maze.getMaze()[line][row].isWalkable()) {
+					if (maze.getMaze()[line][row].isDeparture()) {
+						drawingBoxMatrix[line][row] = new DepartureDrawingBox(mazeApp, Color.GREEN);
 					}
-					else if (maze.getMaze()[j][i].isArrival()) {
-						drawingBoxMatrix[j][i] = new ArrivalDrawingBox(mazeApp, Color.RED);
+					else if (maze.getMaze()[line][row].isArrival()) {
+						drawingBoxMatrix[line][row] = new ArrivalDrawingBox(mazeApp, Color.RED);
 					}
 					else {
-						drawingBoxMatrix[j][i] = new EmptyDrawingBox(mazeApp, Color.BLACK);
+						drawingBoxMatrix[line][row] = new EmptyDrawingBox(mazeApp, Color.BLACK);
 					}
 				}
 				else {
-					drawingBoxMatrix[j][i] = new WallDrawingBox(mazeApp, Color.WHITE);
+					drawingBoxMatrix[line][row] = new WallDrawingBox(mazeApp, Color.WHITE);
 				}
 				
-				add(drawingBoxMatrix[j][i]);
+				add(drawingBoxMatrix[line][row]);
 			}
 		}
 	}
@@ -55,28 +55,29 @@ public class DrawingPanelGrid extends JPanel {
 	public void notifyForUpdates(Object param) {
 
 		if (param instanceof Maze) {
+			// set all new parameters
 			this.maze = (Maze) param;
 			this.dimensionX = maze.getDimensionX();
 			this.dimensionY = maze.getDimensionY();
 			this.drawingBoxMatrix = new DrawingBox[dimensionY][dimensionX];
-			System.out.println("x : "+dimensionX+" y : "+dimensionY);
 			this.gridLayout = new GridLayout(dimensionY, dimensionX);
+			setLayout(this.gridLayout);
 
-			for (int line = 0; line < dimensionX; line++) {
-				for (int row = 0; row < dimensionY; row++) {
+			for (int line = 0; line < dimensionY; line++) {
+				for (int row = 0; row < dimensionX; row++) {
 					if (maze.getMaze()[line][row].isWalkable()) {
 						if (maze.getMaze()[line][row].isDeparture()) {
-							drawingBoxMatrix[row][line].setColor(Color.GREEN);
+							drawingBoxMatrix[line][row] = new DepartureDrawingBox(mazeApp, Color.GREEN);
 						}
 						else if (maze.getMaze()[line][row].isArrival()) {
-							drawingBoxMatrix[row][line].setColor(Color.RED);
+							drawingBoxMatrix[line][row] = new DepartureDrawingBox(mazeApp, Color.RED);
 						}
 						else {
-							drawingBoxMatrix[row][line].setColor(Color.BLACK);
+							drawingBoxMatrix[line][row] = new DepartureDrawingBox(mazeApp, Color.BLACK);
 						}
 					}
 					else {
-						drawingBoxMatrix[row][line].setColor(Color.WHITE);
+						drawingBoxMatrix[line][row] = new DepartureDrawingBox(mazeApp, Color.GREEN);
 					}
 				}
 			}

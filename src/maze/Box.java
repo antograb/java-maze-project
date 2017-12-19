@@ -24,7 +24,7 @@ public abstract class Box
 	private Maze maze ;
 	private ArrayList<Box> neighbourList = new ArrayList<Box>() ;
 	
-	public Box (String label, int x, int y, Maze maze) {
+	public Box (String label, int y , int x, Maze maze) { //y first because of graphical maze representation
 		
 		this.label = label ;
 		this.x = x ;

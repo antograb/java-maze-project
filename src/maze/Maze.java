@@ -40,17 +40,17 @@ public class Maze
 				Box box = maze.getMaze()[line][row];
 				if (box.isWalkable()) {
 					if (box.isDeparture()) {
-						this.maze[line][row] = new DBox(box.getLabel(), box.getX(), box.getY(), this);
+						this.maze[line][row] = new DBox(box.getLabel(), box.getY(), box.getX(), this);
 					}
 					else if (box.isArrival()) {
-						this.maze[line][row] = new ABox(box.getLabel(), box.getX(), box.getY(), this);
+						this.maze[line][row] = new ABox(box.getLabel(), box.getY(), box.getX(), this);
 					}
 					else {
-						this.maze[line][row] = new EBox(box.getLabel(), box.getX(), box.getY(), this);
+						this.maze[line][row] = new EBox(box.getLabel(), box.getY(), box.getX(), this);
 					}
 				}
 				else {
-					this.maze[line][row] = new WBox(box.getLabel(), box.getX(), box.getY(), this);
+					this.maze[line][row] = new WBox(box.getLabel(), box.getY(), box.getX(), this);
 				}
 			}
 		}

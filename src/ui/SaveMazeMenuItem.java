@@ -30,7 +30,7 @@ public class SaveMazeMenuItem extends JMenuItem
 			new FileNameExtensionFilter("Text files", "txt");
 		fileChooser.setFileFilter(filter);
 
-		int returnVal = fileChooser.showOpenDialog(mazeApp);
+		int returnVal = fileChooser.showSaveDialog(mazeApp);
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
 			System.out.println("You chose to save to this file: " +
 				fileChooser.getSelectedFile().getName());

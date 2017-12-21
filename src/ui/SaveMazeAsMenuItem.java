@@ -7,25 +7,26 @@ import java.awt.event.ActionListener;
 
 import model.MazeAppModel;
 
-public class LoadMazeMenuItem extends JMenuItem
+public class SaveMazeAsMenuItem extends JMenuItem
 				implements ActionListener {
 
 	private final MazeApp mazeApp;
 
-	public LoadMazeMenuItem(MazeApp mazeApp) {
+	public SaveMazeAsMenuItem(MazeApp mazeApp) {
 
-		super("Load maze");
+		super("Save maze as");
 		this.mazeApp = mazeApp;
-		this.setAccelerator(KeyStroke.getKeyStroke("control O"));
+		this.setAccelerator(KeyStroke.getKeyStroke("control shift S"));
 		addActionListener(this);
 	}
 
 	public void actionPerformed(ActionEvent evt) {
 
 		MazeAppModel mazeAppModel = mazeApp.getMazeAppModel();
-		String filename = FileBox.load(mazeApp);
+
+		String filename = FileBox.save(mazeApp);
 		if (filename != null) {
-			mazeApp.getMazeAppModel().loadMaze(filename);
+			mazeApp.getMazeAppModel().saveToFile(filename);
 		}
 	}
 }

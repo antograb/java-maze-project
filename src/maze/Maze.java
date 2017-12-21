@@ -29,31 +29,71 @@ public class Maze
 		
 	}
 	
-	public Maze(Maze maze){
+	public Maze(Maze maze) {
 
 		this.dimensionX = maze.getDimensionX();
 		this.dimensionY = maze.getDimensionY();
-		this.maze = new Box[dimensionY][dimensionX];
+		this.maze = matrixDeepCopy(maze.getMaze());
+	}
 
-		for (int line = 0; line < dimensionY; line++) {
-			for (int row = 0; row < dimensionX; row++) {
-				Box box = maze.getMaze()[line][row];
+	public Maze(int numberOfLines, int numberOfRows, Box[][] boxes) {
+		this.dimensionY = numberOfLines;
+		this.dimensionX = numberOfRows;
+		this.maze = matrixDeepCopy(boxes);
+	}
+
+	private Box[][] matrixDeepCopy (Box[][] original) {
+		int numberOfLines = 0;
+		int numberOfRows = 0;
+		Box[][] copy;
+		/*
+		 * We first get the dimensions of the matrix
+		 */
+		for (Box[] lineBoxes: original) {
+			numberOfLines++;
+		}
+		if (numberOfLines > 0) {
+			for (Box box: original[0]) {
+				numberOfRows++;
+			}
+		}
+		copy = new Box[numberOfLines][numberOfRows];
+
+		/*
+		 * Now we proceed to the deep copy of each box
+		 */
+		for (int line = 0; line < numberOfLines; line++) {
+			for (int row = 0; row < numberOfRows; row++) {
+				Box box = original[line][row];
 				if (box.isWalkable()) {
 					if (box.isDeparture()) {
-						this.maze[line][row] = new DBox(box.getLabel(), box.getY(), box.getX(), this);
+						copy[line][row] = new DBox(box.getLabel(), box.getY(), box.getX(), this);
 					}
 					else if (box.isArrival()) {
-						this.maze[line][row] = new ABox(box.getLabel(), box.getY(), box.getX(), this);
+						copy[line][row] = new ABox(box.getLabel(), box.getY(), box.getX(), this);
 					}
 					else {
-						this.maze[line][row] = new EBox(box.getLabel(), box.getY(), box.getX(), this);
+						copy[line][row] = new EBox(box.getLabel(), box.getY(), box.getX(), this);
 					}
 				}
 				else {
-					this.maze[line][row] = new WBox(box.getLabel(), box.getY(), box.getX(), this);
+					copy[line][row] = new WBox(box.getLabel(), box.getY(), box.getX(), this);
 				}
 			}
 		}
+		return copy;
+	}
+
+	public static Maze emptySquareMaze() {
+		int dimensionX = 10;
+		int dimensionY = 10;
+		Box[][] maze = new Box[dimensionY][dimensionX];
+		for (int line = 0; line < dimensionY; line++) {
+			for (int row = 0; row < dimensionX; row++) {
+				maze[line][row] = new EBox("E", line, row, null);
+			}
+		}
+		return new Maze(dimensionY, dimensionX, maze);
 	}
 
 	public int getCost(VertexInterface start, VertexInterface end) {

@@ -8,6 +8,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import dijkstra.VertexInterface;
+import maze.EBox;
 import dijkstra.Dijkstra;
 import dijkstra.Previous;
 
@@ -18,11 +19,15 @@ public class MazeAppModel extends Observable {
 	private VertexInterface            arrival       = maze.getArrival();
 	private Previous                   previous      = (Previous) Dijkstra.dijkstra(maze, departure);
 	private ArrayList<VertexInterface> shortest      = previous.getShortestPathTo(arrival);
-	private ArrayList<VertexInterface> boxList       = maze.getVertexes();
+	//private ArrayList<VertexInterface> boxList       = maze.getVertexes();
 	private Boolean                    modified      = false;
 
 	public void setMaze(Maze maze) {
 		this.maze = new Maze(maze);
+		this.departure = maze.getDeparture();
+		this.arrival = maze.getArrival();
+		this.previous = (Previous) Dijkstra.dijkstra(maze, departure);
+		this.shortest = previous.getShortestPathTo(arrival);
 		modified = true;
 		setChanged();
 		notifyObservers(maze);
@@ -71,6 +76,19 @@ public class MazeAppModel extends Observable {
 						boxWidth, boxHeight,
 						true);
 			}
+		}
+	}
+	
+	public void paintShortestPath(Graphics2D g, int width, int height) {
+
+		g.setColor(Color.ORANGE);
+		int dimensionX = maze.getDimensionX();
+		int dimensionY = maze.getDimensionY();
+		int boxWidth = width/dimensionX;
+		int boxHeight = height/dimensionY;
+		for (VertexInterface vertex : shortest) {
+			EBox box = (EBox) vertex;
+			g.fillOval(box.getX()*boxHeight, box.getY()*boxWidth, boxWidth, boxHeight);
 		}
 	}
 }

@@ -30,7 +30,6 @@ public class MazeDrawing extends JPanel {
 		int height = getHeight();
 
 		mazeApp.getMazeAppModel().paintMaze(g2d, width, height);
-		
 	}
 
 	public void notifyForUpdates(Object param) {

@@ -34,9 +34,8 @@ public class SaveMazeMenuItem extends JMenuItem
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
 			System.out.println("You chose to save to this file: " +
 				fileChooser.getSelectedFile().getName());
+			String filename = fileChooser.getSelectedFile().getPath();
+			mazeApp.getMazeAppModel().saveToFile(filename);
 		}
-
-		String filename = fileChooser.getSelectedFile().getPath();
-		mazeApp.getMazeAppModel().saveToFile(filename);
 	}
 }

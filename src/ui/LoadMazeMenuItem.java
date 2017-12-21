@@ -32,13 +32,13 @@ public class LoadMazeMenuItem extends JMenuItem
 					new FileNameExtensionFilter("Text files", "txt");
 		fileChooser.setFileFilter(filter);
 
+		String filename;
 		int returnVal = fileChooser.showOpenDialog(mazeApp);
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
 			System.out.println("You chose to open this file: " +
 				fileChooser.getSelectedFile().getName());
+			filename = fileChooser.getSelectedFile().getPath();
+			mazeApp.getMazeAppModel().setMaze(new Maze(filename));
 		}
-
-		String filename = fileChooser.getSelectedFile().getPath();
-		mazeApp.getMazeAppModel().setMaze(new Maze(filename));
 	}
 }

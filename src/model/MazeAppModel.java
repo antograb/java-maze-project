@@ -24,7 +24,7 @@ public class MazeAppModel extends Observable {
 	private Boolean                    modified      = false;
 
 	public MazeAppModel() {
-		maze = new Maze(Maze.emptySquareMaze());
+		maze = new Maze(Maze.emptyMaze(10));
 		departure = maze.getDeparture();
 		arrival = maze.getArrival();
 		boxList = maze.getVertexes();

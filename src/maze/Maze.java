@@ -84,16 +84,44 @@ public class Maze
 		return copy;
 	}
 
-	public static Maze emptySquareMaze() {
-		int dimensionX = 10;
-		int dimensionY = 10;
-		Box[][] maze = new Box[dimensionY][dimensionX];
-		for (int line = 0; line < dimensionY; line++) {
-			for (int row = 0; row < dimensionX; row++) {
+	public static Maze emptyMaze(int dimension) {
+		Box[][] maze = new Box[dimension][dimension];
+		for (int line = 0; line < dimension; line++) {
+			for (int row = 0; row < dimension; row++) {
 				maze[line][row] = new EBox("E", line, row, null);
 			}
 		}
-		return new Maze(dimensionY, dimensionX, maze);
+		return new Maze(dimension, dimension, maze);
+	}
+
+	public static Maze emptyMaze(int numberOfLines, int numberOfRows) {
+		Box[][] maze = new Box[numberOfLines][numberOfRows];
+		for (int line = 0; line < numberOfLines; line++) {
+			for (int row = 0; row < numberOfRows; row++) {
+				maze[line][row] = new EBox("E", line, row, null);
+			}
+		}
+		return new Maze(numberOfLines, numberOfRows, maze);
+	}
+
+	public static Maze wallMaze(int dimension) {
+		Box[][] maze = new Box[dimension][dimension];
+		for (int line = 0; line < dimension; line++) {
+			for (int row = 0; row < dimension; row++) {
+				maze[line][row] = new WBox("W", line, row, null);
+			}
+		}
+		return new Maze(dimension, dimension, maze);
+	}
+
+	public static Maze wallMaze(int numberOfLines, int numberOfRows) {
+		Box[][] maze = new Box[numberOfLines][numberOfRows];
+		for (int line = 0; line < numberOfLines; line++) {
+			for (int row = 0; row < numberOfRows; row++) {
+				maze[line][row] = new WBox("W", line, row, null);
+			}
+		}
+		return new Maze(numberOfLines, numberOfRows, maze);
 	}
 
 	public int getCost(VertexInterface start, VertexInterface end) {

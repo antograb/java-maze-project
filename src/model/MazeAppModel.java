@@ -14,7 +14,7 @@ import maze.Maze;
 
 public class MazeAppModel extends Observable {
 
-	private String										 filename;
+	private String			   filename;
 	private Maze                       maze;
 	private VertexInterface            departure;
 	private VertexInterface            arrival;
@@ -25,10 +25,16 @@ public class MazeAppModel extends Observable {
 
 	public MazeAppModel() {
 		maze = new Maze(Maze.emptyMaze(10));
+		initModelFromMaze();
+	}
+
+	private void initModelFromMaze() {
 		departure = maze.getDeparture();
 		arrival = maze.getArrival();
 		boxList = maze.getVertexes();
 		if (departure == null || arrival == null) {
+			previous = null;
+			shortest = null;
 			return;
 		}
 		previous = (Previous) Dijkstra.dijkstra(maze, departure);
@@ -38,6 +44,7 @@ public class MazeAppModel extends Observable {
 	public void loadMaze(String filename) {
 		this.filename = new String(filename);
 		maze = new Maze(this.filename);
+		initModelFromMaze();
 		modified = true;
 		setChanged();
 		notifyObservers(MazeAppModelMessage.MazeRenewal);

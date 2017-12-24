@@ -19,4 +19,7 @@ public class WindowPanel extends JPanel
 		drawingPanelGrid.notifyForUpdates(param);
 	}
 
+  public void paintShortestPath() {
+    drawingPanelGrid.paintShortestPath();
+  }
 }

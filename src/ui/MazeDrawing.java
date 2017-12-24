@@ -19,7 +19,7 @@ public class MazeDrawing extends JPanel {
 		this.mazeApp    = mazeApp;
 		setBackground(Color.BLACK);
 		setPreferredSize(new Dimension(500,500)) ;
-		
+
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class MazeDrawing extends JPanel {
 		}
 	}
 
-	public void paintShortestPath(Graphics2D g, int width, int height) {
+	private void paintShortestPath(Graphics2D g, int width, int height) {
 
 		g.setColor(Color.ORANGE);
 		int dimensionX = mazeApp.getMazeAppModel().getMaze().getDimensionX();
@@ -52,5 +52,9 @@ public class MazeDrawing extends JPanel {
 			EBox box = (EBox) vertex;
 			g.fillOval(box.getX()*boxWidth, box.getY()*boxHeight, boxWidth, boxHeight);
 		}
+	}
+
+	public void paintShortestPath() {
+		paintShortestPath((Graphics2D) getGraphics(), getWidth(), getHeight());
 	}
 }

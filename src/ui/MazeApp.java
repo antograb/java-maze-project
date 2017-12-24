@@ -41,4 +41,8 @@ public class MazeApp extends JFrame
 		System.out.println("New maze detected");
 		windowPanel.notifyForUpdates(param);
 	}
+
+	public void drawShortestPath() {
+		windowPanel.paintShortestPath();
+	}
 }

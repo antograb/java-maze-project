@@ -6,6 +6,7 @@ public class MazeMenuBar extends JMenuBar {
 
 	private final MazeApp mazeApp;
 	private final FileMenu fileMenu;
+	private final MazeMenu mazeMenu;
 
 	public MazeMenuBar(MazeApp mazeApp) {
 
@@ -13,5 +14,6 @@ public class MazeMenuBar extends JMenuBar {
 		this.mazeApp = mazeApp;
 
 		add(fileMenu = new FileMenu(mazeApp));
+		add(mazeMenu = new MazeMenu(mazeApp));
 	}
 }

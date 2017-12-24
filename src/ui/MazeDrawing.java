@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
 import maze.Maze;
+import maze.EBox;
+import dijkstra.VertexInterface;
 
 public class MazeDrawing extends JPanel {
 
@@ -36,6 +38,19 @@ public class MazeDrawing extends JPanel {
 
 		if (param instanceof Maze) {
 			this.repaint();
+		}
+	}
+
+	public void paintShortestPath(Graphics2D g, int width, int height) {
+
+		g.setColor(Color.ORANGE);
+		int dimensionX = mazeApp.getMazeAppModel().getMaze().getDimensionX();
+		int dimensionY = mazeApp.getMazeAppModel().getMaze().getDimensionY();
+		int boxWidth = width / dimensionX;
+		int boxHeight = height / dimensionY;
+		for (VertexInterface vertex : mazeApp.getMazeAppModel().getShortest()) {
+			EBox box = (EBox) vertex;
+			g.fillOval(box.getX()*boxWidth, box.getY()*boxHeight, boxWidth, boxHeight);
 		}
 	}
 }

@@ -36,6 +36,10 @@ public class MazeAppModel extends Observable {
 		return maze;
 	}
 
+	public ArrayList<VertexInterface> getShortest() {
+		return shortest;
+	}
+
 	public boolean isModified() {
 		return modified;
 	}

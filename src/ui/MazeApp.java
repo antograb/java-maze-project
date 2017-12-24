@@ -43,6 +43,12 @@ public class MazeApp extends JFrame
 	}
 
 	public void drawShortestPath() {
+		mazeAppModel.setPathDrawn(true);
 		windowPanel.paintShortestPath();
+	}
+
+	public void clearShortestPath() {
+		mazeAppModel.setPathDrawn(false);
+		this.repaint();
 	}
 }

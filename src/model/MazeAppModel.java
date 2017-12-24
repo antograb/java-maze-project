@@ -20,6 +20,7 @@ public class MazeAppModel extends Observable {
 	private ArrayList<VertexInterface> shortest      = previous.getShortestPathTo(arrival);
 	//private ArrayList<VertexInterface> boxList       = maze.getVertexes();
 	private Boolean                    modified      = false;
+	private boolean                    pathDrawn     = false;
 
 	public void setMaze(Maze maze) {
 		this.maze = new Maze(maze);
@@ -42,6 +43,14 @@ public class MazeAppModel extends Observable {
 
 	public boolean isModified() {
 		return modified;
+	}
+
+	public boolean isPathDrawn() {
+		return pathDrawn;
+	}
+
+	public void setPathDrawn(boolean pathDrawn) {
+		this.pathDrawn = pathDrawn;
 	}
 
 	public void saveToFile() {

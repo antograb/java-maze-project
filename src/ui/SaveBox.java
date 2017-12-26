@@ -12,7 +12,7 @@ public class SaveBox {
 						MazeApp mazeApp,
 						String title) {
 		MazeAppModel mazeAppModel = mazeApp.getMazeAppModel();
-		int response = JOptionPane.showInternalOptionDialog(parent,
+		int response = JOptionPane.showOptionDialog(parent,
 			message,
 			title,
 			JOptionPane.YES_NO_CANCEL_OPTION,

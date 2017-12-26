@@ -32,6 +32,9 @@ public class MazeDrawing extends JPanel {
 		int height = getHeight();
 
 		mazeApp.getMazeAppModel().paintMaze(g2d, width, height);
+		if (mazeApp.getMazeAppModel().isPathDrawn()) {
+			paintShortestPath(g2d, width, height);
+		}
 	}
 
 	public void notifyForUpdates(Object param) {

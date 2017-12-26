@@ -23,6 +23,11 @@ public class LoadMazeMenuItem extends JMenuItem
 	public void actionPerformed(ActionEvent evt) {
 
 		MazeAppModel mazeAppModel = mazeApp.getMazeAppModel();
+		if (! mazeAppModel.isSaved()) {
+			if (! SaveBox.promptAndContinue(this, mazeApp, "Load maze")){
+				return;
+			}
+		}
 		String filename = FileBox.load(mazeApp);
 		if (filename != null) {
 			mazeApp.getMazeAppModel().loadMaze(filename);

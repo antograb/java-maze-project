@@ -21,7 +21,7 @@ public class MazeAppModel extends Observable {
 	private Previous                   previous;
 	private ArrayList<VertexInterface> shortest;
 	private ArrayList<VertexInterface> boxList;
-	private Boolean                    modified      = false;
+	private boolean                    saved      = true;
 
 	public MazeAppModel() {
 		maze = new Maze(Maze.emptyMaze(10));
@@ -45,7 +45,7 @@ public class MazeAppModel extends Observable {
 		this.filename = new String(filename);
 		maze = new Maze(this.filename);
 		initModelFromMaze();
-		modified = true;
+		saved = true;
 		setChanged();
 		notifyObservers(MazeAppModelMessage.MazeRenewal);
 	}
@@ -58,18 +58,19 @@ public class MazeAppModel extends Observable {
 		return filename;
 	}
 
-	public boolean isModified() {
-		return modified;
+	public boolean isSaved() {
+		return saved;
 	}
 
 	public void saveToFile() {
 		maze.saveToTextFile(filename);
+		saved = true;
 	}
 
 	public void saveToFile(String filename) {
 		this.filename = new String(filename);
 		maze.saveToTextFile(this.filename);
-		modified = true;
+		saved = true;
 		setChanged();
 		notifyObservers(MazeAppModelMessage.FileChange);
 	}

@@ -10,67 +10,68 @@ import java.util.Observer;
 import dijkstra.VertexInterface;
 import dijkstra.Dijkstra;
 import dijkstra.Previous;
+import maze.Maze;
 
 public class MazeAppModel extends Observable {
 
-	private Maze                       maze          = new Maze("data/labyrinthe.txt");
-	private VertexInterface            departure     = maze.getDeparture();
-	private VertexInterface            arrival       = maze.getArrival();
-	private Previous                   previous      = (Previous) Dijkstra.dijkstra(maze, departure);
-	private ArrayList<VertexInterface> shortest      = previous.getShortestPathTo(arrival);
-	private ArrayList<VertexInterface> boxList       = maze.getVertexes();
-	private Boolean                    modified      = false;
+	private String			   filename;
+	private Maze                       maze;
+	private VertexInterface            departure;
+	private VertexInterface            arrival;
+	private Previous                   previous;
+	private ArrayList<VertexInterface> shortest;
+	private ArrayList<VertexInterface> boxList;
+	private boolean                    saved      = true;
 
-	public void setMaze(Maze maze) {
-		this.maze = new Maze(maze);
-		modified = true;
+	public MazeAppModel() {
+		maze = new Maze(Maze.emptyMaze(10));
+		initModelFromMaze();
+	}
+
+	private void initModelFromMaze() {
+		departure = maze.getDeparture();
+		arrival = maze.getArrival();
+		boxList = maze.getVertexes();
+		if (departure == null || arrival == null) {
+			previous = null;
+			shortest = null;
+			return;
+		}
+		previous = (Previous) Dijkstra.dijkstra(maze, departure);
+		shortest = previous.getShortestPathTo(arrival);
+	}
+
+	public void loadMaze(String filename) {
+		this.filename = new String(filename);
+		maze = new Maze(this.filename);
+		initModelFromMaze();
+		saved = true;
 		setChanged();
-		notifyObservers(maze);
+		notifyObservers(MazeAppModelMessage.MazeRenewal);
 	}
 
 	public Maze getMaze() {
 		return maze;
 	}
 
-	public boolean isModified() {
-		return modified;
+	public String getFilename() {
+		return filename;
+	}
+
+	public boolean isSaved() {
+		return saved;
 	}
 
 	public void saveToFile() {
-		maze.saveToTextFile("data/labyOutput.txt");
+		maze.saveToTextFile(filename);
+		saved = true;
 	}
 
 	public void saveToFile(String filename) {
-		maze.saveToTextFile(filename);
-	}
-
-	public void paintMaze(Graphics2D g, int width, int height) {
-
-		int dimensionX = maze.getDimensionX();
-		int dimensionY = maze.getDimensionY();
-		int boxWidth = width/dimensionX;
-		int boxHeight = height/dimensionY;
-
-		for (int line = 0; line < dimensionY; line++) {
-			for (int row = 0; row < dimensionX; row++) {
-				if (maze.getMaze()[line][row].isWalkable()) {
-					if (maze.getMaze()[line][row].isDeparture()) {
-						g.setColor(Color.GREEN);
-					}
-					else if (maze.getMaze()[line][row].isArrival()) {
-						g.setColor(Color.RED);
-					}
-					else {
-						g.setColor(Color.BLACK);
-					}
-				}
-				else {
-					g.setColor(Color.WHITE);
-				}
-				g.fill3DRect(row*boxWidth, line*boxHeight,
-						boxWidth, boxHeight,
-						true);
-			}
-		}
+		this.filename = new String(filename);
+		maze.saveToTextFile(this.filename);
+		saved = true;
+		setChanged();
+		notifyObservers(MazeAppModelMessage.FileChange);
 	}
 }

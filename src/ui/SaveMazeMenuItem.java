@@ -1,16 +1,16 @@
 package ui;
 
-import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.KeyStroke;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Observer;
+import java.util.Observable;
 
 import model.MazeAppModel;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 public class SaveMazeMenuItem extends JMenuItem
-				implements ActionListener {
+				implements ActionListener, Observer {
 
 	private final MazeApp mazeApp;
 
@@ -18,24 +18,30 @@ public class SaveMazeMenuItem extends JMenuItem
 
 		super("Save maze");
 		this.mazeApp = mazeApp;
+		this.setAccelerator(KeyStroke.getKeyStroke("control S"));
+		mazeApp.getMazeAppModel().addObserver(this);
+		if (mazeApp.getMazeAppModel().getFilename() == null) {
+			this.setEnabled(false);
+		}
 		addActionListener(this);
 	}
 
 	public void actionPerformed(ActionEvent evt) {
 
 		MazeAppModel mazeAppModel = mazeApp.getMazeAppModel();
-		JFileChooser fileChooser = new JFileChooser();
 
-		FileNameExtensionFilter filter =
-			new FileNameExtensionFilter("Text files", "txt");
-		fileChooser.setFileFilter(filter);
+		if (mazeAppModel.getFilename() != null) {
+			mazeAppModel.saveToFile();
+		}
+	}
 
-		int returnVal = fileChooser.showSaveDialog(mazeApp);
-		if(returnVal == JFileChooser.APPROVE_OPTION) {
-			System.out.println("You chose to save to this file: " +
-				fileChooser.getSelectedFile().getName());
-			String filename = fileChooser.getSelectedFile().getPath();
-			mazeApp.getMazeAppModel().saveToFile(filename);
+	@Override
+	public void update(Observable obs, Object param) {
+		if (mazeApp.getMazeAppModel().getFilename() != null) {
+			this.setEnabled(true);
+		}
+		else {
+			this.setEnabled(true);
 		}
 	}
 }

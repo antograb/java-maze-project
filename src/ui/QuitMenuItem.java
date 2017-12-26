@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 import model.MazeAppModel;
 
@@ -17,6 +18,7 @@ public class QuitMenuItem extends JMenuItem
 
 		super("Quit");
 		this.mazeApp = mazeApp;
+		this.setAccelerator(KeyStroke.getKeyStroke("control Q"));
 		addActionListener(this);
 	}
 
@@ -24,23 +26,11 @@ public class QuitMenuItem extends JMenuItem
 
 	      MazeAppModel mazeAppModel = mazeApp.getMazeAppModel();
 
-	      if (mazeAppModel.isModified()) {
-	    	  int response = JOptionPane.showInternalOptionDialog(this,
-	                                                             "Maze not saved. Save it ?",
-	                                                             "Quit application",
-	                                                             JOptionPane.YES_NO_CANCEL_OPTION,
-	                                                             JOptionPane.WARNING_MESSAGE,
-	                                                             null,null,null);
-	    	  switch (response) {
-			  	case JOptionPane.CANCEL_OPTION:
-			  		return;
-			  	case JOptionPane.OK_OPTION:
-			  		mazeAppModel.saveToFile();
-			  		break;
-			  	case JOptionPane.NO_OPTION:
-			  		break;
-			  }
-		  }
+	      if (! mazeAppModel.isSaved()) {
+		      if (! SaveBox.promptAndContinue(this, mazeApp, "Quit application")) {
+			      return;
+		      }
+	      }
 	      System.exit(0);
 	}
 }

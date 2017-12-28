@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 import maze.Maze;
 import model.MazeAppModelMessage;
+import maze.EBox;
+import dijkstra.VertexInterface;
 
 public class MazeDrawing extends JPanel {
 
@@ -30,6 +32,9 @@ public class MazeDrawing extends JPanel {
 		int height = getHeight();
 
 		paintMaze(g2d, width, height);
+		if (mazeApp.getMazeAppModel().isPathDrawn()) {
+			paintShortestPath(g2d, width, height);
+		}
 	}
 
 	private void paintMaze(Graphics2D g, int width, int height) {
@@ -69,5 +74,22 @@ public class MazeDrawing extends JPanel {
 		if (param == MazeAppModelMessage.MazeRenewal) {
 			this.repaint();
 		}
+	}
+
+	private void paintShortestPath(Graphics2D g, int width, int height) {
+
+		g.setColor(Color.ORANGE);
+		int dimensionX = mazeApp.getMazeAppModel().getMaze().getDimensionX();
+		int dimensionY = mazeApp.getMazeAppModel().getMaze().getDimensionY();
+		int boxWidth = width / dimensionX;
+		int boxHeight = height / dimensionY;
+		for (VertexInterface vertex : mazeApp.getMazeAppModel().getShortest()) {
+			EBox box = (EBox) vertex;
+			g.fillOval(box.getX()*boxWidth, box.getY()*boxHeight, boxWidth, boxHeight);
+		}
+	}
+
+	public void paintShortestPath() {
+		paintShortestPath((Graphics2D) getGraphics(), getWidth(), getHeight());
 	}
 }

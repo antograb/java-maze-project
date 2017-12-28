@@ -209,7 +209,7 @@ public class Maze
 		return neighbourList ;
 		
 	}
-	
+
 	/**Constructs the maze from a text file, according to each single character on each line. 
 	 * @param filename
 	 * 	The path to the file containing the representation of the maze.

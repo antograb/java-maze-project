@@ -21,7 +21,8 @@ public class MazeAppModel extends Observable {
 	private Previous                   previous;
 	private ArrayList<VertexInterface> shortest;
 	private ArrayList<VertexInterface> boxList;
-	private boolean                    saved      = true;
+	private boolean                    saved	= true;
+	private boolean                    pathDrawn	= false;
 
 	public MazeAppModel() {
 		maze = new Maze(Maze.emptyMaze(10));
@@ -60,6 +61,18 @@ public class MazeAppModel extends Observable {
 
 	public boolean isSaved() {
 		return saved;
+	}
+
+	public ArrayList<VertexInterface> getShortest() {
+		return shortest;
+	}
+
+	public boolean isPathDrawn() {
+		return pathDrawn;
+	}
+
+	public void setPathDrawn(boolean pathDrawn) {
+		this.pathDrawn = pathDrawn;
 	}
 
 	public void saveToFile() {

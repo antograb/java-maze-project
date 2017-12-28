@@ -3,6 +3,7 @@ package ui;
 import javax.swing.*;
 import maze.Maze;
 import model.MazeAppModel;
+import maze.EBox;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -75,5 +76,15 @@ public class MazeApp extends JFrame
 
 	public void windowOpened(WindowEvent e) {
 		return;
+	}
+
+	public void drawShortestPath() {
+		mazeAppModel.setPathDrawn(true);
+		windowPanel.paintShortestPath();
+	}
+
+	public void clearShortestPath() {
+		mazeAppModel.setPathDrawn(false);
+		this.repaint();
 	}
 }

@@ -7,10 +7,8 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import dijkstra.VertexInterface;
-import dijkstra.Dijkstra;
-import dijkstra.Previous;
-import maze.Maze;
+import dijkstra.*;
+import maze.*;
 
 public class MazeAppModel extends Observable {
 
@@ -86,5 +84,38 @@ public class MazeAppModel extends Observable {
 		saved = true;
 		setChanged();
 		notifyObservers(MazeAppModelMessage.FileChange);
+	}
+
+	public void toggleBox(int x, int y) {
+		if (maze.getMaze()[y][x].isWalkable()) {
+			if (maze.getMaze()[y][x].isDeparture()) {
+				if (arrival != null) {
+					int arrivalRow = ((EBox) arrival).getX();
+					int arrivalLine = ((EBox) arrival).getY();
+					maze.getMaze()[arrivalLine][arrivalRow] =
+						new EBox("E", arrivalLine, arrivalRow, maze);
+				}
+				maze.getMaze()[y][x] = new ABox("A", y, x, maze);
+			}
+			else if (maze.getMaze()[y][x].isArrival()) {
+				maze.getMaze()[y][x] = new EBox("E", y, x, maze);
+			}
+			else {
+				maze.getMaze()[y][x] = new WBox("W", y, x, maze);
+			}
+		}
+		else {
+			if (departure != null) {
+				int departureRow = ((EBox) departure).getX();
+				int departureLine = ((EBox) departure).getY();
+				maze.getMaze()[departureLine][departureRow] =
+					new EBox("E", departureLine, departureRow, maze);
+			}
+			maze.getMaze()[y][x] = new DBox("D", y, x, maze);
+		}
+		initModelFromMaze();
+		saved = false;
+		setChanged();
+		notifyObservers(MazeAppModelMessage.MazeRenewal);
 	}
 }

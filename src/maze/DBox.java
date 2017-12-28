@@ -6,15 +6,15 @@ package maze;
 
 public class DBox extends EBox{
 
-	public DBox (String label, int x, int y, Maze maze) {
-		
-		super(label,x,y,maze) ;
-		
+	public DBox (String label, int y, int x, Maze maze) {
+
+		super(label, y, x, maze) ;
+
 	}
-	
+
 	@Override
 	public boolean isDeparture() {
 		return true ;
 	}
-	
+
 }

@@ -1,17 +1,21 @@
 package ui;
 
+import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 import maze.Maze;
 import model.MazeAppModelMessage;
 import maze.EBox;
 import dijkstra.VertexInterface;
 
-public class MazeDrawing extends JPanel {
+public class MazeDrawing extends JPanel implements MouseListener {
 
 	private final MazeApp mazeApp;
 
@@ -19,7 +23,8 @@ public class MazeDrawing extends JPanel {
 
 		this.mazeApp    = mazeApp;
 		setBackground(Color.BLACK);
-		setPreferredSize(new Dimension(500,500)) ;
+		setPreferredSize(new Dimension(500,500));
+		addMouseListener(this);
 	}
 
 	@Override
@@ -83,7 +88,22 @@ public class MazeDrawing extends JPanel {
 		int dimensionY = mazeApp.getMazeAppModel().getMaze().getDimensionY();
 		int boxWidth = width / dimensionX;
 		int boxHeight = height / dimensionY;
-		for (VertexInterface vertex : mazeApp.getMazeAppModel().getShortest()) {
+		ArrayList<VertexInterface> shortest =
+			mazeApp.getMazeAppModel().getShortest();
+		if (shortest == null && ! mazeApp.getMazeAppModel().isPathDrawn()) {
+			mazeApp.clearShortestPath();
+			JOptionPane.showMessageDialog(this,
+				"Check that your graph contains a departure and an arrival,"
+				+ " and that a path exists between them.",
+				"No shortest path",
+				JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		else if (shortest == null) {
+			mazeApp.clearShortestPath();
+			return;
+		}
+		for (VertexInterface vertex : shortest) {
 			EBox box = (EBox) vertex;
 			g.fillOval(box.getX()*boxWidth, box.getY()*boxHeight, boxWidth, boxHeight);
 		}
@@ -91,5 +111,34 @@ public class MazeDrawing extends JPanel {
 
 	public void paintShortestPath() {
 		paintShortestPath((Graphics2D) getGraphics(), getWidth(), getHeight());
+	}
+
+	public void mousePressed(MouseEvent e) {
+		return;
+	}
+
+	public void mouseClicked(MouseEvent e) {
+		int x = e.getX();
+		int y = e.getY();
+		int dimensionX = mazeApp.getMazeAppModel().getMaze().getDimensionX();
+		int dimensionY = mazeApp.getMazeAppModel().getMaze().getDimensionY();
+		int boxWidth = getWidth() / dimensionX;
+		int boxHeight = getHeight() / dimensionY;
+		int boxX = x / boxWidth;
+		int boxY = y / boxHeight;
+		mazeApp.getMazeAppModel().toggleBox(boxX, boxY);
+		return;
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		return;
+	}
+
+	public void mouseExited(MouseEvent e) {
+		return;
+	}
+
+	public void mouseEntered(MouseEvent e) {
+		return;
 	}
 }

@@ -42,6 +42,12 @@ public class Maze
 		this.maze = matrixDeepCopy(boxes);
 	}
 
+	public Maze(Box[][] newMaze) {
+		this.dimensionX = newMaze[0].length;
+		this.dimensionY = newMaze.length;
+		this.maze = matrixDeepCopy(newMaze);
+	}
+
 	private Box[][] matrixDeepCopy (Box[][] original) {
 		int numberOfLines = 0;
 		int numberOfRows = 0;

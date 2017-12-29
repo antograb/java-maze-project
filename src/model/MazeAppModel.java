@@ -12,15 +12,15 @@ import maze.*;
 
 public class MazeAppModel extends Observable {
 
-	private String			   filename;
+	private String                     filename;
 	private Maze                       maze;
 	private VertexInterface            departure;
 	private VertexInterface            arrival;
 	private Previous                   previous;
 	private ArrayList<VertexInterface> shortest;
 	private ArrayList<VertexInterface> boxList;
-	private boolean                    saved	= true;
-	private boolean                    pathDrawn	= false;
+	private boolean                    saved = true;
+	private boolean                    pathDrawn = false;
 
 	public MazeAppModel() {
 		maze = new Maze(Maze.emptyMaze(10));
@@ -89,18 +89,10 @@ public class MazeAppModel extends Observable {
 
 	public void toggleBox(int boxLine, int boxRow) {
 		if (maze.getMaze()[boxLine][boxRow].isWalkable()) {
-			if (maze.getMaze()[boxLine][boxRow].isDeparture()) {
-				setABox(boxLine, boxRow);
-			}
-			else if (maze.getMaze()[boxLine][boxRow].isArrival()) {
-				setEBox(boxLine, boxRow);
-			}
-			else {
-				setWBox(boxLine, boxRow);
-			}
+			setWBox(boxLine, boxRow);
 		}
 		else {
-			setDBox(boxLine, boxRow);
+			setEBox(boxLine, boxRow);
 		}
 	}
 
@@ -136,6 +128,64 @@ public class MazeAppModel extends Observable {
 				new EBox("E", arrivalLine, arrivalRow, maze);
 		}
 		maze.getMaze()[boxLine][boxRow] = new ABox("A", boxLine, boxRow, maze);
+		initModelFromMaze();
+		saved = false;
+	}
+
+	public void newClearMaze(int numberOfLines, int numberOfRows) {
+
+		Box[][] newClearMaze = new Box[numberOfLines][numberOfRows];
+		
+		for (int line = 0; line < numberOfLines; line++) {
+			for (int row = 0; row < numberOfRows; row++) {
+				newClearMaze[line][row] = new EBox("E", line, row, this.maze);
+			}
+		}
+		this.maze = new Maze(newClearMaze);
+		initModelFromMaze();
+		saved = false;
+	}
+
+	public void addEmptyColumn() {
+
+		Box[][] previousMaze  = maze.getMaze();
+		int numberOfLines = maze.getDimensionY();
+		int numberOfRows = maze.getDimensionX()+1;
+
+		newClearMaze(numberOfLines, numberOfRows);
+
+		for (int line = 0; line < numberOfLines; line++) {
+			for (int row = 0; row < numberOfRows; row++) {
+				if (row == numberOfRows-1) {
+					maze.getMaze()[line][row] = new EBox("E", line, row, maze);
+				} else {
+					maze.getMaze()[line][row] = previousMaze[line][row];
+				}
+			}
+		}
+
+		initModelFromMaze();
+		saved = false;
+	}
+
+	public void addEmptyLine() {
+
+		Box[][] previousMaze  = maze.getMaze();
+		int numberOfLines = maze.getDimensionY()+1;
+		int numberOfRows = maze.getDimensionX();
+
+		newClearMaze(numberOfLines, numberOfRows);
+
+		for (int line = 0; line < numberOfLines; line++) {
+			for (int row = 0; row < numberOfRows; row++) {
+				if (line == numberOfLines-1) {
+					maze.getMaze()[line][row] = new EBox("E", line, row, maze);
+				} else {
+					maze.getMaze()[line][row] = previousMaze[line][row];
+				}
+			}
+		}
+
 		initModelFromMaze();
 		saved = false;
 	}

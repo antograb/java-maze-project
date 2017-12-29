@@ -34,10 +34,13 @@ public class MazeAppModel extends Observable {
 		if (departure == null || arrival == null) {
 			previous = null;
 			shortest = null;
-			return;
 		}
-		previous = (Previous) Dijkstra.dijkstra(maze, departure);
-		shortest = previous.getShortestPathTo(arrival);
+		else {
+			previous = (Previous) Dijkstra.dijkstra(maze, departure);
+			shortest = previous.getShortestPathTo(arrival);
+		}
+		setChanged();
+		notifyObservers(MazeAppModelMessage.MazeRenewal);
 	}
 
 	public void loadMaze(String filename) {
@@ -45,8 +48,6 @@ public class MazeAppModel extends Observable {
 		maze = new Maze(this.filename);
 		initModelFromMaze();
 		saved = true;
-		setChanged();
-		notifyObservers(MazeAppModelMessage.MazeRenewal);
 	}
 
 	public Maze getMaze() {
@@ -86,36 +87,56 @@ public class MazeAppModel extends Observable {
 		notifyObservers(MazeAppModelMessage.FileChange);
 	}
 
-	public void toggleBox(int x, int y) {
-		if (maze.getMaze()[y][x].isWalkable()) {
-			if (maze.getMaze()[y][x].isDeparture()) {
-				if (arrival != null) {
-					int arrivalRow = ((EBox) arrival).getX();
-					int arrivalLine = ((EBox) arrival).getY();
-					maze.getMaze()[arrivalLine][arrivalRow] =
-						new EBox("E", arrivalLine, arrivalRow, maze);
-				}
-				maze.getMaze()[y][x] = new ABox("A", y, x, maze);
+	public void toggleBox(int boxLine, int boxRow) {
+		if (maze.getMaze()[boxLine][boxRow].isWalkable()) {
+			if (maze.getMaze()[boxLine][boxRow].isDeparture()) {
+				setABox(boxLine, boxRow);
 			}
-			else if (maze.getMaze()[y][x].isArrival()) {
-				maze.getMaze()[y][x] = new EBox("E", y, x, maze);
+			else if (maze.getMaze()[boxLine][boxRow].isArrival()) {
+				setEBox(boxLine, boxRow);
 			}
 			else {
-				maze.getMaze()[y][x] = new WBox("W", y, x, maze);
+				setWBox(boxLine, boxRow);
 			}
 		}
 		else {
-			if (departure != null) {
-				int departureRow = ((EBox) departure).getX();
-				int departureLine = ((EBox) departure).getY();
-				maze.getMaze()[departureLine][departureRow] =
-					new EBox("E", departureLine, departureRow, maze);
-			}
-			maze.getMaze()[y][x] = new DBox("D", y, x, maze);
+			setDBox(boxLine, boxRow);
 		}
+	}
+
+	public void setWBox(int boxLine, int boxRow) {
+		maze.getMaze()[boxLine][boxRow] = new WBox("W", boxLine, boxRow, maze);
 		initModelFromMaze();
 		saved = false;
-		setChanged();
-		notifyObservers(MazeAppModelMessage.MazeRenewal);
+	}
+
+	public void setEBox(int boxLine, int boxRow) {
+		maze.getMaze()[boxLine][boxRow] = new EBox("E", boxLine, boxRow, maze);
+		initModelFromMaze();
+		saved = false;
+	}
+
+	public void setDBox(int boxLine, int boxRow) {
+		if (departure != null) {
+			int departureRow = ((EBox) departure).getX();
+			int departureLine = ((EBox) departure).getY();
+			maze.getMaze()[departureLine][departureRow] =
+				new EBox("E", departureLine, departureRow, maze);
+		}
+		maze.getMaze()[boxLine][boxRow] = new DBox("D", boxLine, boxRow, maze);
+		initModelFromMaze();
+		saved = false;
+	}
+
+	public void setABox(int boxLine, int boxRow) {
+		if (arrival != null) {
+			int arrivalRow = ((EBox) arrival).getX();
+			int arrivalLine = ((EBox) arrival).getY();
+			maze.getMaze()[arrivalLine][arrivalRow] =
+				new EBox("E", arrivalLine, arrivalRow, maze);
+		}
+		maze.getMaze()[boxLine][boxRow] = new ABox("A", boxLine, boxRow, maze);
+		initModelFromMaze();
+		saved = false;
 	}
 }

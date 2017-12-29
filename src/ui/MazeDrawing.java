@@ -117,16 +117,28 @@ public class MazeDrawing extends JPanel implements MouseListener {
 		return;
 	}
 
-	public void mouseClicked(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
+	private int getBoxRow(int x) {
 		int dimensionX = mazeApp.getMazeAppModel().getMaze().getDimensionX();
-		int dimensionY = mazeApp.getMazeAppModel().getMaze().getDimensionY();
 		int boxWidth = getWidth() / dimensionX;
+		return x / boxWidth;
+	}
+
+	private int getBoxLine(int y) {
+		int dimensionY = mazeApp.getMazeAppModel().getMaze().getDimensionY();
 		int boxHeight = getHeight() / dimensionY;
-		int boxX = x / boxWidth;
-		int boxY = y / boxHeight;
-		mazeApp.getMazeAppModel().toggleBox(boxX, boxY);
+		return y / boxHeight;
+	}
+
+	public void mouseClicked(MouseEvent e) {
+		int boxRow = getBoxRow(e.getX());
+		int boxLine = getBoxLine(e.getY());
+		if (e.getButton() == MouseEvent.BUTTON3) {
+			BoxTypeEditionMenu boxTypeEditionMenu = new BoxTypeEditionMenu(mazeApp, boxLine, boxRow);
+			boxTypeEditionMenu.show(e.getComponent(), e.getX(), e.getY());
+		}
+		else if (e.getButton() == MouseEvent.BUTTON1) {
+			mazeApp.getMazeAppModel().toggleBox(boxLine, boxRow);
+		}
 		return;
 	}
 

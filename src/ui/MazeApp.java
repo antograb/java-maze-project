@@ -87,4 +87,41 @@ public class MazeApp extends JFrame
 		mazeAppModel.setPathDrawn(false);
 		this.repaint();
 	}
+
+	public void addEmptyColumn(int posColumn) {
+		mazeAppModel.addEmptyColumn(posColumn);
+	}
+
+	public void addEmptyColumn() {
+		mazeAppModel.addEmptyColumn();
+	}
+
+	public void delColumn(int posColumn) {
+		mazeAppModel.delColumn(posColumn);
+	}
+
+	public void delColumn() {
+		mazeAppModel.delColumn();
+	}
+
+	public void addEmptyLine(int posLine) {
+		mazeAppModel.addEmptyLine(posLine);
+	}
+
+	public void addEmptyLine() {
+		mazeAppModel.addEmptyLine();
+	}
+
+	public void delLine(int posLine) {
+		mazeAppModel.delLine(posLine);
+	}
+
+	public void delLine() {
+		mazeAppModel.delLine();
+	}
+
+	public void clearMaze() {
+		mazeAppModel.clearMaze();
+		this.repaint();
+	}
 }

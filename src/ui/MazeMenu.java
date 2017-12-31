@@ -11,6 +11,8 @@ public class MazeMenu extends JMenu {
 	private final ClearMazeMenuItem clearMazeMenuItem;
 	private final AddRowMenuItem addRowMenuItem;
 	private final AddLineMenuItem addLineMenuItem;
+	private final DelRowMenuItem delRowMenuItem;
+	private final DelLineMenuItem delLineMenuItem;
 
 	public MazeMenu(MazeApp mazeApp) {
 
@@ -23,5 +25,7 @@ public class MazeMenu extends JMenu {
 		add(clearMazeMenuItem = new ClearMazeMenuItem(mazeApp));
 		add(addRowMenuItem = new AddRowMenuItem(mazeApp));
 		add(addLineMenuItem = new AddLineMenuItem(mazeApp));
+		add(delRowMenuItem = new DelRowMenuItem(mazeApp));
+		add(delLineMenuItem = new DelLineMenuItem(mazeApp));
 	}
 }

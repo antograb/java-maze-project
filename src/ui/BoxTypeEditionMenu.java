@@ -9,6 +9,10 @@ public class BoxTypeEditionMenu extends JPopupMenu {
 	JMenuItem setEBox;
 	JMenuItem setDBox;
 	JMenuItem setABox;
+	JMenuItem addRow;
+	JMenuItem addLine;
+	JMenuItem delRow;
+	JMenuItem delLine;
 
 	public BoxTypeEditionMenu(MazeApp mazeApp, int boxLine, int boxRow) {
 		add(setEBox = new SetEBoxMenuItem(mazeApp, boxLine, boxRow));
@@ -21,5 +25,10 @@ public class BoxTypeEditionMenu extends JPopupMenu {
 		setWBox.setEnabled(box.isWalkable());
 		setDBox.setEnabled(! box.isDeparture());
 		setABox.setEnabled(! box.isArrival());
+
+		add(addRow = new AddRowMenuItem(mazeApp, boxRow));
+		add(addLine = new AddLineMenuItem(mazeApp, boxLine));
+		add(delRow = new DelRowMenuItem(mazeApp, boxRow));
+		add(delLine = new DelLineMenuItem(mazeApp, boxLine));
 	}
 }

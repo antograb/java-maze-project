@@ -5,34 +5,33 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
 
-public class AddLineMenuItem extends JMenuItem
+public class DelRowMenuItem extends JMenuItem
 				implements ActionListener {
 
 	private final MazeApp mazeApp;
-	private final int lineNum;
+	private final int rowNum;
 
-	public AddLineMenuItem(MazeApp mazeApp) {
-
-		super("Add line");
+	public DelRowMenuItem(MazeApp mazeApp) {
+		super("Delete row");
 		this.mazeApp = mazeApp;
-		lineNum = -1;
+		rowNum = -1;
 		addActionListener(this);
 	}
 
-	public AddLineMenuItem(MazeApp mazeApp, int lineNum) {
-		super("Add line");
+	public DelRowMenuItem(MazeApp mazeApp, int rowNum) {
+		super("Delete row");
 		this.mazeApp = mazeApp;
-		this.lineNum = lineNum;
+		this.rowNum = rowNum;
 		addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (lineNum == -1) {
-			mazeApp.addEmptyLine();
+		if (rowNum == -1) {
+			mazeApp.delColumn();
 		}
 		else {
-			mazeApp.addEmptyLine(lineNum);
+			mazeApp.delColumn(rowNum);
 		}
 	}
 }

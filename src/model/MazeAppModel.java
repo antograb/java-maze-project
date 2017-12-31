@@ -134,59 +134,52 @@ public class MazeAppModel extends Observable {
 
 	public void newClearMaze(int numberOfLines, int numberOfRows) {
 
-		Box[][] newClearMaze = new Box[numberOfLines][numberOfRows];
-		
-		for (int line = 0; line < numberOfLines; line++) {
-			for (int row = 0; row < numberOfRows; row++) {
-				newClearMaze[line][row] = new EBox("E", line, row, this.maze);
-			}
-		}
-		this.maze = new Maze(newClearMaze);
+		maze = new Maze(Maze.emptyMaze(numberOfLines, numberOfRows));
 		initModelFromMaze();
 		saved = false;
 	}
 
 	public void addEmptyColumn() {
+		addEmptyColumn(maze.getDimensionX());
+	}
 
-		Box[][] previousMaze  = maze.getMaze();
-		int numberOfLines = maze.getDimensionY();
-		int numberOfRows = maze.getDimensionX()+1;
-
-		newClearMaze(numberOfLines, numberOfRows);
-
-		for (int line = 0; line < numberOfLines; line++) {
-			for (int row = 0; row < numberOfRows; row++) {
-				if (row == numberOfRows-1) {
-					maze.getMaze()[line][row] = new EBox("E", line, row, maze);
-				} else {
-					maze.getMaze()[line][row] = previousMaze[line][row];
-				}
-			}
-		}
-
+	public void addEmptyColumn(int posColumn) {
+		maze.addEmptyColumn(posColumn);
 		initModelFromMaze();
 		saved = false;
 	}
 
-	public void addEmptyLine() {
-
-		Box[][] previousMaze  = maze.getMaze();
-		int numberOfLines = maze.getDimensionY()+1;
-		int numberOfRows = maze.getDimensionX();
-
-		newClearMaze(numberOfLines, numberOfRows);
-
-		for (int line = 0; line < numberOfLines; line++) {
-			for (int row = 0; row < numberOfRows; row++) {
-				if (line == numberOfLines-1) {
-					maze.getMaze()[line][row] = new EBox("E", line, row, maze);
-				} else {
-					maze.getMaze()[line][row] = previousMaze[line][row];
-				}
-			}
-		}
-
+	public void delColumn(int posColumn) {
+		maze.delColumn(posColumn);
 		initModelFromMaze();
 		saved = false;
+	}
+
+	public void delColumn() {
+		delColumn(maze.getDimensionX() - 1);
+	}
+
+	public void addEmptyLine() {
+		addEmptyLine(maze.getDimensionY());
+	}
+
+	public void addEmptyLine(int posLine) {
+		maze.addEmptyLine(posLine);
+		initModelFromMaze();
+		saved = false;
+	}
+
+	public void delLine(int posLine) {
+		maze.delLine(posLine);
+		initModelFromMaze();
+		saved = false;
+	}
+
+	public void delLine() {
+		delLine(maze.getDimensionY() - 1);
+	}
+
+	public void clearMaze() {
+		newClearMaze(maze.getDimensionY(), maze.getDimensionX());
 	}
 }

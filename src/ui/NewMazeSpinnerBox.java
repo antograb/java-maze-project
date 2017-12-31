@@ -15,22 +15,16 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 public class NewMazeSpinnerBox extends JPanel
-				implements ActionListener,
-						   ChangeListener {
+				implements ActionListener {
 
 	private final MazeApp mazeApp;
 	private JDialog spinnerDialog;
-	private int numberOfLines;
-	private int numberOfRows;
 	private SpinnerModel lineSpinnerModel;
 	private SpinnerModel rowSpinnerModel;
 
 	public NewMazeSpinnerBox(MazeApp mazeApp) {
-
 
 		this.mazeApp = mazeApp;
 		JPanel spinnerDialog = new JPanel(new SpringLayout());
@@ -40,25 +34,23 @@ public class NewMazeSpinnerBox extends JPanel
 		int maximumValue = 200;
 
 		this.lineSpinnerModel =
-				new SpinnerNumberModel(initialValue, //initial value
-									   initialValue, //min
-									   maximumValue, //max
-									   1);
-		this.lineSpinnerModel.addChangeListener(this);
+			new SpinnerNumberModel(initialValue, //initial value
+					       initialValue, //min
+					       maximumValue, //max
+					       1);
 		JSpinner lineSpinner = addLabeledSpinner(this, labels[0], lineSpinnerModel);
 
 		this.rowSpinnerModel =
-				new SpinnerNumberModel(initialValue, //initial value
-									   initialValue, //min
-									   maximumValue, //max
-									   1);
-		this.rowSpinnerModel.addChangeListener(this);
-		JSpinner rowSpinner = addLabeledSpinner(this, labels[0], rowSpinnerModel);
+			new SpinnerNumberModel(initialValue, //initial value
+					       initialValue, //min
+					       maximumValue, //max
+					       1);
+		JSpinner rowSpinner = addLabeledSpinner(this, labels[1], rowSpinnerModel);
 	}
 
 	static protected JSpinner addLabeledSpinner(Container c,
-												String label,
-												SpinnerModel model) {
+						    String label,
+						    SpinnerModel model) {
 
 		JLabel l = new JLabel(label);
 		c.add(l);
@@ -76,8 +68,8 @@ public class NewMazeSpinnerBox extends JPanel
 		spinnerDialog.setLayout(new BorderLayout());
 		spinnerDialog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
-		spinnerDialog.add(new NewMazeSpinnerBox(this.mazeApp),
-						  BorderLayout.CENTER);
+		spinnerDialog.add(this,
+				  BorderLayout.CENTER);
 
 		JButton OKButton = new JButton("OK");
 		OKButton.addActionListener(this);
@@ -89,13 +81,9 @@ public class NewMazeSpinnerBox extends JPanel
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		mazeApp.getMazeAppModel(
+			).newClearMaze((int) lineSpinnerModel.getValue(),
+				       (int) rowSpinnerModel.getValue());
 		spinnerDialog.dispose();
-	}
-
-	@Override
-	public void stateChanged(ChangeEvent arg0) {
-		this.mazeApp.getMazeAppModel()
-				.newClearMaze((int) this.lineSpinnerModel.getValue(),
-							  (int) this.rowSpinnerModel.getValue());
 	}
 }

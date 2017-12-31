@@ -11,6 +11,7 @@ public class MazeMenu extends JMenu {
 	private final ClearMazeMenuItem clearMazeMenuItem;
 	private final AddRowMenuItem addRowMenuItem;
 	private final AddLineMenuItem addLineMenuItem;
+	private final AnimatePathMenuItem animatePathMenuItem;
 
 	public MazeMenu(MazeApp mazeApp) {
 
@@ -18,6 +19,7 @@ public class MazeMenu extends JMenu {
 		this.mazeApp = mazeApp;
 
 		add(drawMenuItem = new DrawShortestPathMenuItem(mazeApp));
+		add(animatePathMenuItem = new AnimatePathMenuItem(mazeApp));
 		add(clearMenuItem = new ClearShortestPathMenuItem(mazeApp));
 		add(newClearMazeMenuItem = new NewClearMazeMenuItem(mazeApp));
 		add(clearMazeMenuItem = new ClearMazeMenuItem(mazeApp));

@@ -27,10 +27,11 @@ public class Dijkstra {
 					if (pi.getPi(pivot) + g.getCost(pivot, vertex) < pi.getPi(vertex)) {
 						pi.setPi(pi.getPi(pivot) + g.getCost(pivot, vertex), vertex) ;
 						previous.setPrevious(pivot, vertex) ;
+						pivot.addCandidate(vertex);
 					}
 				}
 			}
-			
+
 			int piMax = Integer.MAX_VALUE ;
 			for (VertexInterface vertex: vertexList) {
 				if (! a.contains(vertex) && pi.getPi(vertex) < piMax) {

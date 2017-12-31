@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+
 import dijkstra.*;
 import maze.*;
 import ui.*;

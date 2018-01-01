@@ -37,7 +37,12 @@ public class MazeAppModel extends Observable {
 		}
 		else {
 			previous = (Previous) Dijkstra.dijkstra(maze, departure);
-			shortest = previous.getShortestPathTo(arrival);
+			if (((Box) arrival).getNeighbourList() == null) {
+				shortest = null;
+			}
+			else {
+				shortest = previous.getShortestPathTo(arrival);
+			}
 		}
 		setChanged();
 		notifyObservers(MazeAppModelMessage.MazeRenewal);
@@ -98,12 +103,14 @@ public class MazeAppModel extends Observable {
 
 	public void setWBox(int boxLine, int boxRow) {
 		maze.getMaze()[boxLine][boxRow] = new WBox("W", boxLine, boxRow, maze);
+		maze.resetNeighbourLists();
 		initModelFromMaze();
 		saved = false;
 	}
 
 	public void setEBox(int boxLine, int boxRow) {
 		maze.getMaze()[boxLine][boxRow] = new EBox("E", boxLine, boxRow, maze);
+		maze.resetNeighbourLists();
 		initModelFromMaze();
 		saved = false;
 	}
@@ -116,6 +123,7 @@ public class MazeAppModel extends Observable {
 				new EBox("E", departureLine, departureRow, maze);
 		}
 		maze.getMaze()[boxLine][boxRow] = new DBox("D", boxLine, boxRow, maze);
+		maze.resetNeighbourLists();
 		initModelFromMaze();
 		saved = false;
 	}
@@ -128,6 +136,7 @@ public class MazeAppModel extends Observable {
 				new EBox("E", arrivalLine, arrivalRow, maze);
 		}
 		maze.getMaze()[boxLine][boxRow] = new ABox("A", boxLine, boxRow, maze);
+		maze.resetNeighbourLists();
 		initModelFromMaze();
 		saved = false;
 	}

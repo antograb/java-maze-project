@@ -510,4 +510,12 @@ public class Maze
 		return maze;
 	}
 
+	public void resetNeighbourLists() {
+		for (Box[] line: maze) {
+			for (Box box: line) {
+				box.resetNeighbourList();
+			}
+		}
+	}
+
 }

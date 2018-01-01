@@ -42,46 +42,90 @@ public class Maze
 		this.maze = matrixDeepCopy(boxes);
 	}
 
-	private Box[][] matrixDeepCopy (Box[][] original) {
-		int numberOfLines = 0;
-		int numberOfRows = 0;
-		Box[][] copy;
-		/*
-		 * We first get the dimensions of the matrix
-		 */
-		for (Box[] lineBoxes: original) {
-			numberOfLines++;
+	public Maze(Box[][] newMaze) {
+		this.dimensionY = newMaze.length;
+		if (dimensionY > 0) {
+			this.dimensionX = newMaze[0].length;
 		}
-		if (numberOfLines > 0) {
-			for (Box box: original[0]) {
-				numberOfRows++;
-			}
+		else {
+			this.dimensionX = 0;
 		}
-		copy = new Box[numberOfLines][numberOfRows];
+		this.maze = matrixDeepCopy(newMaze);
+	}
 
-		/*
-		 * Now we proceed to the deep copy of each box
-		 */
-		for (int line = 0; line < numberOfLines; line++) {
-			for (int row = 0; row < numberOfRows; row++) {
+	private Box[][] matrixDeepCopy(Box[][] original,
+				       Box[][] destination,
+				       int numberOfLines,
+				       int numberOfRows,
+				       int lineOffset,
+				       int rowOffset)
+	{
+		if (destination == null) {
+			destination = new Box[numberOfLines][numberOfRows];
+		}
+		if (original.length < 1) {
+			return destination;
+		}
+		for (int line = lineOffset; line < lineOffset + numberOfLines; line++) {
+			for (int row = rowOffset; row < rowOffset + numberOfRows; row++) {
 				Box box = original[line][row];
 				if (box.isWalkable()) {
 					if (box.isDeparture()) {
-						copy[line][row] = new DBox(box.getLabel(), box.getY(), box.getX(), this);
+						destination[line][row] = new DBox(box.getLabel(), box.getY(), box.getX(), this);
 					}
 					else if (box.isArrival()) {
-						copy[line][row] = new ABox(box.getLabel(), box.getY(), box.getX(), this);
+						destination[line][row] = new ABox(box.getLabel(), box.getY(), box.getX(), this);
 					}
 					else {
-						copy[line][row] = new EBox(box.getLabel(), box.getY(), box.getX(), this);
+						destination[line][row] = new EBox(box.getLabel(), box.getY(), box.getX(), this);
 					}
 				}
 				else {
-					copy[line][row] = new WBox(box.getLabel(), box.getY(), box.getX(), this);
+					destination[line][row] = new WBox(box.getLabel(), box.getY(), box.getX(), this);
 				}
 			}
 		}
-		return copy;
+		return destination;
+	}
+
+	private Box[][] matrixDeepCopy(Box[][] original,
+				       int numberOfLines,
+				       int numberOfRows,
+				       int lineOffset,
+				       int rowOffset,
+				       int numberOfDestLines,
+				       int numberOfDestRows) {
+		return matrixDeepCopy(original,
+				      new Box[numberOfDestLines][numberOfDestRows],
+				      numberOfLines,
+				      numberOfRows,
+				      lineOffset,
+				      rowOffset);
+	}
+
+	private Box[][] matrixDeepCopy(Box [][] original,
+				       int numberOfLines,
+				       int numberOfRows,
+				       int lineOffset,
+				       int rowOffset) {
+		return matrixDeepCopy(original,
+							numberOfLines,
+				      numberOfRows,
+				      lineOffset,
+				      rowOffset,
+							numberOfLines,
+							numberOfRows);
+	}
+
+	private Box[][] matrixDeepCopy(Box[][] original, int numberOfLines, int numberOfRows) {
+		return matrixDeepCopy(original, numberOfLines, numberOfRows, 0, 0);
+	}
+
+	private Box[][] matrixDeepCopy(Box[][] original) {
+		if (original.length < 1) {
+			return null;
+		}
+		return matrixDeepCopy(original, original.length, original[0].length);
 	}
 
 	public static Maze emptyMaze(int dimension) {
@@ -122,6 +166,136 @@ public class Maze
 			}
 		}
 		return new Maze(numberOfLines, numberOfRows, maze);
+	}
+
+	public void addEmptyColumn(int posColumn) {
+		Box[][] newMaze = matrixDeepCopy(maze,
+						 dimensionY,
+						 posColumn,
+						 0,
+						 0,
+						 dimensionY,
+						 dimensionX + 1);
+		for (int line = 0; line < dimensionY; line++) {
+			newMaze[line][posColumn] = new EBox("E", line, posColumn, this);
+		}
+		for (int line = 0; line < dimensionY; line++) {
+			for (int row = posColumn; row < dimensionX; row++) {
+				Box box = maze[line][row];
+				if (box.isWalkable()) {
+					if (box.isDeparture()) {
+						newMaze[line][row + 1] = new DBox(box.getLabel(), box.getY(), box.getX() + 1, this);
+					}
+					else if (box.isArrival()) {
+						newMaze[line][row + 1] = new ABox(box.getLabel(), box.getY(), box.getX() + 1, this);
+					}
+					else {
+						newMaze[line][row + 1] = new EBox(box.getLabel(), box.getY(), box.getX() + 1, this);
+					}
+				}
+				else {
+					newMaze[line][row + 1] = new WBox(box.getLabel(), box.getY(), box.getX() + 1, this);
+				}
+			}
+		}
+		maze = newMaze;
+		dimensionX = dimensionX + 1;
+	}
+
+	public void delColumn(int posColumn) {
+		Box[][] newMaze = matrixDeepCopy(maze,
+						 dimensionY,
+						 posColumn,
+						 0,
+						 0,
+						 dimensionY,
+						 dimensionX - 1);
+		for (int line = 0; line < dimensionY; line++) {
+			for (int row = posColumn + 1; row < dimensionX; row++) {
+				Box box = maze[line][row];
+				if (box.isWalkable()) {
+					if (box.isDeparture()) {
+						newMaze[line][row - 1] = new DBox(box.getLabel(), box.getY(), box.getX() - 1, this);
+					}
+					else if (box.isArrival()) {
+						newMaze[line][row - 1] = new ABox(box.getLabel(), box.getY(), box.getX() - 1, this);
+					}
+					else {
+						newMaze[line][row - 1] = new EBox(box.getLabel(), box.getY(), box.getX() - 1, this);
+					}
+				}
+				else {
+					newMaze[line][row - 1] = new WBox(box.getLabel(), box.getY(), box.getX() - 1, this);
+				}
+			}
+		}
+		maze = newMaze;
+		dimensionX = dimensionX - 1;
+	}
+
+	public void addEmptyLine(int posLine) {
+		Box[][] newMaze = matrixDeepCopy(maze,
+						 posLine,
+						 dimensionX,
+						 0,
+						 0,
+						 dimensionY + 1,
+						 dimensionX);
+		for (int row = 0; row < dimensionX; row++) {
+			newMaze[posLine][row] = new EBox("E", posLine, row, this);
+		}
+		for (int line = posLine; line < dimensionY; line++) {
+			for (int row = 0; row < dimensionX; row++) {
+				Box box = maze[line][row];
+				if (box.isWalkable()) {
+					if (box.isDeparture()) {
+						newMaze[line + 1][row] = new DBox(box.getLabel(), box.getY() + 1, box.getX(), this);
+					}
+					else if (box.isArrival()) {
+						newMaze[line + 1][row] = new ABox(box.getLabel(), box.getY() + 1, box.getX(), this);
+					}
+					else {
+						newMaze[line + 1][row] = new EBox(box.getLabel(), box.getY() + 1, box.getX(), this);
+					}
+				}
+				else {
+					newMaze[line + 1][row] = new WBox(box.getLabel(), box.getY() + 1, box.getX(), this);
+				}
+			}
+		}
+		dimensionY = dimensionY + 1;
+		maze = newMaze;
+	}
+
+	public void delLine(int posLine) {
+		Box[][] newMaze = matrixDeepCopy(maze,
+						 posLine,
+						 dimensionX,
+						 0,
+						 0,
+						 dimensionY - 1,
+						 dimensionX);
+		for (int line = posLine + 1; line < dimensionY; line++) {
+			for (int row = 0; row < dimensionX; row++) {
+				Box box = maze[line][row];
+				if (box.isWalkable()) {
+					if (box.isDeparture()) {
+						newMaze[line - 1][row] = new DBox(box.getLabel(), box.getY() - 1, box.getX(), this);
+					}
+					else if (box.isArrival()) {
+						newMaze[line - 1][row] = new ABox(box.getLabel(), box.getY() - 1, box.getX(), this);
+					}
+					else {
+						newMaze[line - 1][row] = new EBox(box.getLabel(), box.getY() - 1, box.getX(), this);
+					}
+				}
+				else {
+					newMaze[line - 1][row] = new WBox(box.getLabel(), box.getY() - 1, box.getX(), this);
+				}
+			}
+		}
+		maze = newMaze;
+		dimensionY = dimensionY - 1;
 	}
 
 	public int getCost(VertexInterface start, VertexInterface end) {
@@ -334,6 +508,14 @@ public class Maze
 
 	public Box[][] getMaze() {
 		return maze;
+	}
+
+	public void resetNeighbourLists() {
+		for (Box[] line: maze) {
+			for (Box box: line) {
+				box.resetNeighbourList();
+			}
+		}
 	}
 
 }

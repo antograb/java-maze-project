@@ -35,7 +35,11 @@ public abstract class Box
 	
 	public ArrayList<VertexInterface> generateNeighbours() {
 		this.neighbourList = maze.generateNeighbours(this);
-		return maze.generateNeighbours(this) ;
+		return this.neighbourList;
+	}
+
+	public void resetNeighbourList() {
+		neighbourList = null;
 	}
 	
 	public boolean isWalkable() {

@@ -4,9 +4,9 @@ import javax.swing.*;
 import maze.Maze;
 import java.awt.*;
 
-public class WindowPanel extends JPanel
-{
-    private final MazeDrawing drawingPanelGrid;
+public class WindowPanel extends JPanel {
+
+	private final MazeDrawing drawingPanelGrid;
 
 	public WindowPanel(MazeApp mazeApp) {
 

@@ -41,7 +41,7 @@ public class SaveMazeMenuItem extends JMenuItem
 			this.setEnabled(true);
 		}
 		else {
-			this.setEnabled(true);
+			this.setEnabled(false);
 		}
 	}
 }

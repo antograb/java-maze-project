@@ -19,8 +19,16 @@ public class MazeAppModel extends Observable {
 	private Previous                   previous;
 	private ArrayList<VertexInterface> shortest;
 	private ArrayList<VertexInterface> boxList;
-	private boolean                    saved = true;
-	private boolean                    pathDrawn = false;
+	private boolean                    saved	= true;
+	/*
+	 * There are three states for pathDrawn :
+	 * 	0 : path isn't drawn
+	 * 	1 : path has been animated
+	 * 	2 : path has already been animated, but needs to be re-drawn
+	 * 		because of window resizing. Therefore there is no need to
+	 * 		animate the path again
+	 */
+	private int                        pathDrawn = 0;
 
 	public MazeAppModel() {
 		maze = new Maze(Maze.emptyMaze(10));
@@ -71,11 +79,19 @@ public class MazeAppModel extends Observable {
 		return shortest;
 	}
 
-	public boolean isPathDrawn() {
+	public ArrayList<VertexInterface> getShortestDeepCopy() {
+		ArrayList<VertexInterface> deepCopy = new ArrayList<VertexInterface>();
+		for (VertexInterface vertex : this.shortest) {
+			deepCopy.add(vertex);
+		}
+		return deepCopy;
+	}
+
+	public int isPathDrawn() {
 		return pathDrawn;
 	}
 
-	public void setPathDrawn(boolean pathDrawn) {
+	public void setPathDrawn(int pathDrawn) {
 		this.pathDrawn = pathDrawn;
 	}
 
@@ -186,6 +202,10 @@ public class MazeAppModel extends Observable {
 
 	public void delLine() {
 		delLine(maze.getDimensionY() - 1);
+	}
+
+	public VertexInterface getDeparture() {
+		return departure;
 	}
 
 	public void clearMaze() {

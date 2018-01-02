@@ -18,4 +18,16 @@ public interface VertexInterface {
 	 * @return The neighbourList of the element.
 	 */
 	public ArrayList<VertexInterface> generateNeighbours();
+
+	/**
+	 * Adds all vertexes not in the ASet and candidate for an eventual path.
+	 * @param vertex
+	 */
+	public void addCandidate(VertexInterface vertex);
+
+	/**
+	 * Returns the list of the candidates for an eventual path.
+	 * @return
+	 */
+	public ArrayList<VertexInterface> getCandidates();
 }

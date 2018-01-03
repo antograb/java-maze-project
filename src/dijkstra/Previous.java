@@ -28,12 +28,14 @@ public class Previous implements PreviousInterface {
 	}
 
 	public ArrayList<VertexInterface> getShortestPathTo(VertexInterface vertex) {
-		
+
+		shortestPath.add(vertex);
 		VertexInterface father = getPrevious(vertex) ;
-		shortestPath.add(father) ;
 		
-		if (((Box) getPrevious(father)).isDeparture()) return shortestPath ;
-		else {
+		if (((Box) getPrevious(father)) == null) {
+			shortestPath.add(father);
+			return shortestPath ;
+		} else {
 			return getShortestPathTo(father) ;
 		}	
 	}

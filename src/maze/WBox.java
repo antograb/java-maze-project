@@ -7,8 +7,8 @@ package maze;
 
 public class WBox extends Box {
 
-	public WBox (String label, int x, int y, Maze maze) {
-		super(label, x, y, maze);
+	public WBox (String label, int y, int x, Maze maze) {
+		super(label, y, x, maze);
 	}
 
 	@Override

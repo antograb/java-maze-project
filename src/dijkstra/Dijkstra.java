@@ -24,11 +24,12 @@ public class Dijkstra {
 		}
 
 		for (int j = 0; j < g.getVertexNumber(); j++) {
-			for (VertexInterface vertex: g.generateNeighbours(pivot)) {
+			for (VertexInterface vertex: pivot.generateNeighbours()) {
 				if (! a.contains(vertex)) {
 					if (pi.getPi(pivot) + g.getCost(pivot, vertex) < pi.getPi(vertex)) {
 						pi.setPi(pi.getPi(pivot) + g.getCost(pivot, vertex), vertex);
 						previous.setPrevious(pivot, vertex);
+						pivot.addCandidate(vertex);
 					}
 				}
 			}

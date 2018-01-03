@@ -26,12 +26,275 @@ public class Maze
 	public Maze(String filename) {
 		initFromTextFile(filename);
 	}
+	
+	public Maze(Maze maze) {
 
-	// public Maze(Box[][] maze){
-	// 	//Replacement for setMaze()
-	//  //Todo : check if the given array is a proper maze
-	// 	//and then set dimensionX and dimensionX
-	// }
+		this.dimensionX = maze.getDimensionX();
+		this.dimensionY = maze.getDimensionY();
+		this.maze = matrixDeepCopy(maze.getMaze());
+	}
+
+	public Maze(int numberOfLines, int numberOfRows, Box[][] boxes) {
+		this.dimensionY = numberOfLines;
+		this.dimensionX = numberOfRows;
+		this.maze = matrixDeepCopy(boxes);
+	}
+
+	public Maze(Box[][] newMaze) {
+		this.dimensionY = newMaze.length;
+		if (dimensionY > 0) {
+			this.dimensionX = newMaze[0].length;
+		}
+		else {
+			this.dimensionX = 0;
+		}
+		this.maze = matrixDeepCopy(newMaze);
+	}
+
+	private Box[][] matrixDeepCopy(Box[][] original,
+				       Box[][] destination,
+				       int numberOfLines,
+				       int numberOfRows,
+				       int lineOffset,
+				       int rowOffset)
+	{
+		if (destination == null) {
+			destination = new Box[numberOfLines][numberOfRows];
+		}
+		if (original.length < 1) {
+			return destination;
+		}
+		for (int line = lineOffset; line < lineOffset + numberOfLines; line++) {
+			for (int row = rowOffset; row < rowOffset + numberOfRows; row++) {
+				Box box = original[line][row];
+				if (box.isWalkable()) {
+					if (box.isDeparture()) {
+						destination[line][row] = new DBox(box.getLabel(), box.getY(), box.getX(), this);
+					}
+					else if (box.isArrival()) {
+						destination[line][row] = new ABox(box.getLabel(), box.getY(), box.getX(), this);
+					}
+					else {
+						destination[line][row] = new EBox(box.getLabel(), box.getY(), box.getX(), this);
+					}
+				}
+				else {
+					destination[line][row] = new WBox(box.getLabel(), box.getY(), box.getX(), this);
+				}
+			}
+		}
+		return destination;
+	}
+
+	private Box[][] matrixDeepCopy(Box[][] original,
+				       int numberOfLines,
+				       int numberOfRows,
+				       int lineOffset,
+				       int rowOffset,
+				       int numberOfDestLines,
+				       int numberOfDestRows) {
+		return matrixDeepCopy(original,
+				      new Box[numberOfDestLines][numberOfDestRows],
+				      numberOfLines,
+				      numberOfRows,
+				      lineOffset,
+				      rowOffset);
+	}
+
+	private Box[][] matrixDeepCopy(Box [][] original,
+				       int numberOfLines,
+				       int numberOfRows,
+				       int lineOffset,
+				       int rowOffset) {
+		return matrixDeepCopy(original,
+							numberOfLines,
+				      numberOfRows,
+				      lineOffset,
+				      rowOffset,
+							numberOfLines,
+							numberOfRows);
+	}
+
+	private Box[][] matrixDeepCopy(Box[][] original, int numberOfLines, int numberOfRows) {
+		return matrixDeepCopy(original, numberOfLines, numberOfRows, 0, 0);
+	}
+
+	private Box[][] matrixDeepCopy(Box[][] original) {
+		if (original.length < 1) {
+			return null;
+		}
+		return matrixDeepCopy(original, original.length, original[0].length);
+	}
+
+	public static Maze emptyMaze(int dimension) {
+		Box[][] maze = new Box[dimension][dimension];
+		for (int line = 0; line < dimension; line++) {
+			for (int row = 0; row < dimension; row++) {
+				maze[line][row] = new EBox("E", line, row, null);
+			}
+		}
+		return new Maze(dimension, dimension, maze);
+	}
+
+	public static Maze emptyMaze(int numberOfLines, int numberOfRows) {
+		Box[][] maze = new Box[numberOfLines][numberOfRows];
+		for (int line = 0; line < numberOfLines; line++) {
+			for (int row = 0; row < numberOfRows; row++) {
+				maze[line][row] = new EBox("E", line, row, null);
+			}
+		}
+		return new Maze(numberOfLines, numberOfRows, maze);
+	}
+
+	public static Maze wallMaze(int dimension) {
+		Box[][] maze = new Box[dimension][dimension];
+		for (int line = 0; line < dimension; line++) {
+			for (int row = 0; row < dimension; row++) {
+				maze[line][row] = new WBox("W", line, row, null);
+			}
+		}
+		return new Maze(dimension, dimension, maze);
+	}
+
+	public static Maze wallMaze(int numberOfLines, int numberOfRows) {
+		Box[][] maze = new Box[numberOfLines][numberOfRows];
+		for (int line = 0; line < numberOfLines; line++) {
+			for (int row = 0; row < numberOfRows; row++) {
+				maze[line][row] = new WBox("W", line, row, null);
+			}
+		}
+		return new Maze(numberOfLines, numberOfRows, maze);
+	}
+
+	public void addEmptyColumn(int posColumn) {
+		Box[][] newMaze = matrixDeepCopy(maze,
+						 dimensionY,
+						 posColumn,
+						 0,
+						 0,
+						 dimensionY,
+						 dimensionX + 1);
+		for (int line = 0; line < dimensionY; line++) {
+			newMaze[line][posColumn] = new EBox("E", line, posColumn, this);
+		}
+		for (int line = 0; line < dimensionY; line++) {
+			for (int row = posColumn; row < dimensionX; row++) {
+				Box box = maze[line][row];
+				if (box.isWalkable()) {
+					if (box.isDeparture()) {
+						newMaze[line][row + 1] = new DBox(box.getLabel(), box.getY(), box.getX() + 1, this);
+					}
+					else if (box.isArrival()) {
+						newMaze[line][row + 1] = new ABox(box.getLabel(), box.getY(), box.getX() + 1, this);
+					}
+					else {
+						newMaze[line][row + 1] = new EBox(box.getLabel(), box.getY(), box.getX() + 1, this);
+					}
+				}
+				else {
+					newMaze[line][row + 1] = new WBox(box.getLabel(), box.getY(), box.getX() + 1, this);
+				}
+			}
+		}
+		maze = newMaze;
+		dimensionX = dimensionX + 1;
+	}
+
+	public void delColumn(int posColumn) {
+		Box[][] newMaze = matrixDeepCopy(maze,
+						 dimensionY,
+						 posColumn,
+						 0,
+						 0,
+						 dimensionY,
+						 dimensionX - 1);
+		for (int line = 0; line < dimensionY; line++) {
+			for (int row = posColumn + 1; row < dimensionX; row++) {
+				Box box = maze[line][row];
+				if (box.isWalkable()) {
+					if (box.isDeparture()) {
+						newMaze[line][row - 1] = new DBox(box.getLabel(), box.getY(), box.getX() - 1, this);
+					}
+					else if (box.isArrival()) {
+						newMaze[line][row - 1] = new ABox(box.getLabel(), box.getY(), box.getX() - 1, this);
+					}
+					else {
+						newMaze[line][row - 1] = new EBox(box.getLabel(), box.getY(), box.getX() - 1, this);
+					}
+				}
+				else {
+					newMaze[line][row - 1] = new WBox(box.getLabel(), box.getY(), box.getX() - 1, this);
+				}
+			}
+		}
+		maze = newMaze;
+		dimensionX = dimensionX - 1;
+	}
+
+	public void addEmptyLine(int posLine) {
+		Box[][] newMaze = matrixDeepCopy(maze,
+						 posLine,
+						 dimensionX,
+						 0,
+						 0,
+						 dimensionY + 1,
+						 dimensionX);
+		for (int row = 0; row < dimensionX; row++) {
+			newMaze[posLine][row] = new EBox("E", posLine, row, this);
+		}
+		for (int line = posLine; line < dimensionY; line++) {
+			for (int row = 0; row < dimensionX; row++) {
+				Box box = maze[line][row];
+				if (box.isWalkable()) {
+					if (box.isDeparture()) {
+						newMaze[line + 1][row] = new DBox(box.getLabel(), box.getY() + 1, box.getX(), this);
+					}
+					else if (box.isArrival()) {
+						newMaze[line + 1][row] = new ABox(box.getLabel(), box.getY() + 1, box.getX(), this);
+					}
+					else {
+						newMaze[line + 1][row] = new EBox(box.getLabel(), box.getY() + 1, box.getX(), this);
+					}
+				}
+				else {
+					newMaze[line + 1][row] = new WBox(box.getLabel(), box.getY() + 1, box.getX(), this);
+				}
+			}
+		}
+		dimensionY = dimensionY + 1;
+		maze = newMaze;
+	}
+
+	public void delLine(int posLine) {
+		Box[][] newMaze = matrixDeepCopy(maze,
+						 posLine,
+						 dimensionX,
+						 0,
+						 0,
+						 dimensionY - 1,
+						 dimensionX);
+		for (int line = posLine + 1; line < dimensionY; line++) {
+			for (int row = 0; row < dimensionX; row++) {
+				Box box = maze[line][row];
+				if (box.isWalkable()) {
+					if (box.isDeparture()) {
+						newMaze[line - 1][row] = new DBox(box.getLabel(), box.getY() - 1, box.getX(), this);
+					}
+					else if (box.isArrival()) {
+						newMaze[line - 1][row] = new ABox(box.getLabel(), box.getY() - 1, box.getX(), this);
+					}
+					else {
+						newMaze[line - 1][row] = new EBox(box.getLabel(), box.getY() - 1, box.getX(), this);
+					}
+				}
+				else {
+					newMaze[line - 1][row] = new WBox(box.getLabel(), box.getY() - 1, box.getX(), this);
+				}
+			}
+		}
+		maze = newMaze;
+		dimensionY = dimensionY - 1;
+	}
 
 	public int getCost(VertexInterface start, VertexInterface end) {
 
@@ -47,18 +310,46 @@ public class Maze
 
 	public ArrayList<VertexInterface> getVertexes() {
 		ArrayList<VertexInterface> vertexList = new ArrayList<VertexInterface>();
-		for (int i = 0; i < dimensionX; i++) {
-			for (int j = 0; j < dimensionY; j++) {
-				if (maze[i][j].isWalkable()) {
-					vertexList.add(maze[i][j]);
+		for (int line = 0 ; line < dimensionY; line++) {
+			for (int row = 0 ; row < dimensionX; row++) {
+				if (maze[line][row].isWalkable()) {
+					vertexList.add(maze[line][row]);
 				}
 			}
 		}
 		return vertexList;
 	}
 
-	public ArrayList<VertexInterface> generateNeighbours(VertexInterface vertex) {
+	/**Method to determine the departure in the maze. Returns null if the departure is non-existent.
+	 * @return Departure vertex
+	 */
+	public VertexInterface getDeparture() {
 
+		ArrayList<VertexInterface> vertexes = getVertexes();
+		for (VertexInterface vertex: vertexes) {
+			if (((Box) vertex).isDeparture()) {
+				return vertex;
+			}
+		}
+		return null;
+	}
+
+	/**Method to determine the arrival in the maze. Returns null if the arrival is non-existent.
+	 * @return Arrival vertex
+	 */
+	public VertexInterface getArrival() {
+
+		ArrayList<VertexInterface> vertexes = getVertexes();
+		for (VertexInterface vertex: vertexes) {
+			if (((Box) vertex).isArrival()) {
+			       return vertex;
+			}
+		}
+		return null;
+	}
+
+	public ArrayList<VertexInterface> generateNeighbours(VertexInterface vertex) {
+		
 		Box box = (Box) vertex;
 		int x = box.getX();
 		int y = box.getY();
@@ -69,28 +360,27 @@ public class Maze
 			return neighbourList;
 		}
 
-		if (x > 0 && maze[x-1][y].isWalkable()) {
-			neighbourList.add(maze[x-1][y]);
+		if (x > 0 && maze[y][x-1].isWalkable()) {
+			neighbourList.add(maze[y][x-1]);
 		}
-
-		if (x < dimensionX-1 && maze[x+1][y].isWalkable()) {
-			neighbourList.add(maze[x+1][y]);
+		
+		if (x < dimensionX-1 && maze[y][x+1].isWalkable()) {
+			neighbourList.add(maze[y][x+1]);
 		}
-
-		if (y > 0 && maze[x][y-1].isWalkable()) {
-			neighbourList.add(maze[x][y-1]);
+		
+		if (y > 0 && maze[y-1][x].isWalkable()) {
+			neighbourList.add(maze[y-1][x]);
 		}
-
-		if (y < dimensionY-1 && maze[x][y+1].isWalkable()) {
-			neighbourList.add(maze[x][y+1]);
+		
+		if (y < dimensionY-1 && maze[y+1][x].isWalkable()) {
+			neighbourList.add(maze[y+1][x]);
 		}
-
+		
 		return neighbourList;
 	}
 
-	/** Constructs the maze from a text file, according to each
-	 *  single character on each line.
-	 *  @param filename
+	/**Constructs the maze from a text file, according to each single character on each line. 
+	 * @param filename
 	 * 	The path to the file containing the representation of the maze.
 	 */
 
@@ -112,16 +402,16 @@ public class Maze
 		try { //generates the maze
 			fr = new FileReader(filename);
 			br = new BufferedReader(fr);
-
+			
 			String currentLine = null;
-
+			
 			currentLine = br.readLine();
 			dimensionX = currentLine.length(); //maze's width
 			int currentLineLength;
+
+			this.maze = new Box[dimensionY][dimensionX] ;
+
 			int compteurLigne = 0;
-
-			this.maze = new Box[dimensionX][dimensionY];
-
 			while (currentLine != null)
 			{
 				currentLineLength = currentLine.length();
@@ -133,25 +423,22 @@ public class Maze
 					char currentChar = currentLine.charAt(compteurColonne);
 
 					switch(currentChar) {
-
+						
 					case 'W':
-						maze[compteurColonne][compteurLigne] =
-							new WBox("W", compteurColonne, compteurLigne, this);
+						maze[compteurLigne][compteurColonne] =
+						   	new WBox("W", compteurLigne, compteurColonne, this) ;
 						break;
-
 					case 'E':
-						maze[compteurColonne][compteurLigne] =
-							new EBox("E", compteurColonne, compteurLigne, this);
+						maze[compteurLigne][compteurColonne] =
+							new EBox("E", compteurLigne, compteurColonne, this) ;
 						break;
-
 					case 'D':
-						maze[compteurColonne][compteurLigne] =
-							new DBox("D", compteurColonne, compteurLigne, this);
+						maze[compteurLigne][compteurColonne] =
+							new DBox("D", compteurLigne, compteurColonne, this) ;
 						break;
-
 					case 'A':
-						maze[compteurColonne][compteurLigne] =
-							new ABox("A", compteurColonne, compteurLigne, this);
+						maze[compteurLigne][compteurColonne] =
+							new ABox("A", compteurLigne, compteurColonne, this) ;
 						break;
 
 					default:
@@ -174,7 +461,6 @@ public class Maze
 		} finally {
 			try { br.close(); } catch (Exception e) {}
 		}
-
 	}
 
 	public final void saveToTextFile(String fileName) {
@@ -187,9 +473,9 @@ public class Maze
 			fos = new FileOutputStream(fileName);
 			pw  = new PrintWriter(fos);
 
-			for (int i = 0; i < dimensionY; i++) {
-				for (int j = 0; j < dimensionX; j++) {
-					pw.print(maze[j][i].getLabel());
+			for (int line = 0; line < dimensionY; line++) {
+				for (int row = 0; row < dimensionX; row++) {
+					pw.print(maze[line][row].getLabel());
 				}
 				pw.print("\n");
 			}
@@ -199,6 +485,18 @@ public class Maze
 		} finally {
 			try { pw.close(); } catch(Exception e) {}
 		}
+	}
+
+	public String toString() {
+
+		String mazeStr = "";
+		for (int line = 0; line < dimensionY; line++) {
+			for (int row = 0; row < dimensionX; row++) {
+				mazeStr += maze[line][row].getLabel();
+			}
+			mazeStr += "\n";
+		}
+		return mazeStr;
 	}
 
 	public int getDimensionX() {
@@ -211,5 +509,13 @@ public class Maze
 
 	public Box[][] getMaze() {
 		return maze;
+	}
+
+	public void resetNeighbourLists() {
+		for (Box[] line: maze) {
+			for (Box box: line) {
+				box.resetNeighbourList();
+			}
+		}
 	}
 }

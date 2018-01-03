@@ -23,13 +23,33 @@ public abstract class Box
 	private int y;
 	private String label;
 	private Maze maze;
+	private ArrayList<VertexInterface> neighbourList;
+	private ArrayList<VertexInterface> candidates;
 
-	public Box (String label, int x, int y, Maze maze) {
-
-		this.label = new String(label);
+	public Box (String label, int y , int x, Maze maze) { //y first because of graphical maze representation
+		
+		this.label = label;
 		this.x = x;
 		this.y = y;
 		this.maze = maze;
+		this.candidates = new ArrayList<VertexInterface>();
+	}
+	
+	public ArrayList<VertexInterface> generateNeighbours() {
+		this.neighbourList = maze.generateNeighbours(this);
+		return this.neighbourList;
+	}
+
+	public void resetNeighbourList() {
+		neighbourList = null;
+	}
+
+	public void addCandidate(VertexInterface vertex) {
+		candidates.add(vertex);
+	}
+
+	public ArrayList<VertexInterface> getCandidates() {
+		return candidates;
 	}
 
 	public boolean isWalkable() {
@@ -42,6 +62,10 @@ public abstract class Box
 
 	public boolean isDeparture() {
 		return false;
+	}
+	
+	public ArrayList<VertexInterface> getNeighbourList() {
+		return neighbourList;
 	}
 
 	public int getX() {
@@ -59,5 +83,4 @@ public abstract class Box
 	public String toString() {
 		return "Label: " + label + ", x: " + x + ", y: " + y;
 	}
-
 }

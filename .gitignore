@@ -3,3 +3,6 @@
 src/package-list
 src/script.js
 *.class
+/bin/
+*.classpath
+*.project

@@ -67,6 +67,14 @@ public class MazeAppModel extends Observable {
 		return maze;
 	}
 
+	public Box[][] getBoxMaze() {
+		return this.maze.getMaze();
+	}
+
+	public Box getBox(int boxLine, int boxRow) {
+		return this.maze.getBox(boxLine, boxRow);
+	}
+
 	public String getFilename() {
 		return filename;
 	}
@@ -118,14 +126,14 @@ public class MazeAppModel extends Observable {
 	}
 
 	public void setWBox(int boxLine, int boxRow) {
-		maze.getMaze()[boxLine][boxRow] = new WBox("W", boxLine, boxRow, maze);
+		maze.setWBox(boxLine, boxRow);
 		maze.resetNeighbourLists();
 		initModelFromMaze();
 		saved = false;
 	}
 
 	public void setEBox(int boxLine, int boxRow) {
-		maze.getMaze()[boxLine][boxRow] = new EBox("E", boxLine, boxRow, maze);
+		maze.setEBox(boxLine, boxRow);
 		maze.resetNeighbourLists();
 		initModelFromMaze();
 		saved = false;
@@ -135,10 +143,9 @@ public class MazeAppModel extends Observable {
 		if (departure != null) {
 			int departureRow = ((EBox) departure).getX();
 			int departureLine = ((EBox) departure).getY();
-			maze.getMaze()[departureLine][departureRow] =
-				new EBox("E", departureLine, departureRow, maze);
+			maze.setEBox(departureLine, departureRow);
 		}
-		maze.getMaze()[boxLine][boxRow] = new DBox("D", boxLine, boxRow, maze);
+		maze.setDBox(boxLine, boxRow);
 		maze.resetNeighbourLists();
 		initModelFromMaze();
 		saved = false;
@@ -148,10 +155,9 @@ public class MazeAppModel extends Observable {
 		if (arrival != null) {
 			int arrivalRow = ((EBox) arrival).getX();
 			int arrivalLine = ((EBox) arrival).getY();
-			maze.getMaze()[arrivalLine][arrivalRow] =
-				new EBox("E", arrivalLine, arrivalRow, maze);
+			maze.setEBox(arrivalLine, arrivalRow);
 		}
-		maze.getMaze()[boxLine][boxRow] = new ABox("A", boxLine, boxRow, maze);
+		maze.setABox(boxLine, boxRow);
 		maze.resetNeighbourLists();
 		initModelFromMaze();
 		saved = false;
@@ -210,5 +216,13 @@ public class MazeAppModel extends Observable {
 
 	public void clearMaze() {
 		newClearMaze(maze.getDimensionY(), maze.getDimensionX());
+	}
+
+	public int getDimensionX() {
+		return this.maze.getDimensionX();
+	}
+
+	public int getDimensionY() {
+		return this.maze.getDimensionX();
 	}
 }

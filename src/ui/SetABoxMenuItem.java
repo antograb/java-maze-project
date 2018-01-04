@@ -21,6 +21,6 @@ public class SetABoxMenuItem extends JMenuItem
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		mazeApp.getMazeAppModel().setABox(boxLine, boxRow);
+		mazeApp.setModelABox(boxLine, boxRow);
 	}
 }

@@ -48,15 +48,16 @@ public class MazeDrawing extends JPanel implements MouseListener {
 		int height = getHeight();
 
 		paintMaze(g2d, width, height);
-		if (mazeApp.getMazeAppModel().isPathDrawn() == 1) {
+		if (mazeApp.isPathDrawn() == 1) {
 			animateShortestPath(g2d, width, height);
-		} else if (mazeApp.getMazeAppModel().isPathDrawn() == 2) {
+		} else if (mazeApp.isPathDrawn() == 2) {
 			paintShortestPath(g2d, width, height);
 		}
 	}
 
 	private void paintMaze(Graphics2D g, int width, int height) {
-		Maze maze =  mazeApp.getMazeAppModel().getMaze();
+
+		Maze maze =  mazeApp.getModelMaze();
 		int dimensionX = maze.getDimensionX();
 		int dimensionY = maze.getDimensionY();
 		int boxWidth = width / dimensionX;
@@ -64,11 +65,11 @@ public class MazeDrawing extends JPanel implements MouseListener {
 
 		for (int line = 0; line < dimensionY; line++) {
 			for (int row = 0; row < dimensionX; row++) {
-				if (maze.getMaze()[line][row].isWalkable()) {
-					if (maze.getMaze()[line][row].isDeparture()) {
+				if (maze.getBox(line, row).isWalkable()) {
+					if (maze.getBox(line, row).isDeparture()) {
 						g.setColor(Color.GREEN);
 					}
-					else if (maze.getMaze()[line][row].isArrival()) {
+					else if (maze.getBox(line, row).isArrival()) {
 						g.setColor(Color.RED);
 					}
 					else {
@@ -90,9 +91,9 @@ public class MazeDrawing extends JPanel implements MouseListener {
 	public void notifyForUpdates(Object param) {
 
 		if (param == MazeAppModelMessage.MazeRenewal) {
-			if (this.mazeApp.getMazeAppModel().getShortest() != null) {
+			if (this.mazeApp.getModelShortest() != null) {
 				this.finalPath
-						= this.mazeApp.getMazeAppModel().getShortestDeepCopy();
+						= this.mazeApp.getModelShortestDeepCopy();
 				Collections.reverse(finalPath);
 			}
 			this.repaint();
@@ -102,15 +103,15 @@ public class MazeDrawing extends JPanel implements MouseListener {
 	private void paintShortestPath(Graphics2D g, int width, int height) {
 
 		g.setColor(Color.WHITE);
-		int dimensionX = mazeApp.getMazeAppModel().getMaze().getDimensionX();
-		int dimensionY = mazeApp.getMazeAppModel().getMaze().getDimensionY();
+		int dimensionX = mazeApp.getModelDimensionX();
+		int dimensionY = mazeApp.getModelDimensionY();
 		int boxWidth = width / dimensionX;
 		int boxHeight = height / dimensionY;
 		int factorWidth = boxWidth / 3;
 		int factorHeight = boxHeight / 3;
 		ArrayList<VertexInterface> shortest =
-			mazeApp.getMazeAppModel().getShortest();
-		if (shortest == null && mazeApp.getMazeAppModel().isPathDrawn() == 0) {
+			mazeApp.getModelShortest();
+		if (shortest == null && mazeApp.isPathDrawn() == 0) {
 			mazeApp.clearShortestPath();
 			JOptionPane.showMessageDialog(this,
 				"Check that your graph contains a departure and an arrival,"
@@ -135,14 +136,14 @@ public class MazeDrawing extends JPanel implements MouseListener {
 	private void animateShortestPath(Graphics2D g, int width, int height) {
 
 		g.setColor(Color.WHITE);
-		int dimensionX = mazeApp.getMazeAppModel().getMaze().getDimensionX();
-		int dimensionY = mazeApp.getMazeAppModel().getMaze().getDimensionY();
+		int dimensionX = mazeApp.getModelDimensionX();
+		int dimensionY = mazeApp.getModelDimensionY();
 		int boxWidth = width / dimensionX;
 		int boxHeight = height / dimensionY;
 		int factorWidth = boxWidth / 3;
 		int factorHeight = boxHeight / 3;
 
-		if (this.finalPath == null && mazeApp.getMazeAppModel().isPathDrawn() == 0) {
+		if (this.finalPath == null && mazeApp.isPathDrawn() == 0) {
 			mazeApp.clearShortestPath();
 			JOptionPane.showMessageDialog(this,
 				"Check that your graph contains a departure and an arrival,"
@@ -193,7 +194,7 @@ public class MazeDrawing extends JPanel implements MouseListener {
 
 		if (pathCounter >= finalPath.size()) {
 			pathDrawingMode = false;
-			mazeApp.getMazeAppModel().setPathDrawn(2);
+			mazeApp.setPathDrawn(2);
 		}
 	}
 
@@ -207,7 +208,7 @@ public class MazeDrawing extends JPanel implements MouseListener {
 				boxTypeEditionMenu.show(e.getComponent(), e.getX(), e.getY());
 			}
 			else if (e.getButton() == MouseEvent.BUTTON1) {
-				mazeApp.getMazeAppModel().toggleBox(boxLine, boxRow);
+				mazeApp.toggleModelBox(boxLine, boxRow);
 			}
 		} else {
 			shortestPath.add(this.finalPath.get(pathCounter));
@@ -231,13 +232,13 @@ public class MazeDrawing extends JPanel implements MouseListener {
 	}
 
 	private int getBoxRow(int x) {
-		int dimensionX = mazeApp.getMazeAppModel().getMaze().getDimensionX();
+		int dimensionX = mazeApp.getModelDimensionX();
 		int boxWidth = getWidth() / dimensionX;
 		return x / boxWidth;
 	}
 
 	private int getBoxLine(int y) {
-		int dimensionY = mazeApp.getMazeAppModel().getMaze().getDimensionY();
+		int dimensionY = mazeApp.getModelDimensionY();
 		int boxHeight = getHeight() / dimensionY;
 		return y / boxHeight;
 	}

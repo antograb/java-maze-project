@@ -24,13 +24,11 @@ public class QuitMenuItem extends JMenuItem
 
 	public void actionPerformed(ActionEvent evt) {
 
-	      MazeAppModel mazeAppModel = mazeApp.getMazeAppModel();
-
-	      if (! mazeAppModel.isSaved()) {
-		      if (! SaveBox.promptAndContinue(this, mazeApp, "Quit application")) {
-			      return;
-		      }
-	      }
-	      System.exit(0);
+		if (! mazeApp.isModelSaved()) {
+			if (! SaveBox.promptAndContinue(this, mazeApp, "Quit application")) {
+				return;
+			}
+		}
+		System.exit(0);
 	}
 }

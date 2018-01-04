@@ -24,7 +24,6 @@ public class NewClearMazeMenuItem extends JMenuItem
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-
 		spinnerBox.createAndShowGUI();
 	}
 }

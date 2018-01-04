@@ -21,6 +21,6 @@ public class SetWBoxMenuItem extends JMenuItem
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		mazeApp.getMazeAppModel().setWBox(boxLine, boxRow);
+		mazeApp.setModelWBox(boxLine, boxRow);
 	}
 }

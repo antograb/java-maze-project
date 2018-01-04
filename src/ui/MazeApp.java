@@ -1,10 +1,13 @@
 package ui;
 
 import javax.swing.*;
+
+import dijkstra.VertexInterface;
 import maze.Maze;
 import model.MazeAppModel;
 import maze.EBox;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.awt.event.WindowEvent;
@@ -40,7 +43,6 @@ public class MazeApp extends JFrame
 
 	@Override
 	public void update(Observable obs, Object param) {
-
 		System.out.println("New maze detected");
 		windowPanel.notifyForUpdates(param);
 	}
@@ -81,6 +83,11 @@ public class MazeApp extends JFrame
 	public void drawShortestPath() {
 		windowPanel.paintShortestPath();
 		mazeAppModel.setPathDrawn(2);
+	}
+
+	public void animateShortestPath() {
+		windowPanel.animateShortestPath();
+		mazeAppModel.setPathDrawn(1);
 	}
 
 	public void clearShortestPath() {
@@ -126,9 +133,63 @@ public class MazeApp extends JFrame
 		this.repaint();
 	}
 
-	public void animateShortestPath() {
+	public boolean isModelSaved( ) {
+		return this.mazeAppModel.isSaved();
+	}
 
-		windowPanel.animateShortestPath();
-		mazeAppModel.setPathDrawn(1);
+	public void loadModelMaze(String filename) {
+		this.mazeAppModel.loadMaze(filename);
+	}
+
+	public maze.Box getModelBox(int boxLine, int boxRow) {
+		return this.mazeAppModel.getBox(boxLine, boxRow);
+	}
+
+	public void setModelABox(int boxLine, int boxRow) {
+		this.mazeAppModel.setABox(boxLine, boxRow);
+	}
+
+	public void setModelDBox(int boxLine, int boxRow) {
+		this.mazeAppModel.setDBox(boxLine, boxRow);
+	}
+
+	public void setModelEBox(int boxLine, int boxRow) {
+		this.mazeAppModel.setEBox(boxLine, boxRow);
+	}
+
+	public void setModelWBox(int boxLine, int boxRow) {
+		this.mazeAppModel.setWBox(boxLine, boxRow);
+	}
+
+	public int isPathDrawn() {
+		return this.mazeAppModel.isPathDrawn();
+	}
+
+	public Maze getModelMaze() {
+		return this.mazeAppModel.getMaze();
+	}
+
+	public ArrayList<VertexInterface> getModelShortest() {
+		return this.mazeAppModel.getShortest();
+	}
+
+	public ArrayList<VertexInterface> getModelShortestDeepCopy() {
+		return this.mazeAppModel.getShortestDeepCopy();
+	}
+
+	public int getModelDimensionX() {
+		return this.mazeAppModel.getDimensionX();
+	}
+
+	public int getModelDimensionY() {
+		return this.mazeAppModel.getDimensionY();
+	}
+
+	public void setPathDrawn(int i) {
+		this.mazeAppModel.setPathDrawn(i);
+	}
+
+	public void toggleModelBox(int boxLine, int boxRow) {
+		this.mazeAppModel.toggleBox(boxLine, boxRow);
 	}
 }

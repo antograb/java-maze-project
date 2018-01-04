@@ -296,6 +296,26 @@ public class Maze
 		dimensionY = dimensionY - 1;
 	}
 
+	public Box getBox(int boxLine, int boxRow) {
+		return this.maze[boxLine][boxRow];
+	}
+
+	public void setABox(int boxLine, int boxRow) {
+		this.maze[boxLine][boxRow] = new ABox("A", boxLine, boxRow, this);
+	}
+
+	public void setDBox(int boxLine, int boxRow) {
+		this.maze[boxLine][boxRow] = new DBox("D", boxLine, boxRow, this);
+	}
+
+	public void setEBox(int boxLine, int boxRow) {
+		this.maze[boxLine][boxRow] = new EBox("E", boxLine, boxRow, this);
+	}
+
+	public void setWBox(int boxLine, int boxRow) {
+		this.maze[boxLine][boxRow] = new WBox("W", boxLine, boxRow, this);
+	}
+
 	public int getCost(VertexInterface start, VertexInterface end) {
 
 		Box startBox = (Box) start;

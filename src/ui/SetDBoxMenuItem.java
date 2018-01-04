@@ -21,6 +21,6 @@ public class SetDBoxMenuItem extends JMenuItem
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		mazeApp.getMazeAppModel().setDBox(boxLine, boxRow);
+		mazeApp.setModelDBox(boxLine, boxRow);
 	}
 }

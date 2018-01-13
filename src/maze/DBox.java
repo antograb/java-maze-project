@@ -5,9 +5,9 @@ package maze;
  * is first in the <code>Maze</code>.
  */
 
-public class DBox extends EBox{
+public final class DBox extends EBox{
 
-	public DBox (String label, int y, int x, Maze maze) {
+	public DBox(String label, int y, int x, Maze maze) {
 		super(label, y, x, maze);
 	}
 

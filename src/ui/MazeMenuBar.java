@@ -2,7 +2,7 @@ package ui;
 
 import javax.swing.JMenuBar;
 
-public class MazeMenuBar extends JMenuBar {
+public final class MazeMenuBar extends JMenuBar {
 
 	private final MazeApp mazeApp;
 	private final FileMenu fileMenu;

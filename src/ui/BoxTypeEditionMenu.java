@@ -4,7 +4,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JMenuItem;
 import maze.Box;
 
-public class BoxTypeEditionMenu extends JPopupMenu {
+public final class BoxTypeEditionMenu extends JPopupMenu {
 
 	JMenuItem setWBox;
 	JMenuItem setEBox;

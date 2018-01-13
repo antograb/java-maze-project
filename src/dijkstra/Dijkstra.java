@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 
-public class Dijkstra {
+public final class Dijkstra {
 
 	private static PreviousInterface dijkstra(GraphInterface g,
 		VertexInterface r,

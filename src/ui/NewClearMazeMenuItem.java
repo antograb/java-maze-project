@@ -7,7 +7,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-public class NewClearMazeMenuItem extends JMenuItem
+public final class NewClearMazeMenuItem extends JMenuItem
 				implements ActionListener {
 
 	private final MazeApp mazeApp;

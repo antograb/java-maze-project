@@ -24,17 +24,16 @@ public abstract class Box
 	private String label;
 	private Maze maze;
 	private ArrayList<VertexInterface> neighbourList;
-	private ArrayList<VertexInterface> candidates;
+	private ArrayList<VertexInterface> candidates =
+		new ArrayList<VertexInterface>();
 
-	public Box (String label, int y , int x, Maze maze) { //y first because of graphical maze representation
-		
+	public Box(String label, int y , int x, Maze maze) { //y first because of graphical maze representation
 		this.label = label;
 		this.x = x;
 		this.y = y;
 		this.maze = maze;
-		this.candidates = new ArrayList<VertexInterface>();
 	}
-	
+
 	public ArrayList<VertexInterface> generateNeighbours() {
 		this.neighbourList = maze.generateNeighbours(this);
 		return this.neighbourList;
@@ -63,7 +62,7 @@ public abstract class Box
 	public boolean isDeparture() {
 		return false;
 	}
-	
+
 	public ArrayList<VertexInterface> getNeighbourList() {
 		return neighbourList;
 	}

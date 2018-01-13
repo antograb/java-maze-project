@@ -6,7 +6,7 @@ import java.util.List;
 
 import maze.Box;
 
-public class Previous implements PreviousInterface {
+public final class Previous implements PreviousInterface {
 
 	private Hashtable<VertexInterface, VertexInterface> hashPrevious;
 	private ArrayList<VertexInterface> shortestPath;
@@ -32,13 +32,13 @@ public class Previous implements PreviousInterface {
 
 		shortestPath.add(vertex);
 		VertexInterface father = getPrevious(vertex);
-		
+
 		if (getPrevious(father) == null) {
 			shortestPath.add(father);
 			return shortestPath;
 		}
 		else {
 			return getShortestPathTo(father);
-		}	
+		}
 	}
 }

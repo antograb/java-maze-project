@@ -13,7 +13,7 @@ import java.util.Observer;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-public class MazeApp extends JFrame
+public final class MazeApp extends JFrame
 	implements Observer, WindowListener {
 
 	private final MazeMenuBar  mazeMenuBar;
@@ -145,6 +145,18 @@ public class MazeApp extends JFrame
 		return this.mazeAppModel.getBox(boxLine, boxRow);
 	}
 
+	public void saveModelMaze(String filename) {
+		mazeAppModel.saveToFile(filename);
+	}
+
+	public void saveModelMaze() {
+		mazeAppModel.saveToFile();
+	}
+
+	public String getModelFilename() {
+		return mazeAppModel.getFilename();
+	}
+
 	public void setModelABox(int boxLine, int boxRow) {
 		this.mazeAppModel.setABox(boxLine, boxRow);
 	}
@@ -173,8 +185,8 @@ public class MazeApp extends JFrame
 		return this.mazeAppModel.getShortest();
 	}
 
-	public ArrayList<VertexInterface> getModelShortestDeepCopy() {
-		return this.mazeAppModel.getShortestDeepCopy();
+	public ArrayList<VertexInterface> getModelShortestShallowCopy() {
+		return this.mazeAppModel.getShortestShallowCopy();
 	}
 
 	public int getModelDimensionX() {

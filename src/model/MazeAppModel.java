@@ -11,14 +11,13 @@ import dijkstra.*;
 import maze.*;
 
 public class MazeAppModel extends Observable {
-
+	/** The file into which the maze is to be saved */
 	private String                     filename;
 	private Maze                       maze;
 	private VertexInterface            departure;
 	private VertexInterface            arrival;
 	private Previous                   previous;
 	private ArrayList<VertexInterface> shortest;
-	private ArrayList<VertexInterface> boxList;
 	private boolean                    saved	= true;
 	/*
 	 * There are three states for pathDrawn :
@@ -38,7 +37,6 @@ public class MazeAppModel extends Observable {
 	private void initModelFromMaze() {
 		departure = maze.getDeparture();
 		arrival = maze.getArrival();
-		boxList = maze.getVertexes();
 		if (departure == null || arrival == null) {
 			previous = null;
 			shortest = null;
@@ -52,8 +50,6 @@ public class MazeAppModel extends Observable {
 				shortest = previous.getShortestPathTo(arrival);
 			}
 		}
-		setChanged();
-		notifyObservers(MazeAppModelMessage.MazeRenewal);
 	}
 
 	public void loadMaze(String filename) {
@@ -61,14 +57,12 @@ public class MazeAppModel extends Observable {
 		maze = new Maze(this.filename);
 		initModelFromMaze();
 		saved = true;
+		setChanged();
+		notifyObservers(MazeAppModelMessage.MazeLoaded);
 	}
 
 	public Maze getMaze() {
 		return maze;
-	}
-
-	public Box[][] getBoxMaze() {
-		return this.maze.getMaze();
 	}
 
 	public Box getBox(int boxLine, int boxRow) {
@@ -87,12 +81,12 @@ public class MazeAppModel extends Observable {
 		return shortest;
 	}
 
-	public ArrayList<VertexInterface> getShortestDeepCopy() {
-		ArrayList<VertexInterface> deepCopy = new ArrayList<VertexInterface>();
+	public ArrayList<VertexInterface> getShortestShallowCopy() {
+		ArrayList<VertexInterface> shallowCopy = new ArrayList<VertexInterface>();
 		for (VertexInterface vertex : this.shortest) {
-			deepCopy.add(vertex);
+			shallowCopy.add(vertex);
 		}
-		return deepCopy;
+		return shallowCopy;
 	}
 
 	public int isPathDrawn() {
@@ -106,10 +100,12 @@ public class MazeAppModel extends Observable {
 	public void saveToFile() {
 		maze.saveToTextFile(filename);
 		saved = true;
+		setChanged();
+		notifyObservers(MazeAppModelMessage.MazeSaved);
 	}
 
 	public void saveToFile(String filename) {
-		this.filename = new String(filename);
+		this.filename = filename;
 		maze.saveToTextFile(this.filename);
 		saved = true;
 		setChanged();
@@ -117,7 +113,7 @@ public class MazeAppModel extends Observable {
 	}
 
 	public void toggleBox(int boxLine, int boxRow) {
-		if (maze.getMaze()[boxLine][boxRow].isWalkable()) {
+		if (maze.getBox(boxLine, boxRow).isWalkable()) {
 			setWBox(boxLine, boxRow);
 		}
 		else {
@@ -130,6 +126,8 @@ public class MazeAppModel extends Observable {
 		maze.resetNeighbourLists();
 		initModelFromMaze();
 		saved = false;
+		setChanged();
+		notifyObservers(MazeAppModelMessage.MazeRenewal);
 	}
 
 	public void setEBox(int boxLine, int boxRow) {
@@ -137,6 +135,8 @@ public class MazeAppModel extends Observable {
 		maze.resetNeighbourLists();
 		initModelFromMaze();
 		saved = false;
+		setChanged();
+		notifyObservers(MazeAppModelMessage.MazeRenewal);
 	}
 
 	public void setDBox(int boxLine, int boxRow) {
@@ -149,6 +149,8 @@ public class MazeAppModel extends Observable {
 		maze.resetNeighbourLists();
 		initModelFromMaze();
 		saved = false;
+		setChanged();
+		notifyObservers(MazeAppModelMessage.MazeRenewal);
 	}
 
 	public void setABox(int boxLine, int boxRow) {
@@ -161,6 +163,8 @@ public class MazeAppModel extends Observable {
 		maze.resetNeighbourLists();
 		initModelFromMaze();
 		saved = false;
+		setChanged();
+		notifyObservers(MazeAppModelMessage.MazeRenewal);
 	}
 
 	public void newClearMaze(int numberOfLines, int numberOfRows) {
@@ -168,6 +172,8 @@ public class MazeAppModel extends Observable {
 		maze = new Maze(Maze.emptyMaze(numberOfLines, numberOfRows));
 		initModelFromMaze();
 		saved = false;
+		setChanged();
+		notifyObservers(MazeAppModelMessage.MazeRenewal);
 	}
 
 	public void addEmptyColumn() {
@@ -178,12 +184,16 @@ public class MazeAppModel extends Observable {
 		maze.addEmptyColumn(posColumn);
 		initModelFromMaze();
 		saved = false;
+		setChanged();
+		notifyObservers(MazeAppModelMessage.MazeRenewal);
 	}
 
 	public void delColumn(int posColumn) {
 		maze.delColumn(posColumn);
 		initModelFromMaze();
 		saved = false;
+		setChanged();
+		notifyObservers(MazeAppModelMessage.MazeRenewal);
 	}
 
 	public void delColumn() {
@@ -198,12 +208,16 @@ public class MazeAppModel extends Observable {
 		maze.addEmptyLine(posLine);
 		initModelFromMaze();
 		saved = false;
+		setChanged();
+		notifyObservers(MazeAppModelMessage.MazeRenewal);
 	}
 
 	public void delLine(int posLine) {
 		maze.delLine(posLine);
 		initModelFromMaze();
 		saved = false;
+		setChanged();
+		notifyObservers(MazeAppModelMessage.MazeRenewal);
 	}
 
 	public void delLine() {
@@ -219,10 +233,10 @@ public class MazeAppModel extends Observable {
 	}
 
 	public int getDimensionX() {
-		return this.maze.getDimensionX();
+		return maze.getDimensionX();
 	}
 
 	public int getDimensionY() {
-		return this.maze.getDimensionX();
+		return maze.getDimensionY();
 	}
 }

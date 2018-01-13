@@ -7,7 +7,7 @@ import model.MazeAppModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ClearShortestPathMenuItem extends JMenuItem
+public final class ClearShortestPathMenuItem extends JMenuItem
 				implements ActionListener {
 
 	private final MazeApp mazeApp;

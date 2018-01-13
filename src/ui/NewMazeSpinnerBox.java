@@ -16,7 +16,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
 
-public class NewMazeSpinnerBox extends JPanel
+public final class NewMazeSpinnerBox extends JPanel
 				implements ActionListener {
 
 	private final MazeApp mazeApp;
@@ -48,7 +48,7 @@ public class NewMazeSpinnerBox extends JPanel
 		JSpinner rowSpinner = addLabeledSpinner(this, labels[1], rowSpinnerModel);
 	}
 
-	static protected JSpinner addLabeledSpinner(Container c,
+	protected static JSpinner addLabeledSpinner(Container c,
 						    String label,
 						    SpinnerModel model) {
 

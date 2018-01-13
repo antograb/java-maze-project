@@ -16,7 +16,7 @@ import dijkstra.VertexInterface;
  * @author Sylvain Rager
  *
  */
-public class Maze
+public final class Maze
 	implements GraphInterface {
 
 	private int dimensionX;
@@ -26,7 +26,7 @@ public class Maze
 	public Maze(String filename) {
 		initFromTextFile(filename);
 	}
-	
+
 	public Maze(Maze maze) {
 
 		this.dimensionX = maze.getDimensionX();
@@ -369,7 +369,7 @@ public class Maze
 	}
 
 	public ArrayList<VertexInterface> generateNeighbours(VertexInterface vertex) {
-		
+
 		Box box = (Box) vertex;
 		int x = box.getX();
 		int y = box.getY();
@@ -383,28 +383,28 @@ public class Maze
 		if (x > 0 && maze[y][x-1].isWalkable()) {
 			neighbourList.add(maze[y][x-1]);
 		}
-		
+
 		if (x < dimensionX-1 && maze[y][x+1].isWalkable()) {
 			neighbourList.add(maze[y][x+1]);
 		}
-		
+
 		if (y > 0 && maze[y-1][x].isWalkable()) {
 			neighbourList.add(maze[y-1][x]);
 		}
-		
+
 		if (y < dimensionY-1 && maze[y+1][x].isWalkable()) {
 			neighbourList.add(maze[y+1][x]);
 		}
-		
+
 		return neighbourList;
 	}
 
-	/**Constructs the maze from a text file, according to each single character on each line. 
+	/**Constructs the maze from a text file, according to each single character on each line.
 	 * @param filename
 	 * 	The path to the file containing the representation of the maze.
 	 */
 
-	private final void initFromTextFile(String filename) {
+	private void initFromTextFile(String filename) {
 
 		FileReader     fr = null;
 		BufferedReader br = null;
@@ -422,9 +422,9 @@ public class Maze
 		try { //generates the maze
 			fr = new FileReader(filename);
 			br = new BufferedReader(fr);
-			
+
 			String currentLine = null;
-			
+
 			currentLine = br.readLine();
 			dimensionX = currentLine.length(); //maze's width
 			int currentLineLength;
@@ -443,7 +443,7 @@ public class Maze
 					char currentChar = currentLine.charAt(compteurColonne);
 
 					switch(currentChar) {
-						
+
 					case 'W':
 						maze[compteurLigne][compteurColonne] =
 						   	new WBox("W", compteurLigne, compteurColonne, this) ;
@@ -483,7 +483,7 @@ public class Maze
 		}
 	}
 
-	public final void saveToTextFile(String fileName) {
+	public void saveToTextFile(String fileName) {
 
 		FileOutputStream fos = null;
 		PrintWriter      pw  = null;
@@ -527,7 +527,7 @@ public class Maze
 		return dimensionY;
 	}
 
-	public Box[][] getMaze() {
+	protected Box[][] getMaze() {
 		return maze;
 	}
 

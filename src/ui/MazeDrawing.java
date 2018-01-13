@@ -18,7 +18,7 @@ import model.MazeAppModelMessage;
 import maze.EBox;
 import dijkstra.VertexInterface;
 
-public class MazeDrawing extends JPanel implements MouseListener {
+public final class MazeDrawing extends JPanel implements MouseListener {
 
 	private final MazeApp mazeApp;
 	private boolean pathDrawingMode;
@@ -39,7 +39,7 @@ public class MazeDrawing extends JPanel implements MouseListener {
 	}
 
 	@Override
-	protected final void paintComponent(Graphics g) {
+	protected void paintComponent(Graphics g) {
 
 		Graphics2D g2d = (Graphics2D) g;
 		super.paintComponent(g2d);
@@ -90,10 +90,11 @@ public class MazeDrawing extends JPanel implements MouseListener {
 
 	public void notifyForUpdates(Object param) {
 
-		if (param == MazeAppModelMessage.MazeRenewal) {
+		if (param == MazeAppModelMessage.MazeRenewal ||
+				param == MazeAppModelMessage.MazeLoaded) {
 			if (this.mazeApp.getModelShortest() != null) {
 				this.finalPath
-						= this.mazeApp.getModelShortestDeepCopy();
+						= this.mazeApp.getModelShortestShallowCopy();
 				Collections.reverse(finalPath);
 			}
 			this.repaint();
@@ -172,25 +173,6 @@ public class MazeDrawing extends JPanel implements MouseListener {
 					   boxWidth - 2 * factorWidth,
 					   boxHeight - 2 * factorHeight);
 		}
-//		Timer timer = new Timer(16, new ActionListener(){
-//		int compteur = shortestPath.size()-1;
-//		VertexInterface vertex;
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				if (compteur < 0) {
-//					((Timer)e.getSource()).stop();
-//				} else {
-//					vertex = shortestPath.get(compteur);
-//					EBox box = (EBox) vertex;
-//					g.fillOval(box.getX() * boxWidth + factorWidth,
-//							   box.getY()*boxHeight + factorHeight,
-//							   boxWidth - 2 * factorWidth,
-//							   boxHeight - 2 * factorHeight);
-//					compteur -= 1;
-//				}
-//			}
-//		});
-//		timer.start();
 
 		if (pathCounter >= finalPath.size()) {
 			pathDrawingMode = false;

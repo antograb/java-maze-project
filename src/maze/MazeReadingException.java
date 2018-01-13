@@ -8,7 +8,7 @@ package maze;
  *
  */
 
-public class MazeReadingException
+public final class MazeReadingException
 			extends Exception {
 
 	private static final long serialVersionUID = 1L;

@@ -82,6 +82,14 @@ public final class MazeApp extends JFrame
 	}
 
 	public void windowOpened(WindowEvent e) {
+		JOptionPane.showMessageDialog(this,
+			"Welcome to this maze solving application propelled by"
+			+ " Dijkstra's algorithm.\n\n"
+			+ "White boxes are walls, black boxes are empty and walkable.\n"
+			+ "Feel free to edit boxes type by right clicking on them.\n\n"
+			+ "You can find an example maze in data/labyrinthe.txt.",
+			"Welcome",
+			JOptionPane.INFORMATION_MESSAGE);
 		return;
 	}
 

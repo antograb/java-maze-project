@@ -3,7 +3,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 
-public class Dijkstra {
+/** Litteral implementation of the Dijkstra's algorithm given in the subject */
+public final class Dijkstra {
 
 	private static PreviousInterface dijkstra(GraphInterface g,
 		VertexInterface r,

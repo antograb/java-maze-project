@@ -5,9 +5,9 @@ package maze;
  * It's the last <code>Box</code> to be walked through and
  * it's an exit to the <code>Maze</code>.
  */
-public class ABox extends EBox{
+public final class ABox extends EBox{
 
-	public ABox (String label, int y, int x, Maze maze) {
+	public ABox(String label, int y, int x, Maze maze) {
 		super(label, y, x, maze) ;
 	}
 

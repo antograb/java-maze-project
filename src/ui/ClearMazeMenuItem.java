@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-public class ClearMazeMenuItem extends JMenuItem
+public final class ClearMazeMenuItem extends JMenuItem
 				implements ActionListener {
 
 	private final MazeApp mazeApp;

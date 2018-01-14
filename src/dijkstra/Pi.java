@@ -2,7 +2,7 @@ package dijkstra;
 
 import java.util.Hashtable;
 
-public class Pi implements PiInterface {
+public final class Pi implements PiInterface {
 
 	private Hashtable<VertexInterface, Integer> hashPi;
 

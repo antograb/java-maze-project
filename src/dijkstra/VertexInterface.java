@@ -19,6 +19,9 @@ public interface VertexInterface {
 	 */
 	public ArrayList<VertexInterface> generateNeighbours();
 
+	/** Returns the neighbourList of the element. */
+	public ArrayList<VertexInterface> getNeighbourList();
+
 	/**
 	 * Adds all vertexes not in the ASet and candidate for an eventual path.
 	 * @param vertex

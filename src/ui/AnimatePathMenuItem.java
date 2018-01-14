@@ -7,7 +7,7 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JMenuItem;
 
-public class AnimatePathMenuItem extends JMenuItem
+public final class AnimatePathMenuItem extends JMenuItem
 				implements ActionListener {
 
 	private final MazeApp mazeApp;

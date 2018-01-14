@@ -2,16 +2,14 @@ package ui;
 
 import javax.swing.JOptionPane;
 import java.awt.Component;
+import maze.MazeSavingException;
 
-import model.MazeAppModel;
-
-public class SaveBox {
+public final class SaveBox {
 	private static String message = "Maze not saved. Save it ?";
 
 	public static boolean promptAndContinue(Component parent,
 						MazeApp mazeApp,
 						String title) {
-		MazeAppModel mazeAppModel = mazeApp.getMazeAppModel();
 		int response = JOptionPane.showOptionDialog(parent,
 			message,
 			title,
@@ -22,13 +20,31 @@ public class SaveBox {
 		case JOptionPane.CANCEL_OPTION:
 			return false;
 		case JOptionPane.OK_OPTION:
-			if (mazeAppModel.getFilename() != null) {
-				mazeAppModel.saveToFile();
+			if (mazeApp.getModelFilename() != null) {
+				try {
+					mazeApp.saveModelMaze();
+				}
+				catch (MazeSavingException mse) {
+					JOptionPane.showMessageDialog(null,
+						mse.getMessage(),
+						"Maze saving error",
+						JOptionPane.ERROR_MESSAGE);
+					return promptAndContinue(null, mazeApp, title);
+				}
 			}
 			else {
 				String filename = FileBox.save(mazeApp);
 				if (filename != null) {
-					mazeApp.getMazeAppModel().saveToFile(filename);
+					try {
+						mazeApp.saveModelMaze(filename);
+					}
+					catch (MazeSavingException mse) {
+						JOptionPane.showMessageDialog(null,
+							mse.getMessage(),
+							"Maze saving error",
+							JOptionPane.ERROR_MESSAGE);
+						return promptAndContinue(null, mazeApp, title);
+					}
 				}
 				else {
 					return promptAndContinue(null, mazeApp, title);

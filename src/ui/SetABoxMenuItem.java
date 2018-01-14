@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
 
-public class SetABoxMenuItem extends JMenuItem
+public final class SetABoxMenuItem extends JMenuItem
 				implements ActionListener {
 
 	private final MazeApp mazeApp;
@@ -21,6 +21,6 @@ public class SetABoxMenuItem extends JMenuItem
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		mazeApp.getMazeAppModel().setABox(boxLine, boxRow);
+		mazeApp.setModelABox(boxLine, boxRow);
 	}
 }

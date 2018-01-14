@@ -4,7 +4,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JMenuItem;
 import maze.Box;
 
-public class BoxTypeEditionMenu extends JPopupMenu {
+public final class BoxTypeEditionMenu extends JPopupMenu {
+
 	JMenuItem setWBox;
 	JMenuItem setEBox;
 	JMenuItem setDBox;
@@ -15,11 +16,12 @@ public class BoxTypeEditionMenu extends JPopupMenu {
 	JMenuItem delLine;
 
 	public BoxTypeEditionMenu(MazeApp mazeApp, int boxLine, int boxRow) {
+
 		add(setEBox = new SetEBoxMenuItem(mazeApp, boxLine, boxRow));
 		add(setWBox = new SetWBoxMenuItem(mazeApp, boxLine, boxRow));
 		add(setDBox = new SetDBoxMenuItem(mazeApp, boxLine, boxRow));
 		add(setABox = new SetABoxMenuItem(mazeApp, boxLine, boxRow));
-		Box box = (Box) mazeApp.getMazeAppModel().getMaze().getMaze()[boxLine][boxRow];
+		Box box = (Box) mazeApp.getModelBox(boxLine, boxRow);
 		setEBox.setEnabled((box.isWalkable() && (box.isDeparture() ||
 			box.isArrival())) || ! box.isWalkable());
 		setWBox.setEnabled(box.isWalkable());

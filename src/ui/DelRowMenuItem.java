@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
 
-public class DelRowMenuItem extends JMenuItem
+public final class DelRowMenuItem extends JMenuItem
 				implements ActionListener {
 
 	private final MazeApp mazeApp;

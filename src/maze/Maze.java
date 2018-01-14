@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import dijkstra.GraphInterface;
@@ -16,17 +17,18 @@ import dijkstra.VertexInterface;
  * @author Sylvain Rager
  *
  */
-public class Maze
-	implements GraphInterface {
+public final class Maze
+		implements GraphInterface {
 
 	private int dimensionX;
 	private int dimensionY;
 	private Box[][] maze;
 
-	public Maze(String filename) {
+	public Maze(String filename)
+			throws MazeReadingException {
 		initFromTextFile(filename);
 	}
-	
+
 	public Maze(Maze maze) {
 
 		this.dimensionX = maze.getDimensionX();
@@ -51,6 +53,12 @@ public class Maze
 		this.maze = matrixDeepCopy(newMaze);
 	}
 
+	/**
+	 * matrixDeepCopy methods allow to deep copy a matrix of Box
+	 * (as stored in a Maze) or only a part of it inside a new matrix of Box.
+	 * The new matrix is therefore a truly new matrix with new boxes, which
+	 * are not references to a previously used object.
+	 */
 	private Box[][] matrixDeepCopy(Box[][] original,
 				       Box[][] destination,
 				       int numberOfLines,
@@ -126,6 +134,7 @@ public class Maze
 		return matrixDeepCopy(original, original.length, original[0].length);
 	}
 
+	/** Create a square maze of empty boxes of the given dimension */
 	public static Maze emptyMaze(int dimension) {
 		Box[][] maze = new Box[dimension][dimension];
 		for (int line = 0; line < dimension; line++) {
@@ -136,6 +145,7 @@ public class Maze
 		return new Maze(dimension, dimension, maze);
 	}
 
+	/** Create a rectangle maze of empty boxes of the given dimensions */
 	public static Maze emptyMaze(int numberOfLines, int numberOfRows) {
 		Box[][] maze = new Box[numberOfLines][numberOfRows];
 		for (int line = 0; line < numberOfLines; line++) {
@@ -146,6 +156,7 @@ public class Maze
 		return new Maze(numberOfLines, numberOfRows, maze);
 	}
 
+	/** Create a square maze of wall boxes of the given dimension */
 	public static Maze wallMaze(int dimension) {
 		Box[][] maze = new Box[dimension][dimension];
 		for (int line = 0; line < dimension; line++) {
@@ -156,6 +167,7 @@ public class Maze
 		return new Maze(dimension, dimension, maze);
 	}
 
+	/** Create a rectangle maze of wall boxes of the given dimensions */
 	public static Maze wallMaze(int numberOfLines, int numberOfRows) {
 		Box[][] maze = new Box[numberOfLines][numberOfRows];
 		for (int line = 0; line < numberOfLines; line++) {
@@ -166,6 +178,7 @@ public class Maze
 		return new Maze(numberOfLines, numberOfRows, maze);
 	}
 
+	/** Add a column of empty boxes at the given position */
 	public void addEmptyColumn(int posColumn) {
 		Box[][] newMaze = matrixDeepCopy(maze,
 						 dimensionY,
@@ -296,6 +309,47 @@ public class Maze
 		dimensionY = dimensionY - 1;
 	}
 
+	/** Return the box at given coordinates */
+	public Box getBox(int boxLine, int boxRow) {
+		return this.maze[boxLine][boxRow];
+	}
+
+	/**
+	 * Set the box at given coordinates to an arrival box. If an arrival box
+	 * was already in the maze, set it to an empty box.
+	 */
+	public void setABox(int boxLine, int boxRow) {
+		if (getArrival() != null) {
+			setEBox(((Box) getArrival()).getY(), ((Box) getArrival()).getX());
+		}
+		this.maze[boxLine][boxRow] = new ABox("A", boxLine, boxRow, this);
+		resetNeighbourLists();
+	}
+
+	/**
+	 * Set the box at given coordinates to a departure box. If a departure box
+	 * was already in the maze, set it to an empty box.
+	 */
+	public void setDBox(int boxLine, int boxRow) {
+		if (getDeparture() != null) {
+			setEBox(((Box) getDeparture()).getY(), ((Box) getDeparture()).getX());
+		}
+		this.maze[boxLine][boxRow] = new DBox("D", boxLine, boxRow, this);
+		resetNeighbourLists();
+	}
+
+	/** Set the box at given coordinates to an empty box */
+	public void setEBox(int boxLine, int boxRow) {
+		this.maze[boxLine][boxRow] = new EBox("E", boxLine, boxRow, this);
+		resetNeighbourLists();
+	}
+
+	/** Set the box at given coordinates to a wall box */
+	public void setWBox(int boxLine, int boxRow) {
+		this.maze[boxLine][boxRow] = new WBox("W", boxLine, boxRow, this);
+		resetNeighbourLists();
+	}
+
 	public int getCost(VertexInterface start, VertexInterface end) {
 
 		Box startBox = (Box) start;
@@ -349,7 +403,7 @@ public class Maze
 	}
 
 	public ArrayList<VertexInterface> generateNeighbours(VertexInterface vertex) {
-		
+
 		Box box = (Box) vertex;
 		int x = box.getX();
 		int y = box.getY();
@@ -363,28 +417,28 @@ public class Maze
 		if (x > 0 && maze[y][x-1].isWalkable()) {
 			neighbourList.add(maze[y][x-1]);
 		}
-		
+
 		if (x < dimensionX-1 && maze[y][x+1].isWalkable()) {
 			neighbourList.add(maze[y][x+1]);
 		}
-		
+
 		if (y > 0 && maze[y-1][x].isWalkable()) {
 			neighbourList.add(maze[y-1][x]);
 		}
-		
+
 		if (y < dimensionY-1 && maze[y+1][x].isWalkable()) {
 			neighbourList.add(maze[y+1][x]);
 		}
-		
+
 		return neighbourList;
 	}
 
-	/**Constructs the maze from a text file, according to each single character on each line. 
+	/**Constructs the maze from a text file, according to each single character on each line.
 	 * @param filename
 	 * 	The path to the file containing the representation of the maze.
 	 */
-
-	private final void initFromTextFile(String filename) {
+	private void initFromTextFile(String filename)
+			throws MazeReadingException {
 
 		FileReader     fr = null;
 		BufferedReader br = null;
@@ -402,9 +456,9 @@ public class Maze
 		try { //generates the maze
 			fr = new FileReader(filename);
 			br = new BufferedReader(fr);
-			
+
 			String currentLine = null;
-			
+
 			currentLine = br.readLine();
 			dimensionX = currentLine.length(); //maze's width
 			int currentLineLength;
@@ -423,7 +477,7 @@ public class Maze
 					char currentChar = currentLine.charAt(compteurColonne);
 
 					switch(currentChar) {
-						
+
 					case 'W':
 						maze[compteurLigne][compteurColonne] =
 						   	new WBox("W", compteurLigne, compteurColonne, this) ;
@@ -454,16 +508,19 @@ public class Maze
 				currentLine = br.readLine();
 				compteurLigne++;
 			}
-		} catch (MazeReadingException mre) {
-			mre.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException e) {
+			throw new MazeReadingException(filename);
 		} finally {
 			try { br.close(); } catch (Exception e) {}
 		}
 	}
 
-	public final void saveToTextFile(String fileName) {
+  /**
+	 * Save the current maze to a text file.
+	 * @param fileName The name of the file in which the maze will be saved
+	 */
+	public void saveToTextFile(String fileName)
+			throws MazeSavingException {
 
 		FileOutputStream fos = null;
 		PrintWriter      pw  = null;
@@ -479,9 +536,8 @@ public class Maze
 				}
 				pw.print("\n");
 			}
-
-		} catch(Exception e) {
-			e.printStackTrace();
+		} catch(IOException e) {
+			throw new MazeSavingException(fileName);
 		} finally {
 			try { pw.close(); } catch(Exception e) {}
 		}
@@ -499,19 +555,21 @@ public class Maze
 		return mazeStr;
 	}
 
+	/** Gives the number of rows in the maze */
 	public int getDimensionX() {
 		return dimensionX;
 	}
 
+	/** Gives the number of lines in the maze */
 	public int getDimensionY() {
 		return dimensionY;
 	}
 
-	public Box[][] getMaze() {
+	protected Box[][] getMaze() {
 		return maze;
 	}
 
-	public void resetNeighbourLists() {
+	private void resetNeighbourLists() {
 		for (Box[] line: maze) {
 			for (Box box: line) {
 				box.resetNeighbourList();

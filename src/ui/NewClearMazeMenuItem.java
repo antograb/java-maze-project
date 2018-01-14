@@ -7,7 +7,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-public class NewClearMazeMenuItem extends JMenuItem
+public final class NewClearMazeMenuItem extends JMenuItem
 				implements ActionListener {
 
 	private final MazeApp mazeApp;
@@ -24,7 +24,6 @@ public class NewClearMazeMenuItem extends JMenuItem
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-
 		spinnerBox.createAndShowGUI();
 	}
 }

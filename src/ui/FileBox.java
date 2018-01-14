@@ -13,8 +13,6 @@ public final class FileBox {
 
 		int returnVal = fileChooser.showOpenDialog(mazeApp);
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
-			System.out.println("You chose to open this file: " +
-				fileChooser.getSelectedFile().getName());
 				String filename = fileChooser.getSelectedFile().getPath();
 				return filename;
 		}
@@ -26,8 +24,6 @@ public final class FileBox {
 
 		int returnVal = fileChooser.showSaveDialog(mazeApp);
 		if(returnVal == JFileChooser.APPROVE_OPTION) {
-			System.out.println("You chose to save to this file: " +
-				fileChooser.getSelectedFile().getName());
 			String filename = fileChooser.getSelectedFile().getPath();
 			return filename;
 		}

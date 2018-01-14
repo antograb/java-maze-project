@@ -15,13 +15,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import maze.Maze;
 import model.MazeAppModelMessage;
-import maze.EBox;
+import maze.Box;
 import dijkstra.VertexInterface;
 
 public final class MazeDrawing extends JPanel implements MouseListener {
 
 	private final MazeApp mazeApp;
-	private boolean pathDrawingMode;
 	private ArrayList<VertexInterface> shortestPath;
 	private ArrayList<VertexInterface> finalPath;
 	private int pathCounter;
@@ -29,7 +28,6 @@ public final class MazeDrawing extends JPanel implements MouseListener {
 	public MazeDrawing(MazeApp mazeApp) {
 
 		this.mazeApp    = mazeApp;
-		this.pathDrawingMode = false;
 		this.shortestPath = new ArrayList<VertexInterface>();
 		this.finalPath = null;
 		this.pathCounter = -1;
@@ -55,6 +53,7 @@ public final class MazeDrawing extends JPanel implements MouseListener {
 		}
 	}
 
+	/** Paint (each box of) the maze in the current JPanel */
 	private void paintMaze(Graphics2D g, int width, int height) {
 
 		Maze maze =  mazeApp.getModelMaze();
@@ -88,19 +87,31 @@ public final class MazeDrawing extends JPanel implements MouseListener {
 		}
 	}
 
+	/**
+	 * This method is responsible for repainting the maze when needed
+	 * @param param
+	 *	The message about what happened to the maze.
+	 *	The maze will be re-painted only if it changed
+	 *	(by user edition or by loading a new maze from file).
+	 * 	@see model.MazeAppModelMessage
+	 */
 	public void notifyForUpdates(Object param) {
 
 		if (param == MazeAppModelMessage.MazeRenewal ||
 				param == MazeAppModelMessage.MazeLoaded) {
 			if (this.mazeApp.getModelShortest() != null) {
-				this.finalPath
-						= this.mazeApp.getModelShortestShallowCopy();
+				finalPath = new ArrayList<VertexInterface>(mazeApp.getModelShortest());
 				Collections.reverse(finalPath);
 			}
 			this.repaint();
 		}
 	}
 
+	/**
+	 * This method is reponsible for painting the shortest path on top
+	 * of the maze. It takes all the boxes belonging to the shortest path
+	 * and display on dot on them all at once.
+	 */
 	private void paintShortestPath(Graphics2D g, int width, int height) {
 
 		g.setColor(Color.WHITE);
@@ -126,7 +137,7 @@ public final class MazeDrawing extends JPanel implements MouseListener {
 			return;
 		}
 		for (VertexInterface vertex : shortest) {
-			EBox box = (EBox) vertex;
+			Box box = (Box) vertex;
 			g.fillOval(box.getX() * boxWidth + factorWidth,
 					   box.getY()*boxHeight + factorHeight,
 					   boxWidth - 2 * factorWidth,
@@ -134,6 +145,11 @@ public final class MazeDrawing extends JPanel implements MouseListener {
 		}
 	}
 
+	/**
+	 * This method displays the next box in the shortest path at each call.
+	 * When the last box in the shortest path has been displayed, it falls
+	 * back to calling drawShortestPath.
+	 */
 	private void animateShortestPath(Graphics2D g, int width, int height) {
 
 		g.setColor(Color.WHITE);
@@ -158,8 +174,6 @@ public final class MazeDrawing extends JPanel implements MouseListener {
 			return;
 		}
 
-		pathDrawingMode = true;
-
 		if (pathCounter == -1) {
 			JOptionPane.showMessageDialog(this,
 					"Click on the maze to see the shortest path evolve");
@@ -167,7 +181,7 @@ public final class MazeDrawing extends JPanel implements MouseListener {
 		}
 
 		for (VertexInterface vertex : shortestPath) {
-			EBox box = (EBox) vertex;
+			Box box = (Box) vertex;
 			g.fillOval(box.getX() * boxWidth + factorWidth,
 					   box.getY() * boxHeight + factorHeight,
 					   boxWidth - 2 * factorWidth,
@@ -175,15 +189,30 @@ public final class MazeDrawing extends JPanel implements MouseListener {
 		}
 
 		if (pathCounter >= finalPath.size()) {
-			pathDrawingMode = false;
 			mazeApp.setPathDrawn(2);
 		}
 	}
 
+	/**
+	 * The method called when the user clicked on the panel.
+	 * It will trigger events such as box edition or shortest path animation.
+	 * @param e
+	 * 	If in animation mode, trigger the displaying of the next box
+	 *  in the shortest pas. If not, catch right clicks to display a context menu
+	 *  and left clicks to toggle boxes type.
+	 */
 	public void mouseClicked(MouseEvent e) {
 		int boxRow = getBoxRow(e.getX());
 		int boxLine = getBoxLine(e.getY());
-		if (! pathDrawingMode) {
+		if (mazeApp.isPathDrawn() == 0) {
+			// Don't do anything if there is no box where the mouse is
+			if (boxRow >= mazeApp.getModelDimensionX()
+					|| boxLine >= mazeApp.getModelDimensionY()) {
+				return;
+			}
+			// Toggle box's type if the user clicked the left button,
+			// print a menu allowing to choose between different actions
+			// if the user clicked the right button.
 			if (e.getButton() == MouseEvent.BUTTON3) {
 				BoxTypeEditionMenu boxTypeEditionMenu
 						= new BoxTypeEditionMenu(mazeApp, boxLine, boxRow);
@@ -213,12 +242,20 @@ public final class MazeDrawing extends JPanel implements MouseListener {
 		return;
 	}
 
+	/**
+	 * Reponsible for calculating the row number of a box
+	 * based on the panel size and the box's width
+	 */
 	private int getBoxRow(int x) {
 		int dimensionX = mazeApp.getModelDimensionX();
 		int boxWidth = getWidth() / dimensionX;
 		return x / boxWidth;
 	}
 
+	/**
+	 * Reponsible for calculating the line number of a box
+	 * based on the panel size and the box's height
+	 */
 	private int getBoxLine(int y) {
 		int dimensionY = mazeApp.getModelDimensionY();
 		int boxHeight = getHeight() / dimensionY;
@@ -237,8 +274,8 @@ public final class MazeDrawing extends JPanel implements MouseListener {
 		return;
 	}
 
+	/** Clear the list of boxes in the local shortest path */
 	public void clearShortestPath() {
 		this.pathCounter = -1;
-		this.shortestPath = new ArrayList<VertexInterface>();
 	}
 }

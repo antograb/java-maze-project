@@ -10,6 +10,8 @@ import java.util.Observable;
 import javax.swing.JOptionPane;
 
 import model.MazeAppModelMessage;
+import maze.MazeReadingException;
+import maze.MazeSavingException;
 
 public final class FileMenu extends JMenu {
 
@@ -53,7 +55,17 @@ public final class FileMenu extends JMenu {
 			}
 			String filename = FileBox.load(mazeApp);
 			if (filename != null) {
-				mazeApp.loadModelMaze(filename);
+				try {
+					mazeApp.loadModelMaze(filename);
+				}
+				catch (MazeReadingException mre) {
+					JOptionPane.showMessageDialog(this,
+						"Please check you have sufficient permissions to"
+						+ " read the file and that the file has a correct"
+						+ " maze format.",
+						"Error loading maze",
+						JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}
 	}
@@ -70,7 +82,7 @@ public final class FileMenu extends JMenu {
 			this.mazeApp = mazeApp;
 			this.setAccelerator(KeyStroke.getKeyStroke("control S"));
 			mazeApp.getMazeAppModel().addObserver(this);
-			if (mazeApp.getMazeAppModel().getFilename() == null) {
+			if (mazeApp.getModelFilename() == null) {
 				this.setEnabled(false);
 			}
 			addActionListener(this);
@@ -78,7 +90,15 @@ public final class FileMenu extends JMenu {
 
 		public void actionPerformed(ActionEvent evt) {
 			if (mazeApp.getModelFilename() != null) {
-				mazeApp.saveModelMaze();
+				try {
+					mazeApp.saveModelMaze();
+				}
+				catch (MazeSavingException mse) {
+					JOptionPane.showMessageDialog(this,
+						mse.getMessage(),
+						"Maze saving error",
+						JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}
 
@@ -111,7 +131,15 @@ public final class FileMenu extends JMenu {
 		public void actionPerformed(ActionEvent evt) {
 			String filename = FileBox.save(mazeApp);
 			if (filename != null) {
-				mazeApp.saveModelMaze(filename);
+				try {
+					mazeApp.saveModelMaze(filename);
+				}
+				catch (MazeSavingException mse) {
+					JOptionPane.showMessageDialog(this,
+						mse.getMessage(),
+						"Maze saving error",
+						JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}
 	}

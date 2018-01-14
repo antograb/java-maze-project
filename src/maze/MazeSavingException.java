@@ -1,16 +1,16 @@
 package maze;
 
-/**<h1> MazeReadingException exception </h1>
+/**<h1> MazeSavingException exception </h1>
  * <p>
  * This class is used to throw exception when reading and
  * initiating the maze from a text file.
  */
-public final class MazeReadingException
+public final class MazeSavingException
 			extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	public MazeReadingException(String filename) {
-		super("Invalid maze format : " + filename + " or can't open file.");
+	public MazeSavingException(String filename) {
+		super("Can't save to file " + filename + ".");
 	}
 }

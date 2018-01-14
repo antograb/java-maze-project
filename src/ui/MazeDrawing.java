@@ -178,6 +178,7 @@ public final class MazeDrawing extends JPanel implements MouseListener {
 			JOptionPane.showMessageDialog(this,
 					"Click on the maze to see the shortest path evolve");
 			pathCounter = 0;
+			repaint();
 		}
 
 		for (VertexInterface vertex : shortestPath) {
@@ -204,7 +205,7 @@ public final class MazeDrawing extends JPanel implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		int boxRow = getBoxRow(e.getX());
 		int boxLine = getBoxLine(e.getY());
-		if (mazeApp.isPathDrawn() == 0) {
+		if (mazeApp.isPathDrawn() != 1) {
 			// Don't do anything if there is no box where the mouse is
 			if (boxRow >= mazeApp.getModelDimensionX()
 					|| boxLine >= mazeApp.getModelDimensionY()) {
